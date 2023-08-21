@@ -1,0 +1,24 @@
+{"login": {
+    "status": 1,
+    "message": "OK",
+    "user": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiMSIsImVtYWlsIjoidGVzdG1lbWJlckBtZW1iZXIuY29tIiwiZmlyc3RfbmFtZSI6IlNCIiwibGFzdF9uYW1lIjoiVGVzdCIsInBob25lIjoiMDgxMTExMTUyMCIsInBob3RvIjoicHJvZmlsZS9wcm9maWxlXzFfMTU3MjAyMzEwNTUucG5nIiwicGFzc3dvcmQiOiIkMnkkMTAkdWQwS0c2RlpaNzJ3WGN1V0pWLzNsdXhDQWhQTXBXZno2aDJMaTlDdEdBQ3FHOTVqS3Rwd2UifSwiaWF0IjoxNjkwNjk2Njc1LCJleHAiOjE2OTA2OTY3MzV9.Y_eEJAeUg_VMrG7sCsbHs6k2pHzvOmNBO5864g5rV2w",
+        "id": "1",
+        "email": "testmember@member.com",
+        "name": "SB Test",
+        "phone": "0811111520",
+        "photo": "http://206.189.39.51/images/profile/profile_1_15720231055.png"
+    }
+},
+"register":{
+    "status": 1,
+    "message": "OK",
+    "user": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImNyZWF0ZWRfYXQiOiIyMDIzLTA3LTMwVDA2OjIxOjU4LjAwMFoiLCJ1cGRhdGVkX2F0IjoiMjAyMy0wNy0zMFQwNjoyMTo1OC4wMDBaIiwiaWQiOiI0IiwiZW1haWwiOiJ0ZXN0bWVtYmVyNEBtZW1iZXIuY29tIiwiZmlyc3RfbmFtZSI6IlRlc3QiLCJsYXN0X25hbWUiOiJNZW1iZXIgMyIsInBob25lIjoiMDgxMjM0Nnh4eHh4IiwiZ2VuZGVyIjoiRkVNQUxFIiwiY2l0eSI6IkJBTkRVTkciLCJkYXRlX29mX2JpcnRoIjoiMTk4Ni0xMi0zMVQxNzowMDowMC4wMDBaIiwicGhvdG8iOiJub3Byb2ZpbGVpbWFnZS5wbmciLCJzdGF0dXMiOjEsInBhc3N3b3JkIjoiJDJiJDEwJFg4ZUQxYWtYNFNrN2JpZUFXcmJSMU9uOGJ5TDBDNm9JaVJnMnlEc0VoTUh2YTY0cy9GcE5hIiwiY3JlYXRlZF9ieSI6MSwidXBkYXRlZF9ieSI6MX0sImlhdCI6MTY5MDY5ODExOCwiZXhwIjoxNjkwNjk4MTc4fQ.o3sQ8IynfvPMYfUI_MZYus_rcJgeosXRN8ddHuHAJyY",
+        "id": "4",
+        "email": "testmember4@member.com",
+        "name": "Test Member 3",
+        "phone": "0812346xxxxx",
+        "photo": "http://206.189.39.51/images/noprofileimage.png"
+    }
+}}
