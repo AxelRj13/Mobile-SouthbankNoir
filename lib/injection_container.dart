@@ -17,6 +17,11 @@ import 'features/events/domain/repository/event_repository.dart';
 import 'features/events/domain/usecases/get_event.dart';
 import 'features/events/domain/usecases/get_today_event.dart';
 import 'features/events/presentation/bloc/event_bloc.dart';
+import 'features/home/data/data_sources/remote/popup_api_service.dart';
+import 'features/home/data/repository/popup_repository_impl.dart';
+import 'features/home/domain/repository/popup_repository.dart';
+import 'features/home/domain/usecases/get_popup.dart';
+import 'features/home/presentation/bloc/popup_bloc.dart';
 import 'features/news/data/data_sources/remote/news_api_service.dart';
 import 'features/news/data/repository/news_repository_impl.dart';
 import 'features/news/domain/repository/news_repository.dart';
@@ -45,6 +50,9 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<LoginRepository>(LoginRepositoryImpl(sl()));
   sl.registerSingleton<RegisterRepository>(RegisterRepositoryImpl(sl()));
 
+  sl.registerLazySingleton<PopupApiService>(() => PopupApiService(dio));
+  sl.registerLazySingleton<PopupRepository>(() => PopupRepositoryImpl(sl()));
+
   sl.registerLazySingleton<BannerApiService>(() => BannerApiService(dio));
   sl.registerLazySingleton<BannerRepository>(() => BannerRepositoryImpl(sl()));
 
@@ -57,6 +65,7 @@ Future<void> initializeDependencies() async {
   // UseCases
   sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl()));
   sl.registerLazySingleton<RegisterUseCase>(() => RegisterUseCase(sl()));
+  sl.registerLazySingleton<GetPopupUseCase>(() => GetPopupUseCase(sl()));
   sl.registerLazySingleton<GetBannerUseCase>(() => GetBannerUseCase(sl()));
   sl.registerLazySingleton<GetEventUseCase>(() => GetEventUseCase(sl()));
   sl.registerLazySingleton<GetTodayEventUseCase>(
@@ -65,6 +74,7 @@ Future<void> initializeDependencies() async {
 
   // Blocs
   sl.registerFactory<AuthBloc>(() => AuthBloc(sl(), sl()));
+  sl.registerFactory<PopupBloc>(() => PopupBloc(sl()));
   sl.registerFactory<BannerBloc>(() => BannerBloc(sl()));
   sl.registerFactory<EventBloc>(() => EventBloc(sl(), sl()));
   sl.registerFactory<NewsBloc>(() => NewsBloc(sl()));

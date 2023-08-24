@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:southbank/config/routes/router.dart';
+import 'package:southbank/core/components/dialog.dart';
+
 import '../../data/models/menu.dart';
 import '../../domain/entities/menu.dart';
 
@@ -44,9 +47,15 @@ class _MenuState extends State<Menu> {
     ),
   ];
 
-  Widget _buildMenuItem(String label, String image) {
+  Widget _buildMenuItem(String label, String image, String route) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        if (route != '') {
+          router.goNamed(route);
+        }
+
+        comingsoonDialog(context);
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
         child: Column(
@@ -74,14 +83,16 @@ class _MenuState extends State<Menu> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: _menus
               .where((menu) => menu.id! < 4)
-              .map((menu) => _buildMenuItem(menu.label!, menu.image!))
+              .map((menu) =>
+                  _buildMenuItem(menu.label!, menu.image!, menu.route!))
               .toList(),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: _menus
               .where((menu) => menu.id! > 3)
-              .map((menu) => _buildMenuItem(menu.label!, menu.image!))
+              .map((menu) =>
+                  _buildMenuItem(menu.label!, menu.image!, menu.route!))
               .toList(),
         ),
       ],
