@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 Color get backgroundColor => const Color(0xFF272727);
+Color get appbarColor => const Color(0xFF434343);
 Color get accentColor => const Color(0xFFF3A838);
 
 ThemeData theme() {
@@ -19,12 +20,12 @@ ThemeData theme() {
 }
 
 AppBarTheme appBarTheme() {
-  return const AppBarTheme(
-    color: Color(0xFF434343),
+  return AppBarTheme(
+    color: appbarColor,
     elevation: 0,
     centerTitle: true,
-    iconTheme: IconThemeData(color: Colors.white),
-    titleTextStyle: TextStyle(
+    iconTheme: const IconThemeData(color: Colors.white),
+    titleTextStyle: const TextStyle(
       color: Colors.white,
       fontSize: 22,
       fontWeight: FontWeight.w700,

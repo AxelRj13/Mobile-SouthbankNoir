@@ -27,6 +27,11 @@ import 'features/news/data/repository/news_repository_impl.dart';
 import 'features/news/domain/repository/news_repository.dart';
 import 'features/news/domain/usecases/get_news.dart';
 import 'features/news/presentation/bloc/news/remote/news_bloc.dart';
+import 'features/outlet/data/data_sources/outlet_api_service.dart';
+import 'features/outlet/data/repository/outlet_repository_impl.dart';
+import 'features/outlet/domain/repository/outlet_repository.dart';
+import 'features/outlet/domain/usecases/get_outlet_details.dart';
+import 'features/outlet/presentation/bloc/outlet_bloc.dart';
 import 'features/promo/data/data_sources/remote/banner_api_service.dart';
 import 'features/promo/data/repository/banner_repository_impl.dart';
 import 'features/promo/domain/repository/banner_repository.dart';
@@ -59,6 +64,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<EventApiService>(() => EventApiService(dio));
   sl.registerLazySingleton<EventRepository>(() => EventRepositoryImpl(sl()));
 
+  sl.registerLazySingleton<OutletApiService>(() => OutletApiService(dio));
+  sl.registerLazySingleton<OutletRepository>(() => OutletRepositoryImpl(sl()));
+
   sl.registerLazySingleton<NewsApiService>(() => NewsApiService(dio));
   sl.registerLazySingleton<NewsRepository>(() => NewsRepositoryImpl(sl()));
 
@@ -70,6 +78,8 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<GetEventUseCase>(() => GetEventUseCase(sl()));
   sl.registerLazySingleton<GetTodayEventUseCase>(
       () => GetTodayEventUseCase(sl()));
+  sl.registerLazySingleton<GetOutletDetailsUseCase>(
+      () => GetOutletDetailsUseCase(sl()));
   sl.registerLazySingleton<GetNewsUseCase>(() => GetNewsUseCase(sl()));
 
   // Blocs
@@ -77,5 +87,6 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<PopupBloc>(() => PopupBloc(sl()));
   sl.registerFactory<BannerBloc>(() => BannerBloc(sl()));
   sl.registerFactory<EventBloc>(() => EventBloc(sl(), sl()));
+  sl.registerFactory<OutletBloc>(() => OutletBloc(sl()));
   sl.registerFactory<NewsBloc>(() => NewsBloc(sl()));
 }

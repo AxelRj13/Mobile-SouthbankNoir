@@ -19,42 +19,38 @@ class _MenuState extends State<Menu> {
       id: 1,
       label: 'Reservation',
       image: 'assets/img/reservation.png',
-      route: '',
     ),
     const MenuModel(
       id: 2,
       label: 'Outlet Info',
       image: 'assets/img/outlet.png',
-      route: '',
+      route: 'outlet',
     ),
     const MenuModel(
       id: 3,
       label: 'News & Promos',
       image: 'assets/img/promotion.png',
-      route: '',
     ),
     const MenuModel(
       id: 4,
       label: 'Complaint',
       image: 'assets/img/complaint.png',
-      route: '',
     ),
     const MenuModel(
       id: 5,
       label: 'Contact Us',
       image: 'assets/img/contact.png',
-      route: '',
     ),
   ];
 
-  Widget _buildMenuItem(String label, String image, String route) {
+  Widget _buildMenuItem(String label, String image, String? route) {
     return InkWell(
       onTap: () {
-        if (route != '') {
+        if (route != null) {
           router.goNamed(route);
+        } else {
+          comingsoonDialog(context);
         }
-
-        comingsoonDialog(context);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
@@ -84,7 +80,7 @@ class _MenuState extends State<Menu> {
           children: _menus
               .where((menu) => menu.id! < 4)
               .map((menu) =>
-                  _buildMenuItem(menu.label!, menu.image!, menu.route!))
+                  _buildMenuItem(menu.label!, menu.image!, menu.route))
               .toList(),
         ),
         Row(
@@ -92,7 +88,7 @@ class _MenuState extends State<Menu> {
           children: _menus
               .where((menu) => menu.id! > 3)
               .map((menu) =>
-                  _buildMenuItem(menu.label!, menu.image!, menu.route!))
+                  _buildMenuItem(menu.label!, menu.image!, menu.route))
               .toList(),
         ),
       ],
