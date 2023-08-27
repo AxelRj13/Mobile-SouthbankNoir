@@ -54,8 +54,6 @@ class EventBloc extends Bloc<EventEvent, EventState> {
             e.artist!.toLowerCase().contains(event.query.toLowerCase()))
         .toList();
 
-    print(eventFounds);
-
     emit(EventsDone(eventFounds));
   }
 
@@ -66,13 +64,21 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     final dataState = await _getTodayEventUseCase();
 
     if (dataState is DataSuccess) {
-      final events = (dataState.data!.data as List)
-          .map((item) => EventModel.fromJson(item))
-          .toList();
+      final status = dataState.data!.status;
 
-      final todayEvent = events.first;
+      if (status == 1) {
+        final data = dataState.data!.data as List;
 
-      emit(EventDone(todayEvent));
+        if (data.isNotEmpty) {
+          final events = data.map((item) => EventModel.fromJson(item)).toList();
+
+          final todayEvent = events.first;
+
+          emit(EventDone(todayEvent));
+        }
+      }
+
+      emit(const EventNotFound());
     }
 
     if (dataState is DataFailed) {

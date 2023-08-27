@@ -40,6 +40,27 @@ class _EventTodayState extends State<EventToday> {
           );
         }
 
+        if (state is EventNotFound) {
+          return const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Today\'s Event',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ],
+                ),
+              ),
+              Text('There is no event for today'),
+            ],
+          );
+        }
+
         return const SBLoading();
       },
     );

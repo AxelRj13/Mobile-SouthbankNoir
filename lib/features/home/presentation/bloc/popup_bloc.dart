@@ -24,8 +24,6 @@ class PopupBloc extends Bloc<PopupEvent, PopupState> {
           .map((item) => PopupModel.fromJson(item))
           .toList();
 
-      print(popups);
-
       final popup = popups.first;
 
       emit(PopupDone(popup));
