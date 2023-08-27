@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:southbank/config/routes/router.dart';
-import 'package:southbank/core/components/dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../config/routes/router.dart';
+import '../../../../core/components/dialog.dart';
 import '../../data/models/menu.dart';
 import '../../domain/entities/menu.dart';
 
