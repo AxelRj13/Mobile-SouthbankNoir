@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'package:southbank/config/routes/router.dart';
-import 'package:southbank/core/components/dialog.dart';
-
+import '../../../../config/routes/router.dart';
+import '../../../../core/components/dialog.dart';
 import '../../data/models/menu.dart';
 import '../../domain/entities/menu.dart';
 
@@ -43,11 +43,18 @@ class _MenuState extends State<Menu> {
     ),
   ];
 
-  Widget _buildMenuItem(String label, String image, String? route) {
+  Widget _buildMenuItem(MenuEntity menu) {
     return InkWell(
-      onTap: () {
-        if (route != null) {
-          router.goNamed(route);
+      onTap: () async {
+        print(menu.id);
+        if (menu.route != null) {
+          router.goNamed(menu.route!);
+        } else if (menu.id == 5) {
+          final uri = Uri.parse(
+              'https://api.whatsapp.com/send/?phone=62818283939&text&type=phone_number&app_absent=0');
+          if (await canLaunchUrl(uri)) {
+            launchUrl(uri, mode: LaunchMode.externalApplication);
+          }
         } else {
           comingsoonDialog(context);
         }
@@ -57,12 +64,12 @@ class _MenuState extends State<Menu> {
         child: Column(
           children: [
             Image.asset(
-              image,
+              menu.image!,
               width: MediaQuery.of(context).size.width / 8.0,
             ),
             const SizedBox(height: 5.0),
             Text(
-              label,
+              menu.label!,
               style: const TextStyle(color: Colors.white),
             ),
           ],
@@ -79,16 +86,14 @@ class _MenuState extends State<Menu> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: _menus
               .where((menu) => menu.id! < 4)
-              .map((menu) =>
-                  _buildMenuItem(menu.label!, menu.image!, menu.route))
+              .map((menu) => _buildMenuItem(menu))
               .toList(),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: _menus
               .where((menu) => menu.id! > 3)
-              .map((menu) =>
-                  _buildMenuItem(menu.label!, menu.image!, menu.route))
+              .map((menu) => _buildMenuItem(menu))
               .toList(),
         ),
       ],
