@@ -26,6 +26,10 @@ class EventDone extends EventState {
   const EventDone(EventModel event) : super(event: event);
 }
 
+class EventNotFound extends EventState {
+  const EventNotFound();
+}
+
 class EventError extends EventState {
   const EventError(DioException error) : super(error: error);
 }
