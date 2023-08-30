@@ -11,8 +11,8 @@ abstract class OutletApiService {
   factory OutletApiService(Dio dio) = _OutletApiService;
 
   @POST('store/details')
-  @MultiPart()
+  @FormUrlEncoded()
   Future<HttpResponse<ApiResponseModel>> getOutletDetails(
-    @Part(name: 'store_id') int id,
+    @Field('store_id') int id,
   );
 }

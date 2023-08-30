@@ -1,13 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:southbank/features/complaint/data/data_sources/remote/complaint_api_service.dart';
-import 'package:southbank/features/complaint/data/repository/complaint_repository_impl.dart';
-import 'package:southbank/features/complaint/domain/repository/complaint_repository.dart';
-import 'package:southbank/features/complaint/domain/usecases/get_complaint_types.dart';
-import 'package:southbank/features/complaint/domain/usecases/send_complaint.dart';
-import 'package:southbank/features/complaint/presentation/bloc/complaint/complaint_bloc.dart';
-import 'package:southbank/features/complaint/presentation/bloc/types/complaint_type_bloc.dart';
 
 import 'core/network/dio_client.dart';
 import 'features/auth/data/data_sources/remote/auth_api_service.dart';
@@ -18,6 +11,13 @@ import 'features/auth/domain/repository/register_repository.dart';
 import 'features/auth/domain/usecases/login.dart';
 import 'features/auth/domain/usecases/register.dart';
 import 'features/auth/presentation/bloc/auth/remote/auth_bloc.dart';
+import 'features/complaint/data/data_sources/remote/complaint_api_service.dart';
+import 'features/complaint/data/repository/complaint_repository_impl.dart';
+import 'features/complaint/domain/repository/complaint_repository.dart';
+import 'features/complaint/domain/usecases/get_complaint_types.dart';
+import 'features/complaint/domain/usecases/send_complaint.dart';
+import 'features/complaint/presentation/bloc/complaint/complaint_bloc.dart';
+import 'features/complaint/presentation/bloc/types/complaint_type_bloc.dart';
 import 'features/events/data/data_sources/remote/event_api_service.dart';
 import 'features/events/data/repository/event_repository_impl.dart';
 import 'features/events/domain/repository/event_repository.dart';
