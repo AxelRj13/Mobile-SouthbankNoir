@@ -35,6 +35,7 @@ class _MenuState extends State<Menu> {
       id: 4,
       label: 'Complaint',
       image: 'assets/img/complaint.png',
+      route: 'complaint',
     ),
     const MenuModel(
       id: 5,
@@ -46,7 +47,6 @@ class _MenuState extends State<Menu> {
   Widget _buildMenuItem(MenuEntity menu) {
     return InkWell(
       onTap: () async {
-        print(menu.id);
         if (menu.route != null) {
           router.goNamed(menu.route!);
         } else if (menu.id == 5) {
