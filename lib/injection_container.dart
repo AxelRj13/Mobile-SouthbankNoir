@@ -1,6 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:southbank/features/complaint/data/data_sources/remote/complaint_api_service.dart';
+import 'package:southbank/features/complaint/data/repository/complaint_repository_impl.dart';
+import 'package:southbank/features/complaint/domain/repository/complaint_repository.dart';
+import 'package:southbank/features/complaint/domain/usecases/get_complaint_types.dart';
+import 'package:southbank/features/complaint/domain/usecases/send_complaint.dart';
+import 'package:southbank/features/complaint/presentation/bloc/complaint/complaint_bloc.dart';
+import 'package:southbank/features/complaint/presentation/bloc/types/complaint_type_bloc.dart';
 
 import 'core/network/dio_client.dart';
 import 'features/auth/data/data_sources/remote/auth_api_service.dart';
@@ -55,38 +62,103 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<LoginRepository>(LoginRepositoryImpl(sl()));
   sl.registerSingleton<RegisterRepository>(RegisterRepositoryImpl(sl()));
 
-  sl.registerLazySingleton<PopupApiService>(() => PopupApiService(dio));
-  sl.registerLazySingleton<PopupRepository>(() => PopupRepositoryImpl(sl()));
+  sl.registerLazySingleton<PopupApiService>(
+    () => PopupApiService(dio),
+  );
+  sl.registerLazySingleton<PopupRepository>(
+    () => PopupRepositoryImpl(sl()),
+  );
 
-  sl.registerLazySingleton<BannerApiService>(() => BannerApiService(dio));
-  sl.registerLazySingleton<BannerRepository>(() => BannerRepositoryImpl(sl()));
+  sl.registerLazySingleton<BannerApiService>(
+    () => BannerApiService(dio),
+  );
+  sl.registerLazySingleton<BannerRepository>(
+    () => BannerRepositoryImpl(sl()),
+  );
 
-  sl.registerLazySingleton<EventApiService>(() => EventApiService(dio));
-  sl.registerLazySingleton<EventRepository>(() => EventRepositoryImpl(sl()));
+  sl.registerLazySingleton<EventApiService>(
+    () => EventApiService(dio),
+  );
+  sl.registerLazySingleton<EventRepository>(
+    () => EventRepositoryImpl(sl()),
+  );
 
-  sl.registerLazySingleton<OutletApiService>(() => OutletApiService(dio));
-  sl.registerLazySingleton<OutletRepository>(() => OutletRepositoryImpl(sl()));
+  sl.registerLazySingleton<OutletApiService>(
+    () => OutletApiService(dio),
+  );
+  sl.registerLazySingleton<OutletRepository>(
+    () => OutletRepositoryImpl(sl()),
+  );
 
-  sl.registerLazySingleton<NewsApiService>(() => NewsApiService(dio));
-  sl.registerLazySingleton<NewsRepository>(() => NewsRepositoryImpl(sl()));
+  sl.registerLazySingleton<NewsApiService>(
+    () => NewsApiService(dio),
+  );
+  sl.registerLazySingleton<NewsRepository>(
+    () => NewsRepositoryImpl(sl()),
+  );
+
+  sl.registerLazySingleton<ComplaintApiService>(
+    () => ComplaintApiService(dio),
+  );
+  sl.registerLazySingleton<ComplaintRepository>(
+    () => ComplaintRepositoryImpl(sl()),
+  );
 
   // UseCases
-  sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl()));
-  sl.registerLazySingleton<RegisterUseCase>(() => RegisterUseCase(sl()));
-  sl.registerLazySingleton<GetPopupUseCase>(() => GetPopupUseCase(sl()));
-  sl.registerLazySingleton<GetBannerUseCase>(() => GetBannerUseCase(sl()));
-  sl.registerLazySingleton<GetEventUseCase>(() => GetEventUseCase(sl()));
+  sl.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(sl()),
+  );
+  sl.registerLazySingleton<RegisterUseCase>(
+    () => RegisterUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetPopupUseCase>(
+    () => GetPopupUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetBannerUseCase>(
+    () => GetBannerUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetEventUseCase>(
+    () => GetEventUseCase(sl()),
+  );
   sl.registerLazySingleton<GetTodayEventUseCase>(
-      () => GetTodayEventUseCase(sl()));
+    () => GetTodayEventUseCase(sl()),
+  );
   sl.registerLazySingleton<GetOutletDetailsUseCase>(
-      () => GetOutletDetailsUseCase(sl()));
-  sl.registerLazySingleton<GetNewsUseCase>(() => GetNewsUseCase(sl()));
+    () => GetOutletDetailsUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetNewsUseCase>(
+    () => GetNewsUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetComplaintTypesUseCase>(
+    () => GetComplaintTypesUseCase(sl()),
+  );
+  sl.registerLazySingleton<SendComplaintUseCase>(
+    () => SendComplaintUseCase(sl()),
+  );
 
   // Blocs
-  sl.registerFactory<AuthBloc>(() => AuthBloc(sl(), sl()));
-  sl.registerFactory<PopupBloc>(() => PopupBloc(sl()));
-  sl.registerFactory<BannerBloc>(() => BannerBloc(sl()));
-  sl.registerFactory<EventBloc>(() => EventBloc(sl(), sl()));
-  sl.registerFactory<OutletBloc>(() => OutletBloc(sl()));
-  sl.registerFactory<NewsBloc>(() => NewsBloc(sl()));
+  sl.registerFactory<AuthBloc>(
+    () => AuthBloc(sl(), sl()),
+  );
+  sl.registerFactory<PopupBloc>(
+    () => PopupBloc(sl()),
+  );
+  sl.registerFactory<BannerBloc>(
+    () => BannerBloc(sl()),
+  );
+  sl.registerFactory<EventBloc>(
+    () => EventBloc(sl(), sl()),
+  );
+  sl.registerFactory<OutletBloc>(
+    () => OutletBloc(sl()),
+  );
+  sl.registerFactory<NewsBloc>(
+    () => NewsBloc(sl()),
+  );
+  sl.registerFactory<ComplaintTypeBloc>(
+    () => ComplaintTypeBloc(sl()),
+  );
+  sl.registerFactory<ComplaintBloc>(
+    () => ComplaintBloc(sl()),
+  );
 }

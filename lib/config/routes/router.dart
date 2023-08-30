@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:southbank/features/complaint/presentation/complaint_screen.dart';
 
 import '../../core/screen/splash_screen.dart';
 import '../../features/auth/presentation/auth_screen.dart';
@@ -33,6 +34,13 @@ final GoRouter router = GoRouter(
           name: 'outlet',
           builder: (context, state) {
             return const OutletScreen();
+          },
+        ),
+        GoRoute(
+          path: 'complaint',
+          name: 'complaint',
+          builder: (context, state) {
+            return const ComplaintScreen();
           },
         ),
       ],

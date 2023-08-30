@@ -16,17 +16,16 @@ class SBButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonColor = color ?? accentColor;
+
     return ElevatedButton(
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all(
-          const Size.fromHeight(50.0),
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        backgroundColor: MaterialStateProperty.all(color ?? accentColor),
+        backgroundColor: buttonColor,
+        disabledBackgroundColor: buttonColor.withOpacity(.5),
       ),
       onPressed: onPressed,
       child: child,

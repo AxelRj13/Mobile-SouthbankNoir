@@ -5,6 +5,7 @@ class SBTextFormField extends StatelessWidget {
   final String hintText;
   final TextInputType? textInputType;
   final bool? isPassword;
+  final bool? isMultiline;
   final String? Function(String?)? validator;
   final Function()? onTap;
   final Widget? suffixIcon;
@@ -15,6 +16,7 @@ class SBTextFormField extends StatelessWidget {
     required this.hintText,
     this.textInputType,
     this.isPassword = false,
+    this.isMultiline = false,
     this.validator,
     this.onTap,
     this.suffixIcon,
@@ -33,6 +35,7 @@ class SBTextFormField extends StatelessWidget {
       obscureText: isPassword!,
       onTap: onTap,
       keyboardType: textInputType,
+      maxLines: isMultiline! ? 5 : 1,
     );
   }
 }
