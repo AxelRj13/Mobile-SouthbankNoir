@@ -25,17 +25,13 @@ class _OutletApiService implements OutletApiService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'store_id',
-      id.toString(),
-    ));
+    final _data = {'store_id': id};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<ApiResponseModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
-      contentType: 'multipart/form-data',
+      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
