@@ -3,14 +3,14 @@ import '../../../../core/resources/data_state.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../repository/news_repository.dart';
 
-class GetNewsUseCase implements UseCase<DataState<ApiResponseEntity>, String> {
+class GetNewsListUseCase
+    implements UseCase<DataState<ApiResponseEntity>, void> {
   final NewsRepository _newsRepository;
 
-  GetNewsUseCase(this._newsRepository);
+  GetNewsListUseCase(this._newsRepository);
 
   @override
-  Future<DataState<ApiResponseEntity>> call({String? params}) {
-    final id = params!;
-    return _newsRepository.getNews(id: id);
+  Future<DataState<ApiResponseEntity>> call({void params}) {
+    return _newsRepository.getNewsList();
   }
 }
