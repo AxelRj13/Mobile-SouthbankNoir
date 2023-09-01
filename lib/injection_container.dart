@@ -29,11 +29,12 @@ import 'features/home/data/repository/popup_repository_impl.dart';
 import 'features/home/domain/repository/popup_repository.dart';
 import 'features/home/domain/usecases/get_popup.dart';
 import 'features/home/presentation/bloc/popup_bloc.dart';
-import 'features/news/data/data_sources/remote/news_api_service.dart';
+import 'features/news/data/data_sources/news_api_service.dart';
 import 'features/news/data/repository/news_repository_impl.dart';
 import 'features/news/domain/repository/news_repository.dart';
 import 'features/news/domain/usecases/get_news.dart';
-import 'features/news/presentation/bloc/news/remote/news_bloc.dart';
+import 'features/news/domain/usecases/get_news_list.dart';
+import 'features/news/presentation/bloc/news/news_bloc.dart';
 import 'features/outlet/data/data_sources/outlet_api_service.dart';
 import 'features/outlet/data/repository/outlet_repository_impl.dart';
 import 'features/outlet/domain/repository/outlet_repository.dart';
@@ -129,6 +130,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<GetNewsUseCase>(
     () => GetNewsUseCase(sl()),
   );
+  sl.registerLazySingleton<GetNewsListUseCase>(
+    () => GetNewsListUseCase(sl()),
+  );
   sl.registerLazySingleton<GetComplaintTypesUseCase>(
     () => GetComplaintTypesUseCase(sl()),
   );
@@ -153,7 +157,7 @@ Future<void> initializeDependencies() async {
     () => OutletBloc(sl()),
   );
   sl.registerFactory<NewsBloc>(
-    () => NewsBloc(sl()),
+    () => NewsBloc(sl(), sl()),
   );
   sl.registerFactory<ComplaintTypeBloc>(
     () => ComplaintTypeBloc(sl()),

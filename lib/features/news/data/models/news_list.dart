@@ -1,21 +1,21 @@
-import '../../domain/entities/news.dart';
+import '../../domain/entities/news_list.dart';
 
-class NewsModel extends NewsEntity {
-  const NewsModel({
+class NewsListModel extends NewsListEntity {
+  const NewsListModel({
+    String? id,
     String? title,
-    String? description,
     String? createdAt,
     String? image,
   }) : super(
+          id: id,
           title: title,
-          description: description,
           createdAt: createdAt,
           image: image,
         );
 
-  factory NewsModel.fromJson(Map<String, dynamic> data) => NewsModel(
+  factory NewsListModel.fromJson(Map<String, dynamic> data) => NewsListModel(
+        id: data['id'] ?? '',
         title: data['title'] ?? '',
-        description: data['description'] ?? '',
         createdAt: data['created_at'] ?? '',
         image: data['image'] ?? '',
       );

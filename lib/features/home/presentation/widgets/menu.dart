@@ -30,6 +30,7 @@ class _MenuState extends State<Menu> {
       id: 3,
       label: 'News & Promos',
       image: 'assets/img/promotion.png',
+      route: 'news',
     ),
     const MenuModel(
       id: 4,
