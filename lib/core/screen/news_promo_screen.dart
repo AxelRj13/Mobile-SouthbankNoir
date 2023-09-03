@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/features/promo/presentation/bloc/promo/promo_bloc.dart';
+import 'package:southbank/features/promo/presentation/bloc/promo/promo_event.dart';
 
-import '../../../config/theme/app_theme.dart';
-import '../../../injection_container.dart';
-import 'bloc/news/news_bloc.dart';
-import 'bloc/news/news_event.dart';
-import 'widgets/tab_news.dart';
-import 'widgets/tab_promo.dart';
+import '../../config/theme/app_theme.dart';
+import '../../injection_container.dart';
+import '../../features/news/presentation/bloc/news_bloc.dart';
+import '../../features/news/presentation/bloc/news_event.dart';
+import '../../features/news/presentation/widgets/tab_news.dart';
+import '../../features/promo/presentation/widgets/tab_promo.dart';
 
 class NewsPromoScreen extends StatefulWidget {
   const NewsPromoScreen({super.key});
@@ -56,9 +58,15 @@ class _NewsPromoScreenState extends State<NewsPromoScreen>
           ),
         ),
       ),
-      body: BlocProvider<NewsBloc>(
-        create: (BuildContext context) =>
-            getIt.get<NewsBloc>()..add(const GetNewsList()),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<NewsBloc>(
+              create: (BuildContext context) =>
+                  getIt.get<NewsBloc>()..add(const GetNewsList())),
+          BlocProvider<PromoBloc>(
+              create: (BuildContext context) =>
+                  getIt.get<PromoBloc>()..add(const GetPromoList())),
+        ],
         child: TabBarView(
           controller: _tabController,
           physics: const BouncingScrollPhysics(),

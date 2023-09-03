@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/network/api_response.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../domain/repository/banner_repository.dart';
-import '../data_sources/remote/banner_api_service.dart';
+import '../data_sources/banner_api_service.dart';
 
 class BannerRepositoryImpl implements BannerRepository {
   final BannerApiService _bannerApiService;

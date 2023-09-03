@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'features/events/presentation/event_screen.dart';
-import 'features/home/presentation/bloc/popup_bloc.dart';
-import 'features/home/presentation/home_screen.dart';
-import 'features/profile/presentation/profile_screen.dart';
-import 'injection_container.dart';
+import '../../features/events/presentation/event_screen.dart';
+import '../../features/home/presentation/bloc/popup_bloc.dart';
+import '../../features/home/presentation/home_screen.dart';
+import '../../features/profile/presentation/profile_screen.dart';
+import '../../injection_container.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

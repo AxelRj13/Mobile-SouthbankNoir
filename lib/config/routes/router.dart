@@ -1,12 +1,13 @@
 import 'package:go_router/go_router.dart';
 
+import '../../core/screen/main_screen.dart';
+import '../../core/screen/news_promo_screen.dart';
 import '../../core/screen/splash_screen.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/complaint/presentation/complaint_screen.dart';
 import '../../features/news/presentation/news_detail_screen.dart';
-import '../../features/news/presentation/news_promo_screen.dart';
 import '../../features/outlet/presentation/outlet_screen.dart';
-import '../../main_screen.dart';
+import '../../features/promo/presentation/promo_detail_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -36,10 +37,21 @@ final GoRouter router = GoRouter(
             builder: (context, state) => const NewsPromoScreen(),
             routes: [
               GoRoute(
-                path: 'detail/:newsId',
+                path: 'news/detail/:newsId',
                 name: 'newsDetail',
                 builder: (context, state) {
-                  return NewsDetailScreen(id: state.pathParameters['newsId']!);
+                  return NewsDetailScreen(
+                    id: state.pathParameters['newsId']!,
+                  );
+                },
+              ),
+              GoRoute(
+                path: 'promo/detail/:promoId',
+                name: 'promoDetail',
+                builder: (context, state) {
+                  return PromoDetailScreen(
+                    id: state.pathParameters['promoId']!,
+                  );
                 },
               ),
             ]),

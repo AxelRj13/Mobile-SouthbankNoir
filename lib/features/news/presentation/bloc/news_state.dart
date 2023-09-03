@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/news.dart';
-import '../../../data/models/news_list.dart';
+import '../../data/models/news.dart';
+import '../../data/models/news_list.dart';
 
 abstract class NewsState extends Equatable {
   final NewsModel? news;
