@@ -4,8 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../../../core/components/loading.dart';
 import '../../domain/entities/banner.dart';
-import '../bloc/banner/remote/banner_bloc.dart';
-import '../bloc/banner/remote/banner_state.dart';
+import '../bloc/banner/banner_bloc.dart';
+import '../bloc/banner/banner_state.dart';
 
 class BannerCarousel extends StatefulWidget {
   const BannerCarousel({super.key});

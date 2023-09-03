@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/resources/data_state.dart';
-import '../../../../data/models/banner.dart';
-import '../../../../domain/usecases/get_banner.dart';
+import '../../../../../core/resources/data_state.dart';
+import '../../../data/models/banner.dart';
+import '../../../domain/usecases/get_banner.dart';
 import 'banner_event.dart';
 import 'banner_state.dart';
 

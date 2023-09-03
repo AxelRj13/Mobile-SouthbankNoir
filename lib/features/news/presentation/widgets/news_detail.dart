@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/components/image_header.dart';
 import '../../../../core/components/loading.dart';
 import '../../data/models/news.dart';
-import '../bloc/news/news_bloc.dart';
-import '../bloc/news/news_event.dart';
-import '../bloc/news/news_state.dart';
+import '../bloc/news_bloc.dart';
+import '../bloc/news_event.dart';
+import '../bloc/news_state.dart';
 
 class NewsDetail extends StatefulWidget {
   final String id;

@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/resources/data_state.dart';
-import '../../../data/models/news_list.dart';
-import '../../../data/models/news.dart';
-import '../../../domain/usecases/get_news.dart';
-import '../../../domain/usecases/get_news_list.dart';
+import '../../../../core/resources/data_state.dart';
+import '../../data/models/news_list.dart';
+import '../../data/models/news.dart';
+import '../../domain/usecases/get_news.dart';
+import '../../domain/usecases/get_news_list.dart';
 import 'news_event.dart';
 import 'news_state.dart';
 

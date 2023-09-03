@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../domain/entities/banner.dart';
+import '../../../domain/entities/banner.dart';
 
 abstract class BannerState extends Equatable {
   final List<BannerEntity>? banners;

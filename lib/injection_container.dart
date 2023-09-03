@@ -34,17 +34,23 @@ import 'features/news/data/repository/news_repository_impl.dart';
 import 'features/news/domain/repository/news_repository.dart';
 import 'features/news/domain/usecases/get_news.dart';
 import 'features/news/domain/usecases/get_news_list.dart';
-import 'features/news/presentation/bloc/news/news_bloc.dart';
+import 'features/news/presentation/bloc/news_bloc.dart';
 import 'features/outlet/data/data_sources/outlet_api_service.dart';
 import 'features/outlet/data/repository/outlet_repository_impl.dart';
 import 'features/outlet/domain/repository/outlet_repository.dart';
 import 'features/outlet/domain/usecases/get_outlet_details.dart';
 import 'features/outlet/presentation/bloc/outlet_bloc.dart';
-import 'features/promo/data/data_sources/remote/banner_api_service.dart';
+import 'features/promo/data/data_sources/banner_api_service.dart';
+import 'features/promo/data/data_sources/promo_api_service.dart';
 import 'features/promo/data/repository/banner_repository_impl.dart';
+import 'features/promo/data/repository/promo_repository_impl.dart';
 import 'features/promo/domain/repository/banner_repository.dart';
+import 'features/promo/domain/repository/promo_repository.dart';
 import 'features/promo/domain/usecases/get_banner.dart';
-import 'features/promo/presentation/bloc/banner/remote/banner_bloc.dart';
+import 'features/promo/domain/usecases/get_promo.dart';
+import 'features/promo/domain/usecases/get_promo_list.dart';
+import 'features/promo/presentation/bloc/banner/banner_bloc.dart';
+import 'features/promo/presentation/bloc/promo/promo_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -98,6 +104,13 @@ Future<void> initializeDependencies() async {
     () => NewsRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<PromoApiService>(
+    () => PromoApiService(dio),
+  );
+  sl.registerLazySingleton<PromoRepository>(
+    () => PromoRepositoryImpl(sl()),
+  );
+
   sl.registerLazySingleton<ComplaintApiService>(
     () => ComplaintApiService(dio),
   );
@@ -133,6 +146,12 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<GetNewsListUseCase>(
     () => GetNewsListUseCase(sl()),
   );
+  sl.registerLazySingleton<GetPromoUseCase>(
+    () => GetPromoUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetPromoListUseCase>(
+    () => GetPromoListUseCase(sl()),
+  );
   sl.registerLazySingleton<GetComplaintTypesUseCase>(
     () => GetComplaintTypesUseCase(sl()),
   );
@@ -158,6 +177,9 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<NewsBloc>(
     () => NewsBloc(sl(), sl()),
+  );
+  sl.registerFactory<PromoBloc>(
+    () => PromoBloc(sl(), sl()),
   );
   sl.registerFactory<ComplaintTypeBloc>(
     () => ComplaintTypeBloc(sl()),

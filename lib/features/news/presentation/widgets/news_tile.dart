@@ -41,7 +41,7 @@ class NewsTileWidget extends StatelessWidget {
       );
     }
 
-    return news.image!.isEmpty
+    return news.image == null || news.image == ''
         ? imageWidget(
             child: Icon(Icons.error, color: accentColor),
           )
@@ -70,7 +70,7 @@ class NewsTileWidget extends StatelessWidget {
           children: [
             Text(
               news.title ?? '',
-              maxLines: 3,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme
