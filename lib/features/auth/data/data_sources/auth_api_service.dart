@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 
-import '../../../../../core/constants/constants.dart';
-import '../../../../../core/network/api_response.dart';
+import '../../../../core/constants/constants.dart';
+import '../../../../core/network/api_response.dart';
 
 part 'auth_api_service.g.dart';
 
@@ -11,9 +11,6 @@ abstract class AuthApiService {
   factory AuthApiService(Dio dio) = _AuthApiService;
 
   @POST('auth/login')
-  @Headers(<String, dynamic>{
-    'X-Secret-Token': secret,
-  })
   @FormUrlEncoded()
   Future<HttpResponse<ApiResponseModel>> login(
     @Field('email') String email,
@@ -21,9 +18,6 @@ abstract class AuthApiService {
   );
 
   @POST('auth/register')
-  @Headers(<String, dynamic>{
-    'X-Secret-Token': secret,
-  })
   @FormUrlEncoded()
   Future<HttpResponse<ApiResponseModel>> register(
     @Field('first_name') String firstName,

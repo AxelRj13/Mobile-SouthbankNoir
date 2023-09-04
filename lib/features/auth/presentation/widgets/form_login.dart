@@ -6,9 +6,9 @@ import '../../../../core/components/button.dart';
 import '../../../../core/components/loading.dart';
 import '../../../../core/components/text_form_field.dart';
 import '../../../../core/utils/validator_extension.dart';
-import '../bloc/auth/remote/auth_bloc.dart';
-import '../bloc/auth/remote/auth_event.dart';
-import '../bloc/auth/remote/auth_state.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 import 'google_button.dart';
 
 class FormLogin extends StatefulWidget {
@@ -91,6 +91,8 @@ class _FormLoginState extends State<FormLogin> {
                     : () {
                         if (_formKey.currentState!.validate()) {
                           FocusScope.of(context).requestFocus(FocusNode());
+
+                          print('Tes masuk sini');
 
                           BlocProvider.of<AuthBloc>(context).add(
                             SignIn(

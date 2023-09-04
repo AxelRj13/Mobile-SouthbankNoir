@@ -27,10 +27,7 @@ class _AuthApiService implements AuthApiService {
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-      r'X-Secret-Token': 'APP#s0utHb4Nk_N01Rs~'
-    };
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = {
       'email': email,
       'password': password,
@@ -72,10 +69,7 @@ class _AuthApiService implements AuthApiService {
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-      r'X-Secret-Token': 'APP#s0utHb4Nk_N01Rs~'
-    };
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = {
       'first_name': firstName,
       'last_name': lastName,
