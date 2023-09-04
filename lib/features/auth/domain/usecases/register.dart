@@ -1,7 +1,7 @@
 import '../../../../core/network/api_response.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../../../core/usecase/usecase.dart';
-import '../../data/models/register_request.dart';
+import '../entities/register_request.dart';
 import '../repository/register_repository.dart';
 
 class RegisterUseCase
@@ -13,9 +13,6 @@ class RegisterUseCase
   @override
   Future<DataState<ApiResponseEntity>> call({RegisterRequest? params}) {
     final registerRequest = params!;
-
-    print('UseCase');
-    print(registerRequest);
 
     return _registerRepository.register(
       firstName: registerRequest.firstName,

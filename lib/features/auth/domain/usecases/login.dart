@@ -1,7 +1,7 @@
 import '../../../../core/network/api_response.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../../../core/usecase/usecase.dart';
-import '../../data/models/login_request.dart';
+import '../entities/login_request.dart';
 import '../repository/login_repository.dart';
 
 class LoginUseCase

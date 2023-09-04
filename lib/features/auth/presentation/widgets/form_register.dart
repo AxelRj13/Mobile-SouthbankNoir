@@ -10,9 +10,9 @@ import '../../../../core/components/radio_button.dart';
 import '../../../../core/components/text_form_field.dart';
 import '../../../../core/constants/enum.dart';
 import '../../../../core/utils/validator_extension.dart';
-import '../bloc/auth/remote/auth_bloc.dart';
-import '../bloc/auth/remote/auth_event.dart';
-import '../bloc/auth/remote/auth_state.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class FormRegister extends StatefulWidget {
   final Function() onFormSwitchTap;

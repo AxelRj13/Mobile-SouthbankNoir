@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/network/api_response.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../domain/repository/register_repository.dart';
-import '../data_sources/remote/auth_api_service.dart';
+import '../data_sources/auth_api_service.dart';
 
 class RegisterRepositoryImpl implements RegisterRepository {
   final AuthApiService _authApiService;
@@ -24,22 +24,8 @@ class RegisterRepositoryImpl implements RegisterRepository {
       required String password,
       required String confirmPassword}) async {
     try {
-      print('Repository');
-      print({
-        'firstname': firstName,
-        'lastname': lastName,
-        'dob': dob,
-        'city': city,
-        'gender': gender,
-        'email': email,
-        'phone': phone,
-        'password': password,
-      });
       final httpResponse = await _authApiService.register(firstName, lastName,
           dob, city, gender, email, phone, password, confirmPassword);
-
-      print('Response');
-      print(httpResponse);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);

@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/network/api_response.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../domain/repository/login_repository.dart';
-import '../data_sources/remote/auth_api_service.dart';
+import '../data_sources/auth_api_service.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   final AuthApiService _authApiService;
