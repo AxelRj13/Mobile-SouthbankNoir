@@ -3,14 +3,13 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/dio_client.dart';
-import 'features/auth/data/data_sources/remote/auth_api_service.dart';
-import 'features/auth/data/repository/login_repository_impl.dart';
-import 'features/auth/data/repository/register_repository_impl.dart';
-import 'features/auth/domain/repository/login_repository.dart';
-import 'features/auth/domain/repository/register_repository.dart';
+import 'features/auth/data/data_sources/auth_api_service.dart';
+import 'features/auth/data/repository/auth_repository_impl.dart';
+import 'features/auth/domain/repository/auth_repository.dart';
+import 'features/auth/domain/usecases/check_email.dart';
 import 'features/auth/domain/usecases/login.dart';
 import 'features/auth/domain/usecases/register.dart';
-import 'features/auth/presentation/bloc/auth/remote/auth_bloc.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/complaint/data/data_sources/remote/complaint_api_service.dart';
 import 'features/complaint/data/repository/complaint_repository_impl.dart';
 import 'features/complaint/domain/repository/complaint_repository.dart';
@@ -40,6 +39,11 @@ import 'features/outlet/data/repository/outlet_repository_impl.dart';
 import 'features/outlet/domain/repository/outlet_repository.dart';
 import 'features/outlet/domain/usecases/get_outlet_details.dart';
 import 'features/outlet/presentation/bloc/outlet_bloc.dart';
+import 'features/profile/data/data_sources/profile_api_service.dart';
+import 'features/profile/data/repository/profile_repository_impl.dart';
+import 'features/profile/domain/repository/profile_repository.dart';
+import 'features/profile/domain/usecases/update_profile.dart';
+import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
 import 'features/promo/data/data_sources/banner_api_service.dart';
 import 'features/promo/data/data_sources/promo_api_service.dart';
 import 'features/promo/data/repository/banner_repository_impl.dart';
@@ -66,8 +70,7 @@ Future<void> initializeDependencies() async {
 
   // Dependencies
   sl.registerSingleton<AuthApiService>(AuthApiService(dio));
-  sl.registerSingleton<LoginRepository>(LoginRepositoryImpl(sl()));
-  sl.registerSingleton<RegisterRepository>(RegisterRepositoryImpl(sl()));
+  sl.registerSingleton<AuthRepository>(AuthRepositoryImpl(sl()));
 
   sl.registerLazySingleton<PopupApiService>(
     () => PopupApiService(dio),
@@ -118,7 +121,17 @@ Future<void> initializeDependencies() async {
     () => ComplaintRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<ProfileApiService>(
+    () => ProfileApiService(dio),
+  );
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(sl()),
+  );
+
   // UseCases
+  sl.registerLazySingleton<CheckEmailUseCase>(
+    () => CheckEmailUseCase(sl()),
+  );
   sl.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(sl()),
   );
@@ -158,10 +171,13 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<SendComplaintUseCase>(
     () => SendComplaintUseCase(sl()),
   );
+  sl.registerLazySingleton<UpdateProfileUseCase>(
+    () => UpdateProfileUseCase(sl()),
+  );
 
   // Blocs
   sl.registerFactory<AuthBloc>(
-    () => AuthBloc(sl(), sl()),
+    () => AuthBloc(sl(), sl(), sl()),
   );
   sl.registerFactory<PopupBloc>(
     () => PopupBloc(sl()),
@@ -186,5 +202,8 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<ComplaintBloc>(
     () => ComplaintBloc(sl()),
+  );
+  sl.registerFactory<ProfileBloc>(
+    () => ProfileBloc(sl()),
   );
 }

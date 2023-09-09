@@ -20,7 +20,7 @@ class Header extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('1200'),
+                    Text('0'),
                     SizedBox(width: 20.0),
                     Icon(Icons.wallet),
                   ],

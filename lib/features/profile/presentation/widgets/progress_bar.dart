@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:southbank/config/theme/app_theme.dart';
+import 'package:southbank/features/profile/data/models/membership_type.dart';
+
+import '../../../../config/theme/app_theme.dart';
 
 class ProgressBar extends StatefulWidget {
   const ProgressBar({super.key});
@@ -9,27 +11,40 @@ class ProgressBar extends StatefulWidget {
 }
 
 class ProgressBarState extends State<ProgressBar> {
-  final List<int> steps = [1, 2, 3];
-  final List<String> labels = ['Basic', 'VIP', 'Priority'];
+  final List<MembershipTypeModel> membershipType = [
+    const MembershipTypeModel(id: 1, label: 'Basic'),
+    const MembershipTypeModel(id: 2, label: 'VIP'),
+    const MembershipTypeModel(id: 3, label: 'Priority'),
+  ];
 
-  List<Icon> _buildStepIndicator() {
+  List<Widget> buildStepIndicator() {
     return [
-      for (var step in steps)
-        Icon(
-          Icons.circle,
-          color: step == 1 ? Colors.redAccent[400] : Colors.grey,
-          size: 24.0,
-        ),
-    ];
-  }
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: membershipType.map((type) {
+          final aligment = type.id == 1
+              ? CrossAxisAlignment.start
+              : type.id == 3
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.center;
 
-  List<Text> _buildStepLabel() {
-    return [
-      for (var label in labels)
-        Text(
-          label,
-          style: TextStyle(color: accentColor),
-        ),
+          return Column(
+            crossAxisAlignment: aligment,
+            children: [
+              const Icon(
+                Icons.circle,
+                color: Colors.grey,
+                size: 24.0,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                type.label!,
+                style: TextStyle(color: accentColor),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
     ];
   }
 
@@ -39,6 +54,7 @@ class ProgressBarState extends State<ProgressBar> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Stack(
         alignment: Alignment.center,
+        clipBehavior: Clip.none,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -49,23 +65,20 @@ class ProgressBarState extends State<ProgressBar> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: LinearProgressIndicator(
-                value: 0.7,
+                value: 0,
                 valueColor: AlwaysStoppedAnimation<Color>(accentColor),
                 backgroundColor: backgroundColor,
               ),
             ),
           ),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: _buildStepIndicator(),
+          Positioned(
+            top: -2,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width - 38.0,
+              child: Column(
+                children: buildStepIndicator(),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: _buildStepLabel(),
-              )
-            ],
+            ),
           )
         ],
       ),

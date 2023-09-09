@@ -13,7 +13,9 @@ class DioInterceptor extends Interceptor {
     final prefs = getIt.get<SharedPreferences>();
     final token = prefs.getString('token');
     final userId = prefs.getString('id');
-    final userName = prefs.getString('name');
+    final firstName = prefs.getString('firstName');
+    final lastName = prefs.getString('lastName');
+    final userName = '$firstName $lastName';
 
     options.headers['X-Secret-Token'] = secret;
 

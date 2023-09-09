@@ -26,16 +26,30 @@ class Register extends AuthEvent {
   });
 }
 
-class SignIn extends AuthEvent {
+class Login extends AuthEvent {
   final String email;
-  final String password;
+  final String? password;
+  final bool isViaGoogle;
 
-  const SignIn({
+  const Login({
     required this.email,
-    required this.password,
+    this.password,
+    this.isViaGoogle = false,
   });
 }
 
-class SignOut extends AuthEvent {}
+class LoginGoogle extends AuthEvent {
+  final String id;
+  final String email;
+  final String? name;
+
+  const LoginGoogle({
+    required this.id,
+    required this.email,
+    this.name,
+  });
+}
+
+class Logout extends AuthEvent {}
 
 class CheckSignInStatus extends AuthEvent {}

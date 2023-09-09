@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart' hide Headers;
+import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -14,20 +14,27 @@ abstract class AuthApiService {
   @FormUrlEncoded()
   Future<HttpResponse<ApiResponseModel>> login(
     @Field('email') String email,
-    @Field('password') String password,
+    @Field('password') String? password,
+    @Field('is_via_google') bool isViaGoogle,
   );
 
   @POST('auth/register')
   @FormUrlEncoded()
   Future<HttpResponse<ApiResponseModel>> register(
     @Field('first_name') String firstName,
-    @Field('last_name') String lastName,
+    @Field('last_name') String? lastName,
     @Field('date_of_birth') String dob,
     @Field('city') String city,
     @Field('gender') String gender,
     @Field('email') String email,
-    @Field('phone') String phone,
+    @Field('phone') String? phone,
     @Field('password') String password,
     @Field('confirm_password') String confirmPassword,
+  );
+
+  @POST('auth/check-email')
+  @FormUrlEncoded()
+  Future<HttpResponse<ApiResponseModel>> checkEmail(
+    @Field('email') String email,
   );
 }

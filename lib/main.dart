@@ -4,14 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'config/routes/router.dart';
 import 'config/theme/app_theme.dart';
-import 'features/auth/presentation/bloc/auth/remote/auth_bloc.dart';
-import 'features/auth/presentation/bloc/auth/remote/auth_event.dart';
-import 'features/auth/presentation/bloc/auth/remote/auth_state.dart';
-// import 'package:southbank/features/news/presentation/bloc/news/remote/remote_news_bloc.dart';
-// import 'package:southbank/features/news/presentation/bloc/news/remote/remote_news_event.dart';
-// import 'package:southbank/features/news/presentation/news_screen.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/auth_event.dart';
+import 'features/auth/presentation/bloc/auth_state.dart';
 import 'injection_container.dart';
-// import 'package:southbank/features/banner/presentation/pages/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,13 +27,17 @@ class MyApp extends StatelessWidget {
     return BlocProvider<AuthBloc>(
       create: (context) => getIt.get<AuthBloc>()..add(CheckSignInStatus()),
       child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is UserSignedIn) {
-            router.goNamed('main');
-          } else if (state is UserSignedOut) {
-            router.goNamed('auth');
-          } else if (state is PrepareUser) {
+        listener: (context, state) async {
+          if (state is AuthInitialState) {
             router.goNamed('splash');
+          }
+
+          if (state is AuthUserLogin) {
+            router.goNamed('main');
+          }
+
+          if (state is AuthUserLogout) {
+            router.goNamed('auth');
           }
         },
         child: MaterialApp.router(

@@ -4,23 +4,33 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/network/api_response.dart';
 import '../../../../core/resources/data_state.dart';
-import '../../domain/repository/login_repository.dart';
-import '../data_sources/auth_api_service.dart';
+import '../../domain/repository/profile_repository.dart';
+import '../data_sources/profile_api_service.dart';
 
-class LoginRepositoryImpl implements LoginRepository {
-  final AuthApiService _authApiService;
+class ProfileRepositoryImpl implements ProfileRepository {
+  final ProfileApiService _profileApiService;
 
-  LoginRepositoryImpl(this._authApiService);
+  ProfileRepositoryImpl(this._profileApiService);
 
   @override
-  Future<DataState<ApiResponseEntity>> login({
-    required String email,
-    required String password,
+  Future<DataState<ApiResponseEntity>> updateProfile({
+    String? firstName,
+    String? lastName,
+    String? phone,
+    String? dob,
+    String? city,
+    String? gender,
+    File? file,
   }) async {
     try {
-      final httpResponse = await _authApiService.login(
-        email,
-        password,
+      final httpResponse = await _profileApiService.updateProfile(
+        firstName,
+        lastName,
+        phone,
+        dob,
+        city,
+        gender,
+        file,
       );
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {

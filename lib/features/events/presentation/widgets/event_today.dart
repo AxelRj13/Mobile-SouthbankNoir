@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/config/theme/app_theme.dart';
 
 import '../../../../core/components/loading.dart';
 import '../bloc/event_bloc.dart';
@@ -41,10 +42,10 @@ class _EventTodayState extends State<EventToday> {
         }
 
         if (state is EventNotFound) {
-          return const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -56,7 +57,24 @@ class _EventTodayState extends State<EventToday> {
                   ],
                 ),
               ),
-              Text('There is no event for today'),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+                child: Center(
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Icon(Icons.info, color: accentColor),
+                        ),
+                        const WidgetSpan(child: SizedBox(width: 8.0)),
+                        const TextSpan(text: 'There is no event for today')
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           );
         }
