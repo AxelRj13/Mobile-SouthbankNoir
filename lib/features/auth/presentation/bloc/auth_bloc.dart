@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/resources/data_state.dart';
@@ -7,21 +8,27 @@ import '../../../../injection_container.dart';
 import '../../domain/entities/login_request.dart';
 import '../../domain/entities/register_request.dart';
 import '../../data/models/user.dart';
+import '../../domain/usecases/check_email.dart';
 import '../../domain/usecases/login.dart';
 import '../../domain/usecases/register.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final CheckEmailUseCase _checkEmailUseCase;
   final LoginUseCase _loginUseCase;
   final RegisterUseCase _registerUseCase;
 
-  AuthBloc(this._loginUseCase, this._registerUseCase)
-      : super(const AuthInitialState()) {
-    on<Register>(onRegister);
-    on<SignIn>(onSignIn);
-    on<SignOut>(onSignOut);
+  AuthBloc(
+    this._checkEmailUseCase,
+    this._loginUseCase,
+    this._registerUseCase,
+  ) : super(const AuthInitialState()) {
     on<CheckSignInStatus>(onCheckSignInStatus);
+    on<LoginGoogle>(onLoginGoogle);
+    on<Login>(onLogin);
+    on<Logout>(onLogout);
+    on<Register>(onRegister);
   }
 
   void _setSession(String token, UserModel user) {
@@ -39,26 +46,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     prefs.setString('photo', user.photo!);
   }
 
-  void onRegister(
-    Register event,
+  void _result(
+    DataState dataState,
     Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthLoading());
-
-    final registerRequest = RegisterRequest(
-      firstName: event.firstName,
-      lastName: event.lastName,
-      dob: event.dob,
-      city: event.city,
-      gender: event.gender,
-      email: event.email,
-      phone: event.phone,
-      password: event.password,
-      confirmPassword: event.confirmPassword,
-    );
-
-    final dataState = await _registerUseCase(params: registerRequest);
-
+  ) {
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
@@ -68,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         _setSession(token!, user);
 
-        emit(UserSignedIn(user));
+        emit(AuthUserLogin(user));
       } else {
         final messageResponse = MessageResponse(
           status: false,
@@ -85,64 +76,50 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void onSignIn(
-    SignIn event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthLoading());
-
+  Future<void> _login(
+    Emitter<AuthState> emit, {
+    String? email,
+    String? password,
+    bool? isViaGoogle,
+  }) async {
     final loginRequest = LoginRequest(
-      email: event.email,
-      password: event.password,
+      email: email!,
+      password: password,
+      isViaGoogle: isViaGoogle!,
     );
 
     final dataState = await _loginUseCase(params: loginRequest);
 
-    if (dataState is DataSuccess) {
-      final status = dataState.data!.status;
-
-      if (status == 1) {
-        final token = dataState.data!.token;
-        final user = UserModel.fromJson(dataState.data!.data);
-
-        _setSession(token!, user);
-
-        emit(UserSignedIn(user));
-      } else {
-        final messageResponse = MessageResponse(
-          status: false,
-          title: 'Oppss...',
-          message: dataState.data!.message!,
-        );
-
-        emit(AuthMessage(messageResponse));
-      }
-    }
-
-    if (dataState is DataFailed) {
-      emit(AuthError(dataState.error!));
-    }
+    _result(dataState, emit);
   }
 
-  void onSignOut(
-    SignOut event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthLoading());
+  Future<void> _register(
+    Emitter<AuthState> emit, {
+    String? firstName,
+    String? lastName,
+    String? dob,
+    String? city,
+    String? gender,
+    String? email,
+    String? phone,
+    String? password,
+    String? confirmPassword,
+  }) async {
+    final registerRequest = RegisterRequest(
+      firstName: firstName!,
+      lastName: lastName,
+      dob: dob!,
+      city: city!,
+      gender: gender!,
+      email: email!,
+      phone: phone,
+      password: password!,
+      confirmPassword: confirmPassword!,
+    );
 
-    final prefs = getIt.get<SharedPreferences>();
-    prefs.remove('token');
-    prefs.remove('id');
-    prefs.remove('firstName');
-    prefs.remove('lastName');
-    prefs.remove('email');
-    prefs.remove('phone');
-    prefs.remove('dob');
-    prefs.remove('gender');
-    prefs.remove('city');
-    prefs.remove('photo');
+    final dataState = await _registerUseCase(params: registerRequest);
 
-    emit(const UserSignedOut());
+    _result(dataState, emit);
   }
 
   void onCheckSignInStatus(
@@ -183,10 +160,114 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           city: city,
           photo: photo,
         );
-        emit(UserSignedIn(user));
+        emit(AuthUserLogin(user));
       } else {
-        emit(const UserSignedOut());
+        emit(const AuthUserLogout());
       }
     });
+  }
+
+  void onLoginGoogle(
+    LoginGoogle event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthGoogleLoading());
+
+    final dataState = await _checkEmailUseCase(params: event.email);
+
+    if (dataState is DataSuccess) {
+      final status = dataState.data!.status;
+
+      if (status == 1) {
+        final alreadyRegistered =
+            dataState.data!.data['alreadyRegistered'] as bool;
+
+        if (!alreadyRegistered) {
+          await _register(
+            emit,
+            firstName: event.name ?? 'Southbank Member',
+            dob: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+            city: 'BANDUNG',
+            gender: 'MALE',
+            email: event.email,
+            password: event.id,
+            confirmPassword: event.id,
+          );
+        } else {
+          await _login(
+            emit,
+            email: event.email,
+            isViaGoogle: true,
+          );
+        }
+      } else {
+        final messageResponse = MessageResponse(
+          status: false,
+          title: 'Oppss...',
+          message: dataState.data!.message!,
+        );
+
+        emit(AuthMessage(messageResponse));
+      }
+    }
+
+    if (dataState is DataFailed) {
+      emit(AuthError(dataState.error!));
+    }
+  }
+
+  void onLogin(
+    Login event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+
+    await _login(
+      emit,
+      email: event.email,
+      password: event.password,
+      isViaGoogle: false,
+    );
+  }
+
+  void onLogout(
+    Logout event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+
+    final prefs = getIt.get<SharedPreferences>();
+    prefs.remove('token');
+    prefs.remove('id');
+    prefs.remove('firstName');
+    prefs.remove('lastName');
+    prefs.remove('email');
+    prefs.remove('phone');
+    prefs.remove('dob');
+    prefs.remove('gender');
+    prefs.remove('city');
+    prefs.remove('photo');
+
+    emit(const AuthUserLogout());
+  }
+
+  void onRegister(
+    Register event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+
+    await _register(
+      emit,
+      firstName: event.firstName,
+      lastName: event.lastName,
+      dob: event.dob,
+      city: event.city,
+      gender: event.gender,
+      email: event.email,
+      phone: event.phone,
+      password: event.password,
+      confirmPassword: event.confirmPassword,
+    );
   }
 }

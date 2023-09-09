@@ -23,15 +23,19 @@ class _AuthApiService implements AuthApiService {
   @override
   Future<HttpResponse<ApiResponseModel>> login(
     String email,
-    String password,
+    String? password,
+    bool isViaGoogle,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = {
       'email': email,
       'password': password,
+      'is_via_google': isViaGoogle,
     };
+    _data.removeWhere((k, v) => v == null);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<ApiResponseModel>>(Options(
       method: 'POST',
@@ -58,17 +62,18 @@ class _AuthApiService implements AuthApiService {
   @override
   Future<HttpResponse<ApiResponseModel>> register(
     String firstName,
-    String lastName,
+    String? lastName,
     String dob,
     String city,
     String gender,
     String email,
-    String phone,
+    String? phone,
     String password,
     String confirmPassword,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = {
       'first_name': firstName,
@@ -81,6 +86,7 @@ class _AuthApiService implements AuthApiService {
       'password': password,
       'confirm_password': confirmPassword,
     };
+    _data.removeWhere((k, v) => v == null);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<ApiResponseModel>>(Options(
       method: 'POST',
@@ -91,6 +97,35 @@ class _AuthApiService implements AuthApiService {
             .compose(
               _dio.options,
               'auth/register',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ApiResponseModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<ApiResponseModel>> checkEmail(String email) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'email': email};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponseModel>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
+    )
+            .compose(
+              _dio.options,
+              'auth/check-email',
               queryParameters: queryParameters,
               data: _data,
             )

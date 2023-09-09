@@ -28,6 +28,11 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.1.12
+  image_picker: ^1.0.4
+  image_cropper: ^5.0.0
+  http_parser: ^4.0.2
+  mime: ^1.0.4
+  google_sign_in: ^6.1.5
 
 dev_dependencies:
   flutter_test:

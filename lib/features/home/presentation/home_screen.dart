@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/components/dialog.dart';
 import '../../../injection_container.dart';
-import '../../auth/presentation/bloc/auth/remote/auth_bloc.dart';
-import '../../auth/presentation/bloc/auth/remote/auth_event.dart';
+import '../../auth/presentation/bloc/auth_bloc.dart';
+import '../../auth/presentation/bloc/auth_event.dart';
 import '../../events/presentation/bloc/event_bloc.dart';
 import '../../events/presentation/bloc/event_event.dart';
 import '../../events/presentation/widgets/event_today.dart';
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     final prefs = getIt.get<SharedPreferences>();
 
-    _userName = prefs.getString('name') ?? '-';
+    _userName = prefs.getString('firstName') ?? '-';
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<PopupBloc>().add(const GetPopup());
@@ -43,9 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<PopupBloc, PopupState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is PopupDone) {
-          popupDialog(context, context.read<PopupBloc>().state.popup!.image!);
+          await popupDialog(
+              context, context.read<PopupBloc>().state.popup!.image!);
         }
       },
       child: MultiBlocProvider(
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     IconButton(
                       onPressed: () {
                         BlocProvider.of<AuthBloc>(context).add(
-                          SignOut(),
+                          Logout(),
                         );
                       },
                       icon: const Icon(Icons.logout),

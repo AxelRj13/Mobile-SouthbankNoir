@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/core/resources/message_response.dart';
 
 import '../../../../../core/resources/data_state.dart';
+import '../../../../../core/resources/message_response.dart';
 import '../../../domain/entities/complaint_request.dart';
 import '../../../domain/usecases/send_complaint.dart';
 import 'complaint_event.dart';

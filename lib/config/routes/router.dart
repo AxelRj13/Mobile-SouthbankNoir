@@ -7,6 +7,7 @@ import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/complaint/presentation/complaint_screen.dart';
 import '../../features/news/presentation/news_detail_screen.dart';
 import '../../features/outlet/presentation/outlet_screen.dart';
+import '../../features/profile/presentation/profile_edit_screen.dart';
 import '../../features/promo/presentation/promo_detail_screen.dart';
 
 final GoRouter router = GoRouter(
@@ -32,33 +33,39 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const OutletScreen(),
         ),
         GoRoute(
-            path: 'news',
-            name: 'news',
-            builder: (context, state) => const NewsPromoScreen(),
-            routes: [
-              GoRoute(
-                path: 'news/detail/:newsId',
-                name: 'newsDetail',
-                builder: (context, state) {
-                  return NewsDetailScreen(
-                    id: state.pathParameters['newsId']!,
-                  );
-                },
-              ),
-              GoRoute(
-                path: 'promo/detail/:promoId',
-                name: 'promoDetail',
-                builder: (context, state) {
-                  return PromoDetailScreen(
-                    id: state.pathParameters['promoId']!,
-                  );
-                },
-              ),
-            ]),
+          path: 'news',
+          name: 'news',
+          builder: (context, state) => const NewsPromoScreen(),
+          routes: [
+            GoRoute(
+              path: 'news/detail/:newsId',
+              name: 'newsDetail',
+              builder: (context, state) {
+                return NewsDetailScreen(
+                  id: state.pathParameters['newsId']!,
+                );
+              },
+            ),
+            GoRoute(
+              path: 'promo/detail/:promoId',
+              name: 'promoDetail',
+              builder: (context, state) {
+                return PromoDetailScreen(
+                  id: state.pathParameters['promoId']!,
+                );
+              },
+            ),
+          ],
+        ),
         GoRoute(
           path: 'complaint',
           name: 'complaint',
           builder: (context, state) => const ComplaintScreen(),
+        ),
+        GoRoute(
+          path: 'profile/edit',
+          name: 'profileEdit',
+          builder: (context, state) => const ProfileEditScreen(),
         ),
       ],
     ),

@@ -92,10 +92,8 @@ class _FormLoginState extends State<FormLogin> {
                         if (_formKey.currentState!.validate()) {
                           FocusScope.of(context).requestFocus(FocusNode());
 
-                          print('Tes masuk sini');
-
                           BlocProvider.of<AuthBloc>(context).add(
-                            SignIn(
+                            Login(
                               email: _emailController.text,
                               password: _passwordController.text,
                             ),
