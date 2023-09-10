@@ -7,37 +7,17 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Card(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Points'),
-                SizedBox(height: 15.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('0'),
-                    SizedBox(width: 20.0),
-                    Icon(Icons.wallet),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(13.0),
-              child: IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextButton.icon(
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: TextButton.icon(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(accentColor),
                       ),
@@ -55,8 +35,13 @@ class Header extends StatelessWidget {
                       ),
                       onPressed: () {/* ... */},
                     ),
-                    const SizedBox(width: 8),
-                    TextButton.icon(
+                  ),
+                  const VerticalDivider(
+                    thickness: 2.0,
+                    width: 30.0,
+                  ),
+                  Expanded(
+                    child: TextButton.icon(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(accentColor),
                       ),
@@ -74,18 +59,49 @@ class Header extends StatelessWidget {
                       ),
                       onPressed: () {/* ... */},
                     ),
-                    const VerticalDivider(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              thickness: 2.0,
+              height: 30.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    children: [
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Icon(Icons.wallet),
+                      ),
+                      WidgetSpan(child: SizedBox(width: 8.0)),
+                      TextSpan(text: '0 Points')
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
                     Text(
-                      'Basic',
+                      'Membership Level',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 10.0),
+                    Text(
+                      'BASIC',
                       style: TextStyle(color: accentColor),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

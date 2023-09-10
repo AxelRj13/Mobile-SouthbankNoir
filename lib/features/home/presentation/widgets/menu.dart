@@ -66,12 +66,15 @@ class _MenuState extends State<Menu> {
           children: [
             Image.asset(
               menu.image!,
-              width: MediaQuery.of(context).size.width / 8.0,
+              width: MediaQuery.of(context).size.width * 0.15,
             ),
-            const SizedBox(height: 5.0),
+            const SizedBox(height: 8.0),
             Text(
               menu.label!,
-              style: const TextStyle(color: Colors.white),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Colors.white),
             ),
           ],
         ),
