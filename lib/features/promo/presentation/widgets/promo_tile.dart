@@ -88,16 +88,13 @@ class PromoTileWidget extends StatelessWidget {
 
   Widget buildTitleAndInformation(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             promo.title ?? '',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             style: Theme.of(context)
                 .textTheme
                 .titleMedium!
@@ -146,7 +143,6 @@ class PromoTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
-      height: MediaQuery.of(context).size.height / 2.2,
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: RoundedRectangleBorder(
