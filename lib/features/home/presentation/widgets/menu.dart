@@ -66,7 +66,7 @@ class _MenuState extends State<Menu> {
           children: [
             Image.asset(
               menu.image!,
-              width: MediaQuery.of(context).size.width * 0.15,
+              width: MediaQuery.of(context).size.width * 0.13,
             ),
             const SizedBox(height: 8.0),
             Text(
@@ -84,23 +84,10 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _menus
-              .where((menu) => menu.id! < 4)
-              .map((menu) => _buildMenuItem(menu))
-              .toList(),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _menus
-              .where((menu) => menu.id! > 3)
-              .map((menu) => _buildMenuItem(menu))
-              .toList(),
-        ),
-      ],
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: _menus.map((menu) => _buildMenuItem(menu)).toList(),
     );
   }
 }
