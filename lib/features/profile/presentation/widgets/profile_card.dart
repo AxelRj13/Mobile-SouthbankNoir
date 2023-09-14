@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../config/theme/app_theme.dart';
 import '../../../auth/data/models/user.dart';
+import '../../../membership/presentation/widgets/membership_profile_widget.dart';
 
 class ProfileCard extends StatelessWidget {
   final UserModel user;
@@ -52,43 +52,7 @@ class ProfileCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15.0),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          const Text('Membership Tier'),
-                          const SizedBox(height: 15.0),
-                          Text(
-                            'BASIC',
-                            style: TextStyle(
-                              color: accentColor,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          const Text('Your Points'),
-                          const SizedBox(height: 15.0),
-                          Text(
-                            '0',
-                            style: TextStyle(
-                              color: accentColor,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const MembershipProfileWidget(),
             ],
           ),
         ),

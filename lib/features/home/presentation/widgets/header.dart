@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/features/membership/presentation/bloc/membership_bloc.dart';
+import 'package:southbank/features/membership/presentation/bloc/membership_event.dart';
+import 'package:southbank/injection_container.dart';
 
 import '../../../../config/theme/app_theme.dart';
+import '../../../membership/presentation/widgets/membership_home_widget.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -67,37 +72,10 @@ class Header extends StatelessWidget {
               thickness: 2.0,
               height: 30.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    children: [
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: Icon(Icons.wallet),
-                      ),
-                      WidgetSpan(child: SizedBox(width: 8.0)),
-                      TextSpan(text: '0 Points')
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Membership Level',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      'BASIC',
-                      style: TextStyle(color: accentColor),
-                    ),
-                  ],
-                ),
-              ],
+            BlocProvider<MembershipBloc>(
+              create: (BuildContext context) =>
+                  getIt.get<MembershipBloc>()..add(const GetMembership()),
+              child: const MembershipHomeWidget(),
             ),
           ],
         ),

@@ -16,9 +16,9 @@ import '../../../../core/components/text_form_field.dart';
 import '../../../../core/constants/enum.dart';
 import '../../../../core/utils/validator_extension.dart';
 import '../../../../injection_container.dart';
-import '../bloc/profile/profile_bloc.dart';
-import '../bloc/profile/profile_event.dart';
-import '../bloc/profile/profile_state.dart';
+import '../bloc/profile_bloc.dart';
+import '../bloc/profile_event.dart';
+import '../bloc/profile_state.dart';
 
 class ProfileEditForm extends StatefulWidget {
   const ProfileEditForm({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/resources/data_state.dart';
-import '../../../data/models/membership.dart';
-import '../../../domain/usecases/get_membership.dart';
+import '../../../../core/resources/data_state.dart';
+import '../../data/models/membership.dart';
+import '../../domain/usecases/get_membership.dart';
 import 'membership_event.dart';
 import 'membership_state.dart';
 

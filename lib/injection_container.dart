@@ -1,6 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:southbank/features/membership/data/data_sources/membership_api_service.dart';
+import 'package:southbank/features/membership/data/repository/membership_repository_impl.dart';
+import 'package:southbank/features/membership/domain/repository/membership_repository.dart';
+import 'package:southbank/features/membership/domain/usecases/get_membership.dart';
+import 'package:southbank/features/membership/presentation/bloc/membership_bloc.dart';
 
 import 'core/network/dio_client.dart';
 import 'features/auth/data/data_sources/auth_api_service.dart';
@@ -43,7 +48,7 @@ import 'features/profile/data/data_sources/profile_api_service.dart';
 import 'features/profile/data/repository/profile_repository_impl.dart';
 import 'features/profile/domain/repository/profile_repository.dart';
 import 'features/profile/domain/usecases/update_profile.dart';
-import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
+import 'features/profile/presentation/bloc/profile_bloc.dart';
 import 'features/promo/data/data_sources/banner_api_service.dart';
 import 'features/promo/data/data_sources/promo_api_service.dart';
 import 'features/promo/data/repository/banner_repository_impl.dart';
@@ -128,6 +133,13 @@ Future<void> initializeDependencies() async {
     () => ProfileRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<MembershipApiService>(
+    () => MembershipApiService(dio),
+  );
+  sl.registerLazySingleton<MembershipRepository>(
+    () => MembershipRepositoryImpl(sl()),
+  );
+
   // UseCases
   sl.registerLazySingleton<CheckEmailUseCase>(
     () => CheckEmailUseCase(sl()),
@@ -174,6 +186,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<UpdateProfileUseCase>(
     () => UpdateProfileUseCase(sl()),
   );
+  sl.registerLazySingleton<GetMembershipUseCase>(
+    () => GetMembershipUseCase(sl()),
+  );
 
   // Blocs
   sl.registerFactory<AuthBloc>(
@@ -205,5 +220,8 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<ProfileBloc>(
     () => ProfileBloc(sl()),
+  );
+  sl.registerFactory<MembershipBloc>(
+    () => MembershipBloc(sl()),
   );
 }
