@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/membership.dart';
+import '../../data/models/membership.dart';
 
 abstract class MembershipState extends Equatable {
   final MembershipModel? membership;

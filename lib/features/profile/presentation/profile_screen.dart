@@ -6,13 +6,15 @@ import '../../../core/components/loading.dart';
 import '../../../injection_container.dart';
 import '../../auth/presentation/bloc/auth_bloc.dart';
 import '../../auth/presentation/bloc/auth_event.dart';
-import 'bloc/profile/profile_bloc.dart';
-import 'bloc/profile/profile_event.dart';
-import 'bloc/profile/profile_state.dart';
+import '../../membership/presentation/bloc/membership_bloc.dart';
+import '../../membership/presentation/bloc/membership_event.dart';
+import '../../membership/presentation/widgets/membership_progress_bar.dart';
+import 'bloc/profile_bloc.dart';
+import 'bloc/profile_event.dart';
+import 'bloc/profile_state.dart';
 import 'widgets/profile_bottom_menu.dart';
 import 'widgets/profile_card.dart';
 import 'widgets/profile_menu.dart';
-import 'widgets/progress_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,9 +26,17 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ProfileBloc>(
-      create: (BuildContext context) =>
-          getIt.get<ProfileBloc>()..add(CheckProfile()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ProfileBloc>(
+          create: (BuildContext context) =>
+              getIt.get<ProfileBloc>()..add(CheckProfile()),
+        ),
+        BlocProvider<MembershipBloc>(
+          create: (BuildContext context) =>
+              getIt.get<MembershipBloc>()..add(const GetMembership()),
+        ),
+      ],
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state is ProfileDone) {
@@ -35,9 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   ProfileCard(user: state.user!),
-                  const ProgressBar(),
-                  const SizedBox(height: 30.0),
-                  // const Text('Next Level'),
+                  const MembershipProgressBar(),
                   const SizedBox(height: 30.0),
                   const ProfileMenu(),
                   const SizedBox(height: 15.0),
