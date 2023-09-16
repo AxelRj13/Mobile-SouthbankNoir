@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../../../config/routes/router.dart';
 import '../../../../core/components/loading.dart';
 import '../../domain/entities/banner.dart';
 import '../bloc/banner/banner_bloc.dart';
@@ -18,7 +19,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
 
-  Widget _buildCarousel(List<BannerEntity> banners) {
+  Widget buildCarousel(List<BannerEntity> banners) {
     return CarouselSlider(
       carouselController: _controller,
       options: CarouselOptions(
@@ -36,15 +37,23 @@ class _BannerCarouselState extends State<BannerCarousel> {
           .map(
             (banner) => Builder(
               builder: (BuildContext context) {
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: banner.bannerImage != null
-                          ? NetworkImage(banner.bannerImage!)
-                          : const AssetImage('assets/img/logo.png')
-                              as ImageProvider,
-                      fit: BoxFit.cover,
+                return GestureDetector(
+                  onTap: () {
+                    router.pushNamed(
+                      'promoDetail',
+                      pathParameters: {'promoId': banner.id!},
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: banner.bannerImage != null
+                            ? NetworkImage(banner.bannerImage!)
+                            : const AssetImage('assets/img/logo.png')
+                                as ImageProvider,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 );
@@ -55,7 +64,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
     );
   }
 
-  Widget _buildCarouselIndicator(List<BannerEntity> banners) {
+  Widget buildCarouselIndicator(List<BannerEntity> banners) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: banners.asMap().entries.map((banner) {
@@ -82,8 +91,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
         if (state is BannerDone) {
           return Column(
             children: [
-              _buildCarousel(state.banners!),
-              _buildCarouselIndicator(state.banners!),
+              buildCarousel(state.banners!),
+              buildCarouselIndicator(state.banners!),
             ],
           );
         }

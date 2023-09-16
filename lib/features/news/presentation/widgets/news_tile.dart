@@ -96,24 +96,6 @@ class NewsTileWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: accentColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                  child: const Text(
-                    'See more',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    router.goNamed(
-                      'newsDetail',
-                      pathParameters: {'newsId': news.id!},
-                    );
-                  },
-                ),
               ],
             ),
           ],
@@ -124,15 +106,24 @@ class NewsTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
-      height: MediaQuery.of(context).size.width / 2.5,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          buildImage(context),
-          buildTitleAndDescription(context),
-        ],
+    return GestureDetector(
+      onTap: () {
+        router.goNamed(
+          'newsDetail',
+          pathParameters: {'newsId': news.id!},
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(color: backgroundColor),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+        height: MediaQuery.of(context).size.width / 2.5,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            buildImage(context),
+            buildTitleAndDescription(context),
+          ],
+        ),
       ),
     );
   }
