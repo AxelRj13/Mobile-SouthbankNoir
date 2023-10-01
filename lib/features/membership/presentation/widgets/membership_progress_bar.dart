@@ -55,6 +55,16 @@ class MembershipProgressBarState extends State<MembershipProgressBar> {
   Widget build(BuildContext context) {
     return BlocBuilder<MembershipBloc, MembershipState>(
       builder: (context, state) {
+        double value = 0.0;
+        String infoNextTier = '';
+
+        if (state is MembershipDone) {
+          final totalSpentMax = state.membership!.totalSpentMax;
+          final totalSpent = state.membership!.totalSpent;
+
+          value = totalSpent! / totalSpentMax!;
+        }
+
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
@@ -72,7 +82,7 @@ class MembershipProgressBarState extends State<MembershipProgressBar> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: LinearProgressIndicator(
-                        value: 0,
+                        value: value,
                         valueColor: AlwaysStoppedAnimation<Color>(accentColor),
                         backgroundColor: backgroundColor,
                       ),
@@ -90,9 +100,7 @@ class MembershipProgressBarState extends State<MembershipProgressBar> {
                 ],
               ),
               const SizedBox(height: 30.0),
-              Text(state is MembershipDone
-                  ? state.membership!.diffNextTier!
-                  : ''),
+              Text(infoNextTier),
             ],
           ),
         );

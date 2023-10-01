@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../config/theme/app_theme.dart';
+import '../../../../core/utils/formatter.dart';
 import '../bloc/membership_bloc.dart';
 import '../bloc/membership_state.dart';
 
@@ -17,6 +19,12 @@ class _MembershipHomeWidgetState extends State<MembershipHomeWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<MembershipBloc, MembershipState>(
       builder: (context, state) {
+        int points = 0;
+
+        if (state is MembershipDone) {
+          points = state.membership!.points!;
+        }
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -30,8 +38,12 @@ class _MembershipHomeWidgetState extends State<MembershipHomeWidget> {
                   ),
                   const WidgetSpan(child: SizedBox(width: 8.0)),
                   TextSpan(
-                    text:
-                        '${state is MembershipDone ? state.membership!.points ?? 0 : 0} Points',
+                    text: Intl.plural(
+                      points,
+                      zero: '${UtilsFormatter.decimalFormat(points)} Point',
+                      one: '${UtilsFormatter.decimalFormat(points)} Point',
+                      other: '${UtilsFormatter.decimalFormat(points)} Points',
+                    ),
                   ),
                 ],
               ),
