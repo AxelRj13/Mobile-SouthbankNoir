@@ -6,6 +6,7 @@ class MembershipEntity extends Equatable {
   final String? name;
   final int? totalSpentMax;
   final String? diffNextTier;
+  final int? totalTiers;
 
   const MembershipEntity({
     this.points,
@@ -13,6 +14,7 @@ class MembershipEntity extends Equatable {
     this.name,
     this.totalSpentMax,
     this.diffNextTier,
+    this.totalTiers,
   });
 
   @override
@@ -22,5 +24,6 @@ class MembershipEntity extends Equatable {
         name,
         totalSpentMax,
         diffNextTier,
+        totalTiers,
       ];
 }

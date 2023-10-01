@@ -61,7 +61,10 @@ Future<void> exceptionDialog(BuildContext context) {
             'There is an error occurred. Please try again or contact our crew.'),
         actions: [
           TextButton(
-            style: TextButton.styleFrom(backgroundColor: accentColor),
+            style: TextButton.styleFrom(
+              backgroundColor: accentColor,
+              foregroundColor: Colors.white,
+            ),
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('OK', style: TextStyle(color: Colors.white)),
           ),
@@ -90,9 +93,56 @@ Future<void> basicDialog(BuildContext context, String title, String message) {
         content: Text(message),
         actions: [
           TextButton(
-            style: TextButton.styleFrom(backgroundColor: accentColor),
+            style: TextButton.styleFrom(
+              backgroundColor: accentColor,
+              foregroundColor: Colors.white,
+            ),
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('OK', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+        actionsAlignment: MainAxisAlignment.center,
+      );
+    },
+  );
+}
+
+Future<bool?> confirmDialog(
+    BuildContext context, String title, String message) async {
+  return await showDialog<bool>(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: Center(
+          child: Text(
+            title,
+            style: TextStyle(color: accentColor, fontWeight: FontWeight.bold),
+          ),
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: accentColor,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Yes', style: TextStyle(color: Colors.white)),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: accentColor,
+              side: BorderSide(
+                color: accentColor,
+                width: 1.0,
+              ),
+            ),
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No', style: TextStyle(color: Colors.white)),
           ),
         ],
         actionsAlignment: MainAxisAlignment.center,

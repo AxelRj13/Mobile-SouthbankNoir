@@ -5,6 +5,8 @@ import '../../core/screen/news_promo_screen.dart';
 import '../../core/screen/splash_screen.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/complaint/presentation/complaint_screen.dart';
+import '../../features/coupon/presentation/coupon_detail_screen.dart';
+import '../../features/coupon/presentation/coupon_screen.dart';
 import '../../features/news/presentation/news_detail_screen.dart';
 import '../../features/outlet/presentation/outlet_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
@@ -40,20 +42,16 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: 'news/detail/:newsId',
               name: 'newsDetail',
-              builder: (context, state) {
-                return NewsDetailScreen(
-                  id: state.pathParameters['newsId']!,
-                );
-              },
+              builder: (context, state) => NewsDetailScreen(
+                id: state.pathParameters['newsId']!,
+              ),
             ),
             GoRoute(
               path: 'promo/detail/:promoId',
               name: 'promoDetail',
-              builder: (context, state) {
-                return PromoDetailScreen(
-                  id: state.pathParameters['promoId']!,
-                );
-              },
+              builder: (context, state) => PromoDetailScreen(
+                id: state.pathParameters['promoId']!,
+              ),
             ),
           ],
         ),
@@ -66,6 +64,23 @@ final GoRouter router = GoRouter(
           path: 'profile/edit',
           name: 'profileEdit',
           builder: (context, state) => const ProfileEditScreen(),
+        ),
+        GoRoute(
+          path: 'coupons/:type',
+          name: 'coupons',
+          builder: (context, state) => CouponScreen(
+            type: state.pathParameters['type']!,
+          ),
+          routes: [
+            GoRoute(
+              path: 'detail/:couponId',
+              name: 'couponDetail',
+              builder: (context, state) => CouponDetailScreen(
+                type: state.pathParameters['type']!,
+                id: state.pathParameters['couponId']!,
+              ),
+            ),
+          ],
         ),
       ],
     ),

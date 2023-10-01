@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/features/membership/presentation/bloc/membership_bloc.dart';
-import 'package:southbank/features/membership/presentation/bloc/membership_event.dart';
-import 'package:southbank/injection_container.dart';
 
+import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
+import '../../../../core/constants/constants.dart';
+import '../../../../injection_container.dart';
+import '../../../membership/presentation/bloc/membership_bloc.dart';
+import '../../../membership/presentation/bloc/membership_event.dart';
 import '../../../membership/presentation/widgets/membership_home_widget.dart';
 
 class Header extends StatelessWidget {
@@ -38,7 +40,12 @@ class Header extends StatelessWidget {
                           fontSize: 12.0,
                         ),
                       ),
-                      onPressed: () {/* ... */},
+                      onPressed: () {
+                        router.goNamed(
+                          'coupons',
+                          pathParameters: {'type': myCoupon},
+                        );
+                      },
                     ),
                   ),
                   const VerticalDivider(
@@ -62,7 +69,12 @@ class Header extends StatelessWidget {
                           fontSize: 12.0,
                         ),
                       ),
-                      onPressed: () {/* ... */},
+                      onPressed: () {
+                        router.goNamed(
+                          'coupons',
+                          pathParameters: {'type': buyCoupon},
+                        );
+                      },
                     ),
                   ),
                 ],

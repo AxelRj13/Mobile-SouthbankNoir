@@ -3,6 +3,7 @@ import 'package:southbank/config/routes/router.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/dialog.dart';
+import '../../../../core/constants/constants.dart';
 import '../../data/models/menu.dart';
 
 class ProfileMenu extends StatefulWidget {
@@ -18,25 +19,26 @@ class _ProfileMenuState extends State<ProfileMenu> {
       id: 1,
       label: 'Edit Profile',
       icon: Icons.account_circle_outlined,
-      route: 'profileEdit',
+      route: ProfileMenuRouteModel(route: 'profileEdit'),
     ),
     const ProfileMenuModel(
       id: 2,
       label: 'My Bookings',
       icon: Icons.book_online,
-      route: 'comingsoon',
+      route: ProfileMenuRouteModel(route: 'comingsoon'),
     ),
     const ProfileMenuModel(
       id: 3,
       label: 'My Coupons',
       icon: Icons.sell,
-      route: 'comingsoon',
+      route: ProfileMenuRouteModel(
+          route: 'coupons', parameter: {'type': myCoupon}),
     ),
     const ProfileMenuModel(
       id: 4,
       label: 'Terms & Conditions',
       icon: Icons.checklist,
-      route: 'comingsoon',
+      route: ProfileMenuRouteModel(route: 'comingsoon'),
     ),
     const ProfileMenuModel(
       id: 5,
@@ -67,7 +69,12 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: () {
                 if (menu.route != null) {
                   if (menu.id == 1) {
-                    router.goNamed(menu.route!);
+                    router.goNamed(menu.route!.route!);
+                  } else if (menu.id == 3) {
+                    router.goNamed(
+                      menu.route!.route!,
+                      pathParameters: menu.route!.parameter!,
+                    );
                   } else {
                     comingsoonDialog(context);
                   }

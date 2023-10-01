@@ -1,11 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:southbank/features/membership/data/data_sources/membership_api_service.dart';
-import 'package:southbank/features/membership/data/repository/membership_repository_impl.dart';
-import 'package:southbank/features/membership/domain/repository/membership_repository.dart';
-import 'package:southbank/features/membership/domain/usecases/get_membership.dart';
-import 'package:southbank/features/membership/presentation/bloc/membership_bloc.dart';
 
 import 'core/network/dio_client.dart';
 import 'features/auth/data/data_sources/auth_api_service.dart';
@@ -22,6 +17,15 @@ import 'features/complaint/domain/usecases/get_complaint_types.dart';
 import 'features/complaint/domain/usecases/send_complaint.dart';
 import 'features/complaint/presentation/bloc/complaint/complaint_bloc.dart';
 import 'features/complaint/presentation/bloc/types/complaint_type_bloc.dart';
+import 'features/coupon/data/data_sources/coupon_api_service.dart';
+import 'features/coupon/data/repository/coupon_repository_impl.dart';
+import 'features/coupon/domain/repository/coupon_repository.dart';
+import 'features/coupon/domain/usecases/buy_coupon.dart';
+import 'features/coupon/domain/usecases/get_coupon.dart';
+import 'features/coupon/domain/usecases/get_coupons.dart';
+import 'features/coupon/domain/usecases/get_my_coupon.dart';
+import 'features/coupon/presentation/bloc/coupon/coupon_bloc.dart';
+import 'features/coupon/presentation/bloc/coupon_purchased/coupon_purchased_bloc.dart';
 import 'features/events/data/data_sources/remote/event_api_service.dart';
 import 'features/events/data/repository/event_repository_impl.dart';
 import 'features/events/domain/repository/event_repository.dart';
@@ -33,6 +37,11 @@ import 'features/home/data/repository/popup_repository_impl.dart';
 import 'features/home/domain/repository/popup_repository.dart';
 import 'features/home/domain/usecases/get_popup.dart';
 import 'features/home/presentation/bloc/popup_bloc.dart';
+import 'features/membership/data/data_sources/membership_api_service.dart';
+import 'features/membership/data/repository/membership_repository_impl.dart';
+import 'features/membership/domain/repository/membership_repository.dart';
+import 'features/membership/domain/usecases/get_membership.dart';
+import 'features/membership/presentation/bloc/membership_bloc.dart';
 import 'features/news/data/data_sources/news_api_service.dart';
 import 'features/news/data/repository/news_repository_impl.dart';
 import 'features/news/domain/repository/news_repository.dart';
@@ -140,6 +149,13 @@ Future<void> initializeDependencies() async {
     () => MembershipRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<CouponApiService>(
+    () => CouponApiService(dio),
+  );
+  sl.registerLazySingleton<CouponRepository>(
+    () => CouponRepositoryImpl(sl()),
+  );
+
   // UseCases
   sl.registerLazySingleton<CheckEmailUseCase>(
     () => CheckEmailUseCase(sl()),
@@ -189,6 +205,18 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<GetMembershipUseCase>(
     () => GetMembershipUseCase(sl()),
   );
+  sl.registerLazySingleton<GetCouponsUseCase>(
+    () => GetCouponsUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetCouponUseCase>(
+    () => GetCouponUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetMyCouponUseCase>(
+    () => GetMyCouponUseCase(sl()),
+  );
+  sl.registerLazySingleton<BuyCouponUseCase>(
+    () => BuyCouponUseCase(sl()),
+  );
 
   // Blocs
   sl.registerFactory<AuthBloc>(
@@ -223,5 +251,11 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<MembershipBloc>(
     () => MembershipBloc(sl()),
+  );
+  sl.registerFactory<CouponBloc>(
+    () => CouponBloc(sl(), sl(), sl()),
+  );
+  sl.registerFactory<CouponPurchasedBloc>(
+    () => CouponPurchasedBloc(sl()),
   );
 }
