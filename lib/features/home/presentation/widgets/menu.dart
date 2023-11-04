@@ -19,6 +19,7 @@ class _MenuState extends State<Menu> {
       id: 1,
       label: 'Reservation',
       image: 'assets/img/reservation.png',
+      route: 'reservation',
     ),
     const MenuModel(
       id: 2,

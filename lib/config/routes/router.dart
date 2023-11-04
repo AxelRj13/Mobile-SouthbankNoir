@@ -11,6 +11,8 @@ import '../../features/news/presentation/news_detail_screen.dart';
 import '../../features/outlet/presentation/outlet_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
 import '../../features/promo/presentation/promo_detail_screen.dart';
+import '../../features/reservation/presentation/confirmation_screen.dart';
+import '../../features/reservation/presentation/reservation_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -80,6 +82,20 @@ final GoRouter router = GoRouter(
                 id: state.pathParameters['couponId']!,
               ),
             ),
+          ],
+        ),
+        GoRoute(
+          path: 'reservation',
+          name: 'reservation',
+          builder: (context, state) => const ReservationScreen(),
+          routes: [
+            GoRoute(
+              path: 'confirmation/:bookingId',
+              name: 'confirmation',
+              builder: (context, state) => ConfirmationScreen(
+                bookingId: state.pathParameters['bookingId']!,
+              ),
+            )
           ],
         ),
       ],
