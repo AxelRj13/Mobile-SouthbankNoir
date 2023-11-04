@@ -103,7 +103,10 @@ class _BannerCarouselState extends State<BannerCarousel> {
           );
         }
 
-        return const SBLoading();
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.25,
+          child: const Center(child: SBLoading()),
+        );
       },
     );
   }
