@@ -39,20 +39,35 @@ class AuthGoogleLoading extends AuthState {
 }
 
 class AuthError extends AuthState {
-  const AuthError(DioException error) : super(error: error);
+  const AuthError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }
 
 class AuthMessage extends AuthState {
-  const AuthMessage(MessageResponse message) : super(message: message);
+  const AuthMessage({
+    required MessageResponse message,
+  }) : super(
+          message: message,
+        );
 }
 
 class AuthCheckEmail extends AuthState {
-  const AuthCheckEmail(bool alreadyRegistered)
-      : super(alreadyRegistered: alreadyRegistered);
+  const AuthCheckEmail({
+    required bool alreadyRegistered,
+  }) : super(
+          alreadyRegistered: alreadyRegistered,
+        );
 }
 
 class AuthUserLogin extends AuthState {
-  const AuthUserLogin(UserModel user) : super(user: user);
+  const AuthUserLogin({
+    required UserModel user,
+  }) : super(
+          user: user,
+        );
 }
 
 class AuthUserLogout extends AuthState {

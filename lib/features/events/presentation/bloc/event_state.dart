@@ -8,10 +8,18 @@ abstract class EventState extends Equatable {
   final List<EventModel>? events;
   final DioException? error;
 
-  const EventState({this.event, this.events, this.error});
+  const EventState({
+    this.event,
+    this.events,
+    this.error,
+  });
 
   @override
-  List<Object> get props => [events!, error!];
+  List<Object> get props => [
+        event!,
+        events!,
+        error!,
+      ];
 }
 
 class EventLoading extends EventState {
@@ -19,11 +27,19 @@ class EventLoading extends EventState {
 }
 
 class EventsDone extends EventState {
-  const EventsDone(List<EventModel> events) : super(events: events);
+  const EventsDone({
+    required List<EventModel> events,
+  }) : super(
+          events: events,
+        );
 }
 
 class EventDone extends EventState {
-  const EventDone(EventModel event) : super(event: event);
+  const EventDone({
+    required EventModel event,
+  }) : super(
+          event: event,
+        );
 }
 
 class EventNotFound extends EventState {
@@ -31,5 +47,9 @@ class EventNotFound extends EventState {
 }
 
 class EventError extends EventState {
-  const EventError(DioException error) : super(error: error);
+  const EventError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }

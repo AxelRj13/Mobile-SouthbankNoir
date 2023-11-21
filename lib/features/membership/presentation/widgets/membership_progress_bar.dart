@@ -63,6 +63,8 @@ class MembershipProgressBarState extends State<MembershipProgressBar> {
           final totalSpent = state.membership!.totalSpent;
 
           value = totalSpent! / totalSpentMax!;
+
+          infoNextTier = state.membership!.diffNextTier!;
         }
 
         return Padding(

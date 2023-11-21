@@ -24,5 +24,13 @@ class RegisterRequest extends Equatable {
   });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        firstName,
+        dob,
+        city,
+        gender,
+        email,
+        password,
+        confirmPassword,
+      ];
 }

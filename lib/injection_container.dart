@@ -53,6 +53,13 @@ import 'features/outlet/data/repository/outlet_repository_impl.dart';
 import 'features/outlet/domain/repository/outlet_repository.dart';
 import 'features/outlet/domain/usecases/get_outlet_details.dart';
 import 'features/outlet/presentation/bloc/outlet_bloc.dart';
+import 'features/payment/data/data_sources/payment_api_service.dart';
+import 'features/payment/data/repository/payment_repository_impl.dart';
+import 'features/payment/domain/repository/payment_repository.dart';
+import 'features/payment/domain/usecases/confirm_payment.dart';
+import 'features/payment/domain/usecases/get_payment.dart';
+import 'features/payment/presentation/bloc/confirmation/confirmation_bloc.dart';
+import 'features/payment/presentation/bloc/payment/payment_bloc.dart';
 import 'features/profile/data/data_sources/profile_api_service.dart';
 import 'features/profile/data/repository/profile_repository_impl.dart';
 import 'features/profile/domain/repository/profile_repository.dart';
@@ -69,6 +76,17 @@ import 'features/promo/domain/usecases/get_promo.dart';
 import 'features/promo/domain/usecases/get_promo_list.dart';
 import 'features/promo/presentation/bloc/banner/banner_bloc.dart';
 import 'features/promo/presentation/bloc/promo/promo_bloc.dart';
+import 'features/reservation/data/data_sources/reservation_api_service.dart';
+import 'features/reservation/data/repository/reservation_repository_impl.dart';
+import 'features/reservation/domain/repository/reservation_repository.dart';
+import 'features/reservation/domain/usecases/apply_promo.dart';
+import 'features/reservation/domain/usecases/create_reservation.dart';
+import 'features/reservation/domain/usecases/get_reservation_detail.dart';
+import 'features/reservation/domain/usecases/get_reservations.dart';
+import 'features/reservation/domain/usecases/get_tables.dart';
+import 'features/reservation/presentation/bloc/promo/reservation_promo_bloc.dart';
+import 'features/reservation/presentation/bloc/reservation/reservation_bloc.dart';
+import 'features/reservation/presentation/bloc/table/table_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -156,6 +174,20 @@ Future<void> initializeDependencies() async {
     () => CouponRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<ReservationApiService>(
+    () => ReservationApiService(dio),
+  );
+  sl.registerLazySingleton<ReservationRepository>(
+    () => ReservationRepositoryImpl(sl()),
+  );
+
+  sl.registerLazySingleton<PaymentApiService>(
+    () => PaymentApiService(dio),
+  );
+  sl.registerLazySingleton<PaymentRepository>(
+    () => PaymentRepositoryImpl(sl()),
+  );
+
   // UseCases
   sl.registerLazySingleton<CheckEmailUseCase>(
     () => CheckEmailUseCase(sl()),
@@ -217,6 +249,27 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<BuyCouponUseCase>(
     () => BuyCouponUseCase(sl()),
   );
+  sl.registerLazySingleton<ApplyPromoUseCase>(
+    () => ApplyPromoUseCase(sl()),
+  );
+  sl.registerLazySingleton<CreateReservationUseCase>(
+    () => CreateReservationUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetReservationsUseCase>(
+    () => GetReservationsUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetReservationDetailUseCase>(
+    () => GetReservationDetailUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetTablesUseCase>(
+    () => GetTablesUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetPaymentUseCase>(
+    () => GetPaymentUseCase(sl()),
+  );
+  sl.registerLazySingleton<ConfirmPaymentUseCase>(
+    () => ConfirmPaymentUseCase(sl()),
+  );
 
   // Blocs
   sl.registerFactory<AuthBloc>(
@@ -257,5 +310,20 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<CouponPurchasedBloc>(
     () => CouponPurchasedBloc(sl()),
+  );
+  sl.registerFactory<TableBloc>(
+    () => TableBloc(sl()),
+  );
+  sl.registerFactory<ReservationBloc>(
+    () => ReservationBloc(sl(), sl(), sl()),
+  );
+  sl.registerFactory<ReservationPromoBloc>(
+    () => ReservationPromoBloc(sl()),
+  );
+  sl.registerFactory<PaymentBloc>(
+    () => PaymentBloc(sl()),
+  );
+  sl.registerFactory<ConfirmationPaymentBloc>(
+    () => ConfirmationPaymentBloc(sl()),
   );
 }

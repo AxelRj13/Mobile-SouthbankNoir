@@ -12,5 +12,9 @@ class LoginRequest extends Equatable {
   });
 
   @override
-  List<Object?> get props => [email, password, isViaGoogle];
+  List<Object?> get props => [
+        email,
+        password,
+        isViaGoogle,
+      ];
 }

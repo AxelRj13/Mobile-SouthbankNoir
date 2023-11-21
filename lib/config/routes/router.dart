@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/screen/main_screen.dart';
@@ -9,8 +10,16 @@ import '../../features/coupon/presentation/coupon_detail_screen.dart';
 import '../../features/coupon/presentation/coupon_screen.dart';
 import '../../features/news/presentation/news_detail_screen.dart';
 import '../../features/outlet/presentation/outlet_screen.dart';
+import '../../features/payment/data/models/payment.dart';
+import '../../features/payment/presentation/payment_confirm_screen.dart';
+import '../../features/payment/presentation/payment_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
 import '../../features/promo/presentation/promo_detail_screen.dart';
+import '../../features/reservation/data/models/reservation_confirm.dart';
+import '../../features/reservation/presentation/my_reservation_screen.dart';
+import '../../features/reservation/presentation/reservation_confirm_screen.dart';
+import '../../features/reservation/presentation/reservation_detail_screen.dart';
+import '../../features/reservation/presentation/reservation_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -79,6 +88,59 @@ final GoRouter router = GoRouter(
                 type: state.pathParameters['type']!,
                 id: state.pathParameters['couponId']!,
               ),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'reservation',
+          name: 'reservation',
+          builder: (context, state) => const ReservationScreen(),
+          routes: [
+            GoRoute(
+              path: 'confirmation',
+              name: 'confirmation',
+              builder: (context, state) {
+                ReservationConfirmModel reservationConfirm = state.extra as ReservationConfirmModel;
+                return ReservationConfirmScreen(
+                  reservationConfirm: reservationConfirm,
+                );
+              },
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'my-booking',
+          name: 'myBooking',
+          builder: (context, state) {
+            return MyReservationScreen(
+              key: UniqueKey(),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: 'detail/:bookingId/:bookingNo',
+              name: 'bookingDetail',
+              builder: (context, state) => ReservationDetailScreen(
+                bookingId: state.pathParameters['bookingId']!,
+                bookingNo: state.pathParameters['bookingNo']!,
+              ),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'payment/:bookingId',
+          name: 'payment',
+          builder: (context, state) => PaymentConfirmScreen(
+            bookingId: state.pathParameters['bookingId']!,
+          ),
+          routes: [
+            GoRoute(
+              path: 'payment-confirmation',
+              name: 'paymentConfirm',
+              builder: (context, state) {
+                PaymentModel payment = state.extra as PaymentModel;
+                return PaymentScreen(payment: payment);
+              },
             ),
           ],
         ),

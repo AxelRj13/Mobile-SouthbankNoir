@@ -58,7 +58,8 @@ Future<void> exceptionDialog(BuildContext context) {
           ),
         ),
         content: const Text(
-            'There is an error occurred. Please try again or contact our crew.'),
+          'There is an error occurred. Please try again or contact our crew.',
+        ),
         actions: [
           TextButton(
             style: TextButton.styleFrom(
@@ -108,7 +109,10 @@ Future<void> basicDialog(BuildContext context, String title, String message) {
 }
 
 Future<bool?> confirmDialog(
-    BuildContext context, String title, String message) async {
+  BuildContext context,
+  String title,
+  String message,
+) async {
   return await showDialog<bool>(
     barrierDismissible: false,
     context: context,
