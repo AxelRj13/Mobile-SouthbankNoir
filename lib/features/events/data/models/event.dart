@@ -1,4 +1,4 @@
-import 'package:southbank/features/events/domain/entities/event.dart';
+import '../../domain/entities/event.dart';
 
 class EventModel extends EventEntity {
   const EventModel({

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
 
 class EventTile extends StatelessWidget {
@@ -23,36 +24,23 @@ class EventTile extends StatelessWidget {
   });
 
   Widget _buildHeader() {
-    return isTodayEvent
-        ? Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  headerLabel!,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-          )
-        : Card(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8.0),
-                topRight: Radius.circular(8.0),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(headerLabel!),
-                ],
-              ),
-            ),
-          );
+    return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.0),
+          topRight: Radius.circular(8.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(headerLabel!),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildImage() {
@@ -60,9 +48,7 @@ class EventTile extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: image != null
-              ? NetworkImage(image!)
-              : const AssetImage('assets/img/logo.png') as ImageProvider,
+          image: image != null ? NetworkImage(image!) : const AssetImage('assets/img/logo.png') as ImageProvider,
         ),
       ),
     );
@@ -91,7 +77,11 @@ class EventTile extends StatelessWidget {
         disabledBackgroundColor: Colors.grey,
         minimumSize: const Size.fromHeight(20.0),
       ),
-      onPressed: !isFullBook! ? () {/* ... */} : null,
+      onPressed: !isFullBook!
+          ? () {
+              router.goNamed('reservation');
+            }
+          : null,
       child: Text(
         !isFullBook! ? 'Reserve' : 'Fully Booked',
         style: const TextStyle(
@@ -106,7 +96,7 @@ class EventTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildHeader(),
+        if (!isTodayEvent) _buildHeader(),
         Card(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,

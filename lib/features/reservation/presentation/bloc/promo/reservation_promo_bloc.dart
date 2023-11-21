@@ -24,7 +24,8 @@ class ReservationPromoBloc extends Bloc<ReservationPromoEvent, ReservationPromoS
     emit(const ReservationPromoLoading());
 
     final applyPromoRequest = ApplyPromoRequest(
-      bookingId: event.bookingId,
+      storeId: event.storeId,
+      subtotal: event.subtotal,
       code: event.code,
     );
 
@@ -58,6 +59,7 @@ class ReservationPromoBloc extends Bloc<ReservationPromoEvent, ReservationPromoS
           ReservationPromo(
             message: messageResponse,
             promo: applyPromo,
+            promoApplied: true,
           ),
         );
       } else {

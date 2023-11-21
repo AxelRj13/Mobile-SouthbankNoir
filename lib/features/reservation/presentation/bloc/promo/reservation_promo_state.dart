@@ -35,6 +35,7 @@ class ReservationPromo extends ReservationPromoState {
   const ReservationPromo({
     required MessageResponse message,
     ApplyPromoModel? promo,
+    bool? promoApplied,
   }) : super(
           message: message,
           applyPromo: promo,

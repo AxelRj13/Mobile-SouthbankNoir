@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/resources/data_state.dart';
-import '../../../data/models/reservation.dart';
-import '../../../domain/entities/floor.dart';
+import '../../../data/models/table.dart';
+import '../../../domain/entities/table_floor.dart';
 import '../../../domain/entities/table_detail.dart';
 import '../../../domain/entities/table_position.dart';
 import '../../../domain/entities/table_request.dart';
@@ -16,10 +16,12 @@ class TableBloc extends Bloc<TableEvent, TableState> {
   int _tabIndex = 0;
   int? _storeId;
   String? _storeName;
+  String? _storeImage;
   String? _date;
   String? _dateDisplay;
-  List<FloorEntity>? _floors;
-  List<List<TableDetailEntity>> _tables = [];
+  String? _event;
+  List<TableFloorEntity>? _floors;
+  final List<List<TableDetailEntity>> _tables = [];
 
   final List<Map<String, List<TablePosition>>> _tablePosition = [
     {
@@ -119,12 +121,14 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        final reservation = ReservationModel.fromJson(dataState.data!.data);
+        final reservation = TableModel.fromJson(dataState.data!.data);
 
         _storeId = int.parse(reservation.storeId!);
         _storeName = reservation.storeName;
+        _storeImage = reservation.storeImage;
         _date = reservation.date;
         _dateDisplay = reservation.dateDisplay;
+        _event = reservation.event;
 
         _floors = reservation.floors!;
 
@@ -167,8 +171,10 @@ class TableBloc extends Bloc<TableEvent, TableState> {
             tabIndex: _tabIndex,
             storeId: _storeId,
             storeName: _storeName,
+            storeImage: _storeImage,
             date: _date,
             dateDisplay: _dateDisplay,
+            event: _event,
             tables: _tables.elementAt(_tabIndex),
           ),
         );
@@ -193,8 +199,10 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       tabIndex: _tabIndex,
       storeId: _storeId,
       storeName: _storeName,
+      storeImage: _storeImage,
       date: _date,
       dateDisplay: _dateDisplay,
+      event: _event,
       tables: _tables.elementAt(_tabIndex),
     ));
   }

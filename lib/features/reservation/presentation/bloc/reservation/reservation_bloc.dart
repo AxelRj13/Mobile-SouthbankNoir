@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/resources/data_state.dart';
 import '../../../../../core/resources/message_response.dart';
 import '../../../data/models/reservation_detail.dart';
+import '../../../data/models/reservation.dart';
+import '../../../domain/usecases/get_reservations.dart';
 import '../../../domain/entities/reservation_payload.dart';
 import '../../../domain/usecases/create_reservation.dart';
 import '../../../domain/usecases/get_reservation_detail.dart';
@@ -11,13 +13,16 @@ import 'reservation_state.dart';
 
 class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
   final CreateReservationUseCase _createReservationUseCase;
+  final GetReservationsUseCase _getReservationsUseCase;
   final GetReservationDetailUseCase _getReservationDetailUseCase;
 
   ReservationBloc(
     this._createReservationUseCase,
+    this._getReservationsUseCase,
     this._getReservationDetailUseCase,
   ) : super(const ReservationInitial()) {
     on<CreateReservation>(onReservationCreate);
+    on<GetReservations>(onGetReservations);
     on<GetReservationDetail>(onGetReservationDetail);
   }
 
@@ -27,15 +32,23 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
   ) async {
     emit(const ReservationLoading());
 
-    final reservationTablePayload = ReservationTablePayload(
-      id: int.parse(event.table.id!),
-      total: event.table.downPaymentNumber,
-    ).toJson();
+    final tables = event.tables
+        .map(
+          (table) => ReservationTablePayload(
+            id: int.parse(table.id!),
+            total: table.downPaymentNumber,
+          ).toJson(),
+        )
+        .toList();
 
     final reservationPayload = ReservationPayload(
       storeId: event.storeId,
       date: event.date,
-      details: [reservationTablePayload],
+      personName: event.personName,
+      personPhone: event.personPhone,
+      notes: event.notes,
+      promoCode: event.promoCode,
+      details: tables,
     ).toJson();
 
     final dataState = await _createReservationUseCase(
@@ -71,6 +84,32 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
           ReservationBook(
             message: messageResponse,
           ),
+        );
+      }
+    }
+
+    if (dataState is DataFailed) {
+      print(dataState.error!.message);
+      emit(ReservationError(dataState.error!));
+    }
+  }
+
+  void onGetReservations(
+    GetReservations event,
+    Emitter<ReservationState> emit,
+  ) async {
+    emit(const ReservationLoading());
+
+    final dataState = await _getReservationsUseCase();
+
+    if (dataState is DataSuccess) {
+      final status = dataState.data!.status;
+
+      if (status == 1) {
+        final reservations = (dataState.data!.data as List).map((booking) => ReservationModel.fromJson(booking)).toList();
+
+        emit(
+          ReservationDone(reservations),
         );
       }
     }

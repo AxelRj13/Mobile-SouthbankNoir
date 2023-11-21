@@ -3,6 +3,8 @@ import 'reservation_table_detail.dart';
 
 class ReservationDetailEntity extends Equatable {
   final String? bookingId;
+  final String? bookingNo;
+  final String? status;
   final String? storeImage;
   final String? storeName;
   final String? events;
@@ -14,10 +16,14 @@ class ReservationDetailEntity extends Equatable {
   final String? promoCode;
   final String? totalDiscount;
   final String? totalPayment;
+  final String? tableName;
+  final String? tableCapacity;
   final List<ReservationTableDetailEntity>? details;
 
   const ReservationDetailEntity({
     this.bookingId,
+    this.bookingNo,
+    this.status,
     this.storeImage,
     this.storeName,
     this.events,
@@ -29,12 +35,16 @@ class ReservationDetailEntity extends Equatable {
     this.promoCode,
     this.totalDiscount,
     this.totalPayment,
+    this.tableName,
+    this.tableCapacity,
     this.details,
   });
 
   @override
   List<Object?> get props => [
         bookingId,
+        bookingNo,
+        status,
         storeImage,
         storeName,
         events,
@@ -46,6 +56,8 @@ class ReservationDetailEntity extends Equatable {
         promoCode,
         totalDiscount,
         totalPayment,
+        tableName,
+        tableCapacity,
         details,
       ];
 }

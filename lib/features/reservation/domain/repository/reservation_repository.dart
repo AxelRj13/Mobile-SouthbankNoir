@@ -7,16 +7,19 @@ abstract class ReservationRepository {
     required String date,
   });
 
-  Future<DataState<ApiResponseEntity>> getReservationDetail({
-    required String bookingId,
-  });
+  Future<DataState<ApiResponseEntity>> getReservations();
 
   Future<DataState<ApiResponseEntity>> createReservation({
     required Map<String, dynamic> payload,
   });
 
-  Future<DataState<ApiResponseEntity>> applyPromo({
+  Future<DataState<ApiResponseEntity>> getReservationDetail({
     required String bookingId,
+  });
+
+  Future<DataState<ApiResponseEntity>> applyPromo({
+    required String storeId,
+    required String subtotal,
     required String code,
   });
 }

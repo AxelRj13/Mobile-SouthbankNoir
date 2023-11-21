@@ -59,7 +59,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         _setSession(token!, user);
 
-        emit(AuthUserLogin(user));
+        emit(
+          AuthUserLogin(user: user),
+        );
       } else {
         final messageResponse = MessageResponse(
           status: false,
@@ -67,7 +69,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           message: dataState.data!.message!,
         );
 
-        emit(AuthMessage(messageResponse));
+        emit(
+          AuthMessage(message: messageResponse),
+        );
       }
     }
 
@@ -160,7 +164,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           city: city,
           photo: photo,
         );
-        emit(AuthUserLogin(user));
+        emit(
+          AuthUserLogin(user: user),
+        );
       } else {
         emit(const AuthUserLogout());
       }
@@ -179,8 +185,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        final alreadyRegistered =
-            dataState.data!.data['alreadyRegistered'] as bool;
+        final alreadyRegistered = dataState.data!.data['alreadyRegistered'] as bool;
 
         if (!alreadyRegistered) {
           await _register(
@@ -207,7 +212,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           message: dataState.data!.message!,
         );
 
-        emit(AuthMessage(messageResponse));
+        emit(
+          AuthMessage(message: messageResponse),
+        );
       }
     }
 

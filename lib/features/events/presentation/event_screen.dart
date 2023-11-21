@@ -19,8 +19,10 @@ class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<EventBloc>(
-      create: (BuildContext context) =>
-          getIt.get<EventBloc>()..add(const GetEvents()),
+      create: (BuildContext context) => getIt.get<EventBloc>()
+        ..add(
+          const GetEvents(),
+        ),
       child: BlocBuilder<EventBloc, EventState>(
         builder: (context, state) {
           if (state is EventsDone) {
@@ -29,8 +31,7 @@ class _EventScreenState extends State<EventScreen> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: TextField(
-                    onChanged: (value) =>
-                        BlocProvider.of<EventBloc>(context).add(
+                    onChanged: (value) => BlocProvider.of<EventBloc>(context).add(
                       GetEventBySearch(
                         query: value,
                       ),
@@ -60,7 +61,7 @@ class _EventScreenState extends State<EventScreen> {
                                 artist: event.artist,
                                 timeStart: event.timeStart,
                                 storeName: event.storeName,
-                                isFullBook: event.isFullBook == 0,
+                                isFullBook: event.isFullBook == 1,
                               ),
                             );
                           },

@@ -14,12 +14,14 @@ class ReservationRepositoryImpl implements ReservationRepository {
 
   @override
   Future<DataState<ApiResponseEntity>> applyPromo({
-    required String bookingId,
+    required String storeId,
+    required String subtotal,
     required String code,
   }) async {
     try {
       final httpResponse = await _reservationApiService.applyPromo(
-        bookingId,
+        storeId,
+        subtotal,
         code,
       );
 
@@ -48,6 +50,28 @@ class ReservationRepositoryImpl implements ReservationRepository {
       final httpResponse = await _reservationApiService.createReservation(
         payload,
       );
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<ApiResponseEntity>> getReservations() async {
+    try {
+      final httpResponse = await _reservationApiService.getReservations();
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);

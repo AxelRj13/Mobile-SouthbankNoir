@@ -29,11 +29,13 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     final dataState = await _getEventUseCase();
 
     if (dataState is DataSuccess) {
-      _events = (dataState.data!.data as List)
-          .map((item) => EventModel.fromJson(item))
-          .toList();
+      _events = (dataState.data!.data as List).map((item) => EventModel.fromJson(item)).toList();
 
-      emit(EventsDone(_events));
+      emit(
+        EventsDone(
+          events: _events,
+        ),
+      );
     }
 
     if (dataState is DataFailed) {
@@ -49,12 +51,22 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     emit(const EventLoading());
 
     final eventFounds = _events
-        .where((e) =>
-            e.name!.toLowerCase().contains(event.query.toLowerCase()) ||
-            e.artist!.toLowerCase().contains(event.query.toLowerCase()))
+        .where(
+          (e) =>
+              e.name!.toLowerCase().contains(
+                    event.query.toLowerCase(),
+                  ) ||
+              e.artist!.toLowerCase().contains(
+                    event.query.toLowerCase(),
+                  ),
+        )
         .toList();
 
-    emit(EventsDone(eventFounds));
+    emit(
+      EventsDone(
+        events: eventFounds,
+      ),
+    );
   }
 
   void onGetTodayEvent(
@@ -67,18 +79,20 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        final data = dataState.data!.data as List;
+        final todayEvent = (dataState.data!.data as List)
+            .map(
+              (item) => EventModel.fromJson(item),
+            )
+            .toList();
 
-        if (data.isNotEmpty) {
-          final events = data.map((item) => EventModel.fromJson(item)).toList();
-
-          final todayEvent = events.first;
-
-          emit(EventDone(todayEvent));
-        }
+        emit(
+          EventsDone(
+            events: todayEvent,
+          ),
+        );
+      } else {
+        emit(const EventNotFound());
       }
-
-      emit(const EventNotFound());
     }
 
     if (dataState is DataFailed) {

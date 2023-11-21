@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:southbank/features/reservation/presentation/bloc/promo/reservation_promo_bloc.dart';
 
 import 'core/network/dio_client.dart';
 import 'features/auth/data/data_sources/auth_api_service.dart';
@@ -54,6 +53,13 @@ import 'features/outlet/data/repository/outlet_repository_impl.dart';
 import 'features/outlet/domain/repository/outlet_repository.dart';
 import 'features/outlet/domain/usecases/get_outlet_details.dart';
 import 'features/outlet/presentation/bloc/outlet_bloc.dart';
+import 'features/payment/data/data_sources/payment_api_service.dart';
+import 'features/payment/data/repository/payment_repository_impl.dart';
+import 'features/payment/domain/repository/payment_repository.dart';
+import 'features/payment/domain/usecases/confirm_payment.dart';
+import 'features/payment/domain/usecases/get_payment.dart';
+import 'features/payment/presentation/bloc/confirmation/confirmation_bloc.dart';
+import 'features/payment/presentation/bloc/payment/payment_bloc.dart';
 import 'features/profile/data/data_sources/profile_api_service.dart';
 import 'features/profile/data/repository/profile_repository_impl.dart';
 import 'features/profile/domain/repository/profile_repository.dart';
@@ -76,7 +82,9 @@ import 'features/reservation/domain/repository/reservation_repository.dart';
 import 'features/reservation/domain/usecases/apply_promo.dart';
 import 'features/reservation/domain/usecases/create_reservation.dart';
 import 'features/reservation/domain/usecases/get_reservation_detail.dart';
+import 'features/reservation/domain/usecases/get_reservations.dart';
 import 'features/reservation/domain/usecases/get_tables.dart';
+import 'features/reservation/presentation/bloc/promo/reservation_promo_bloc.dart';
 import 'features/reservation/presentation/bloc/reservation/reservation_bloc.dart';
 import 'features/reservation/presentation/bloc/table/table_bloc.dart';
 
@@ -173,6 +181,13 @@ Future<void> initializeDependencies() async {
     () => ReservationRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<PaymentApiService>(
+    () => PaymentApiService(dio),
+  );
+  sl.registerLazySingleton<PaymentRepository>(
+    () => PaymentRepositoryImpl(sl()),
+  );
+
   // UseCases
   sl.registerLazySingleton<CheckEmailUseCase>(
     () => CheckEmailUseCase(sl()),
@@ -240,11 +255,20 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<CreateReservationUseCase>(
     () => CreateReservationUseCase(sl()),
   );
+  sl.registerLazySingleton<GetReservationsUseCase>(
+    () => GetReservationsUseCase(sl()),
+  );
   sl.registerLazySingleton<GetReservationDetailUseCase>(
     () => GetReservationDetailUseCase(sl()),
   );
   sl.registerLazySingleton<GetTablesUseCase>(
     () => GetTablesUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetPaymentUseCase>(
+    () => GetPaymentUseCase(sl()),
+  );
+  sl.registerLazySingleton<ConfirmPaymentUseCase>(
+    () => ConfirmPaymentUseCase(sl()),
   );
 
   // Blocs
@@ -291,9 +315,15 @@ Future<void> initializeDependencies() async {
     () => TableBloc(sl()),
   );
   sl.registerFactory<ReservationBloc>(
-    () => ReservationBloc(sl(), sl()),
+    () => ReservationBloc(sl(), sl(), sl()),
   );
   sl.registerFactory<ReservationPromoBloc>(
     () => ReservationPromoBloc(sl()),
+  );
+  sl.registerFactory<PaymentBloc>(
+    () => PaymentBloc(sl()),
+  );
+  sl.registerFactory<ConfirmationPaymentBloc>(
+    () => ConfirmationPaymentBloc(sl()),
   );
 }

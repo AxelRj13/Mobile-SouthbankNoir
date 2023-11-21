@@ -3,11 +3,13 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../core/resources/message_response.dart';
 import '../../../data/models/apply_promo.dart';
+import '../../../data/models/reservation.dart';
 import '../../../data/models/reservation_detail.dart';
 
 abstract class ReservationState extends Equatable {
   final String? bookingId;
   final ApplyPromoModel? applyPromo;
+  final List<ReservationModel>? reservations;
   final ReservationDetailModel? reservationDetailModel;
   final MessageResponse? message;
   final DioException? error;
@@ -15,6 +17,7 @@ abstract class ReservationState extends Equatable {
   const ReservationState({
     this.bookingId,
     this.applyPromo,
+    this.reservations,
     this.reservationDetailModel,
     this.message,
     this.error,
@@ -24,6 +27,7 @@ abstract class ReservationState extends Equatable {
   List<Object> get props => [
         bookingId!,
         applyPromo!,
+        reservations!,
         reservationDetailModel!,
         message!,
         error!,
@@ -45,6 +49,14 @@ class ReservationBook extends ReservationState {
   }) : super(
           message: message,
           bookingId: bookingId,
+        );
+}
+
+class ReservationDone extends ReservationState {
+  const ReservationDone(
+    List<ReservationModel> reservations,
+  ) : super(
+          reservations: reservations,
         );
 }
 

@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-import 'table.dart';
+import 'table_group.dart';
 
-class FloorEntity extends Equatable {
+class TableFloorEntity extends Equatable {
   final String? layout;
   final int? level;
-  final List<TableEntity>? table;
+  final List<TableGroupEntity>? table;
 
-  const FloorEntity({
+  const TableFloorEntity({
     this.layout,
     this.level,
     this.table,

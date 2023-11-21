@@ -25,14 +25,18 @@ class _ProfileMenuState extends State<ProfileMenu> {
       id: 2,
       label: 'My Bookings',
       icon: Icons.book_online,
-      route: ProfileMenuRouteModel(route: 'comingsoon'),
+      route: ProfileMenuRouteModel(route: 'myBooking'),
     ),
     const ProfileMenuModel(
       id: 3,
       label: 'My Coupons',
       icon: Icons.sell,
       route: ProfileMenuRouteModel(
-          route: 'coupons', parameter: {'type': myCoupon}),
+        route: 'coupons',
+        parameter: {
+          'type': myCoupon,
+        },
+      ),
     ),
     const ProfileMenuModel(
       id: 4,
@@ -58,9 +62,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
         ),
         child: Column(
           children: menu.map((menu) {
-            final trailing = menu.id == 5
-                ? const Text('1.1.0')
-                : const Icon(Icons.chevron_right);
+            final trailing = menu.id == 5 ? const Text('1.1.0') : const Icon(Icons.chevron_right);
 
             return ListTile(
               leading: Icon(menu.icon),
@@ -70,13 +72,13 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 if (menu.route != null) {
                   if (menu.id == 1) {
                     router.goNamed(menu.route!.route!);
-                  } else if (menu.id == 3) {
+                  } else if (menu.id == 4) {
+                    comingsoonDialog(context);
+                  } else {
                     router.goNamed(
                       menu.route!.route!,
-                      pathParameters: menu.route!.parameter!,
+                      pathParameters: menu.route!.parameter ?? {},
                     );
-                  } else {
-                    comingsoonDialog(context);
                   }
                 }
               },

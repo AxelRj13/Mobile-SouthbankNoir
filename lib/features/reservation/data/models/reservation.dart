@@ -1,27 +1,18 @@
-import '../../domain/entities/floor.dart';
 import '../../domain/entities/reservation.dart';
-import 'floor.dart';
+import '../../domain/entities/reservation_detail.dart';
+import 'reservation_detail.dart';
 
 class ReservationModel extends ReservationEntity {
   const ReservationModel({
-    String? storeId,
-    String? storeName,
-    String? dateDisplay,
     String? date,
-    List<FloorEntity>? floors,
+    List<ReservationDetailEntity>? bookings,
   }) : super(
-          storeId: storeId,
-          storeName: storeName,
-          dateDisplay: dateDisplay,
           date: date,
-          floors: floors,
+          bookings: bookings,
         );
 
   factory ReservationModel.fromJson(Map<String, dynamic> data) => ReservationModel(
-        storeId: data['store_id'],
-        storeName: data['store_name'],
-        dateDisplay: data['date_display'],
         date: data['date'],
-        floors: (data['list'] as List).map((floor) => FloorModel.fromJson(floor)).toList(),
+        bookings: (data['bookings'] as List).map((booking) => ReservationDetailModel.fromJson(booking)).toList(),
       );
 }

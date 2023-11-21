@@ -14,7 +14,8 @@ class ApplyPromoUseCase implements UseCase<DataState<ApiResponseEntity>, ApplyPr
     final applyPromoRequest = params!;
 
     return _reservationRepository.applyPromo(
-      bookingId: applyPromoRequest.bookingId,
+      storeId: applyPromoRequest.storeId,
+      subtotal: applyPromoRequest.subtotal,
       code: applyPromoRequest.code,
     );
   }

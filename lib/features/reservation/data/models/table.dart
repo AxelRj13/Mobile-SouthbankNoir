@@ -1,18 +1,33 @@
+import '../../domain/entities/table_floor.dart';
 import '../../domain/entities/table.dart';
-import '../../domain/entities/table_detail.dart';
-import 'table_detail.dart';
+import 'table_floor.dart';
 
 class TableModel extends TableEntity {
   const TableModel({
-    String? name,
-    List<TableDetailEntity>? tables,
+    String? storeId,
+    String? storeName,
+    String? storeImage,
+    String? dateDisplay,
+    String? date,
+    String? event,
+    List<TableFloorEntity>? floors,
   }) : super(
-          name: name,
-          tables: tables,
+          storeId: storeId,
+          storeName: storeName,
+          storeImage: storeImage,
+          dateDisplay: dateDisplay,
+          date: date,
+          event: event,
+          floors: floors,
         );
 
   factory TableModel.fromJson(Map<String, dynamic> data) => TableModel(
-        name: data['name'],
-        tables: (data['tables'] as List).map((table) => TableDetailModel.fromJson(table)).toList(),
+        storeId: data['store_id'],
+        storeName: data['store_name'],
+        storeImage: data['store_iamge'],
+        dateDisplay: data['date_display'],
+        date: data['date'],
+        event: data['events'],
+        floors: (data['list'] as List).map((floor) => TableFloorModel.fromJson(floor)).toList(),
       );
 }

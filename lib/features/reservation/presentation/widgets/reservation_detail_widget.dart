@@ -3,33 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/theme/app_theme.dart';
-import '../../../../core/components/button.dart';
-import '../../../../core/components/dialog.dart';
 import '../../../../core/components/loading.dart';
-import '../../../../core/components/text_form_field.dart';
 import '../../domain/entities/reservation_table_detail.dart';
-import '../bloc/promo/reservation_promo_bloc.dart';
-import '../bloc/promo/reservation_promo_event.dart';
-import '../bloc/promo/reservation_promo_state.dart';
 import '../bloc/reservation/reservation_bloc.dart';
 import '../bloc/reservation/reservation_state.dart';
 
-class ConfirmationWidget extends StatefulWidget {
-  final String bookingId;
-
-  const ConfirmationWidget({super.key, required this.bookingId});
+class ReservationDetailWidget extends StatefulWidget {
+  const ReservationDetailWidget({super.key});
 
   @override
-  State<ConfirmationWidget> createState() => _ConfirmationWidgetState();
+  State<ReservationDetailWidget> createState() => _ReservationDetailWidgetState();
 }
 
-class _ConfirmationWidgetState extends State<ConfirmationWidget> {
-  final _formKey = GlobalKey<FormState>();
-  final _promoController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _notesController = TextEditingController();
-
+class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
   Widget imageWidget({
     required double width,
     Widget? child,
@@ -178,9 +164,6 @@ class _ConfirmationWidgetState extends State<ConfirmationWidget> {
           final theme = Theme.of(context);
           final reservationDetail = state.reservationDetailModel!;
 
-          _nameController.text = reservationDetail.contactPersonName!;
-          _phoneController.text = reservationDetail.contactPersonPhone!;
-
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
@@ -278,22 +261,10 @@ class _ConfirmationWidgetState extends State<ConfirmationWidget> {
                             textTheme: theme.textTheme,
                             label: 'Subtotal',
                           ),
-                          BlocBuilder<ReservationPromoBloc, ReservationPromoState>(
-                            builder: (context, state) {
-                              String discount = reservationDetail.totalDiscount!;
-                              String payment = reservationDetail.totalPayment!;
-
-                              if (state is ReservationPromo) {
-                                discount = state.applyPromo!.discount!;
-                                payment = state.applyPromo!.payment!;
-                              }
-
-                              return buildSubtotal(
-                                quantity: reservationDetail.qty!,
-                                discount: discount,
-                                payment: payment,
-                              );
-                            },
+                          buildSubtotal(
+                            quantity: reservationDetail.qty!,
+                            discount: reservationDetail.totalDiscount!,
+                            payment: reservationDetail.totalPayment!,
                           ),
                         ],
                       ),
@@ -309,130 +280,21 @@ class _ConfirmationWidgetState extends State<ConfirmationWidget> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          buildTitle(
-                            textTheme: theme.textTheme,
-                            label: 'Promo Code',
-                          ),
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: SBTextFormField(
-                                  controller: _promoController,
-                                  hintText: '',
-                                  fillColor: Colors.black12,
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  onChanged: (value) {
-                                    _promoController.value = TextEditingValue(
-                                      text: value.toUpperCase(),
-                                      selection: _promoController.selection,
-                                    );
-                                  },
-                                ),
+                              buildTitle(
+                                textTheme: theme.textTheme,
+                                label: 'Contact Person Information',
                               ),
-                              const SizedBox(width: 20.0),
-                              BlocBuilder<ReservationPromoBloc, ReservationPromoState>(builder: (context, state) {
-                                return TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(accentColor),
-                                  ),
-                                  onPressed: () {
-                                    BlocProvider.of<ReservationPromoBloc>(context).add(
-                                      SetApplyPromo(
-                                        bookingId: widget.bookingId,
-                                        code: _promoController.text,
-                                      ),
-                                    );
-                                  },
-                                  child: (state is ReservationPromoLoading)
-                                      ? const Center(
-                                          child: SBLoading(color: Colors.white),
-                                        )
-                                      : const Text(
-                                          'Apply',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                );
-                              }),
+                              Text(reservationDetail.contactPersonName!),
+                              const SizedBox(height: 8.0),
+                              Text(reservationDetail.contactPersonPhone!),
                             ],
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    margin: const EdgeInsets.all(10.0),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: accentColor,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildTitle(
-                              textTheme: theme.textTheme,
-                              label: 'Contact Person',
-                            ),
-                            const Text('Name'),
-                            const SizedBox(height: 10.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: SBTextFormField(
-                                    controller: _nameController,
-                                    hintText: '',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please fill in the name field';
-                                      }
-                                      return null;
-                                    },
-                                    fillColor: Colors.black12,
-                                    contentPadding: const EdgeInsets.all(10.0),
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 15.0),
-                            const Text('Phone No.'),
-                            const SizedBox(height: 10.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: SBTextFormField(
-                                    controller: _phoneController,
-                                    hintText: '',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please fill in the phone number field';
-                                      }
-                                      return null;
-                                    },
-                                    fillColor: Colors.black12,
-                                    contentPadding: const EdgeInsets.all(10.0),
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                   ),
@@ -446,52 +308,22 @@ class _ConfirmationWidgetState extends State<ConfirmationWidget> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          buildTitle(
-                            textTheme: theme.textTheme,
-                            label: 'Additional Notes',
-                          ),
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: SBTextFormField(
-                                  controller: _notesController,
-                                  hintText: 'e.g. : Please turn down AC temperature a bit, etc...',
-                                  fillColor: Colors.black12,
-                                  contentPadding: const EdgeInsets.all(10.0),
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  isMultiline: true,
-                                ),
+                              buildTitle(
+                                textTheme: theme.textTheme,
+                                label: 'Additional Notes',
                               ),
+                              Text('${reservationDetail.notes != '' && reservationDetail.notes != null ? reservationDetail.notes : '-'}'),
                             ],
                           ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20.0),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: SBButton(
-                      onPressed: (state is ReservationLoading)
-                          ? null
-                          : () {
-                              if (_formKey.currentState!.validate()) {
-                                FocusScope.of(context).requestFocus(FocusNode());
-                                comingsoonDialog(context);
-                              }
-                            },
-                      child: (state is ReservationLoading)
-                          ? const Center(
-                              child: SBLoading(color: Colors.white),
-                            )
-                          : const Text('Proceed to Payment'),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
                 ],
               ),
             ),

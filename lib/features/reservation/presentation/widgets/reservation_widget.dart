@@ -2,17 +2,14 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
-import '../../../../core/components/dialog.dart';
-import '../../../../core/components/loading.dart';
 import '../../../../injection_container.dart';
+import '../../data/models/reservation_confirm.dart';
 import '../../domain/entities/table_detail.dart';
-import '../bloc/reservation/reservation_bloc.dart';
-import '../bloc/reservation/reservation_event.dart';
-import '../bloc/reservation/reservation_state.dart';
 import '../bloc/table/table_bloc.dart';
 import '../bloc/table/table_event.dart';
 import 'reservation_legend.dart';
@@ -21,8 +18,10 @@ class ReservationWidget extends StatefulWidget {
   final int tabIndex;
   final int storeId;
   final String storeName;
+  final String storeImage;
   final String date;
   final String dateDisplay;
+  final String event;
   final List<TableDetailEntity> tables;
 
   const ReservationWidget({
@@ -30,8 +29,10 @@ class ReservationWidget extends StatefulWidget {
     required this.tabIndex,
     required this.storeId,
     required this.storeName,
+    required this.storeImage,
     required this.date,
     required this.dateDisplay,
+    required this.event,
     required this.tables,
   });
 
@@ -44,113 +45,93 @@ class _ReservationWidgetState extends State<ReservationWidget> {
   TableDetailEntity? _selectedTable;
 
   void selectTable({
-    required int storeId,
-    required String date,
+    required ThemeData theme,
     required TableDetailEntity table,
   }) {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext _) => BlocProvider.value(
-        value: getIt.get<ReservationBloc>(),
-        child: BlocListener<ReservationBloc, ReservationState>(
-          listener: (context, state) async {
-            if (state is ReservationBook) {
-              await basicDialog(
-                context,
-                state.message!.title,
-                state.message!.message,
-              );
-
-              if (state.message!.status) {
-                router.goNamed(
-                  'confirmation',
-                  pathParameters: {'bookingId': state.bookingId!},
-                );
-              }
-            }
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10.0,
-              vertical: 20.0,
+      builder: (BuildContext _) => Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: 20.0,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              table.tableName!.toUpperCase(),
+              style: theme.textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            const SizedBox(height: 10.0),
+            Text(
+              table.tableNo!,
+              style: theme.textTheme.titleLarge!,
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              '*Min Spend. ${table.minimumSpend!}',
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+            const SizedBox(height: 15.0),
+            buildBottomSheetInformation(
+              icon: Icons.payments,
+              label: 'Down Payment',
+              info: table.downPayment!,
+            ),
+            const SizedBox(height: 10.0),
+            buildBottomSheetInformation(
+              icon: Icons.groups,
+              label: 'Capacity',
+              info: table.capacity!,
+            ),
+            const SizedBox(height: 20.0),
+            Row(
               children: [
-                Text(
-                  table.tableName!.toUpperCase(),
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                Text(
-                  table.tableNo!,
-                  style: Theme.of(context).textTheme.titleLarge!,
-                ),
-                const SizedBox(height: 10.0),
-                Text(
-                  '*Min Spend. ${table.minimumSpend!}',
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-                const SizedBox(height: 15.0),
-                buildBottomSheetInformation(
-                  icon: Icons.payments,
-                  label: 'Down Payment',
-                  info: table.downPayment!,
-                ),
-                const SizedBox(height: 10.0),
-                buildBottomSheetInformation(
-                  icon: Icons.groups,
-                  label: 'Capacity',
-                  info: table.capacity!,
-                ),
-                const SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: SBButton(
-                        color: Colors.grey,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text(
-                          'Cancel',
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                      ),
+                Expanded(
+                  child: SBButton(
+                    color: Colors.grey,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(fontSize: 16.0),
                     ),
-                    const SizedBox(width: 10.0),
-                    Expanded(
-                      child: BlocBuilder<ReservationBloc, ReservationState>(
-                        builder: (context, state) {
-                          return SBButton(
-                            onPressed: (state is ReservationLoading)
-                                ? null
-                                : () {
-                                    BlocProvider.of<ReservationBloc>(context).add(
-                                      CreateReservation(
-                                        storeId: storeId,
-                                        date: date,
-                                        table: table,
-                                      ),
-                                    );
-                                  },
-                            child: (state is ReservationLoading)
-                                ? const Center(
-                                    child: SBLoading(color: Colors.white),
-                                  )
-                                : const Text(
-                                    'Reserve',
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
-                          );
-                        },
-                      ),
+                  ),
+                ),
+                const SizedBox(width: 10.0),
+                Expanded(
+                  child: SBButton(
+                    onPressed: () {
+                      final prefs = getIt.get<SharedPreferences>();
+
+                      final firstName = prefs.get('firstName') ?? '';
+                      final lastName = prefs.get('lastName') ?? '';
+                      final phone = prefs.get('phone') ?? '';
+
+                      final reservationConfirm = ReservationConfirmModel(
+                        storeId: widget.storeId,
+                        storeName: widget.storeName,
+                        storeImage: widget.storeImage,
+                        date: widget.date,
+                        dateDisplay: widget.dateDisplay,
+                        event: widget.event,
+                        personName: '$firstName $lastName',
+                        personPhone: phone.toString(),
+                        table: [table],
+                      );
+
+                      router.goNamed('confirmation', extra: reservationConfirm);
+                    },
+                    child: const Text(
+                      'Reserve',
+                      style: TextStyle(fontSize: 16.0),
                     ),
-                  ],
-                )
+                  ),
+                ),
               ],
-            ),
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -223,6 +204,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
   }
 
   List<Widget> buildStage({
+    required ThemeData theme,
     required int tabIndex,
     required double height,
     required double width,
@@ -242,7 +224,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                 child: Center(
                   child: Text(
                     'STAGE',
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: theme.textTheme.bodySmall,
                   ),
                 ),
               ),
@@ -262,7 +244,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                 child: Center(
                   child: Text(
                     'BAR',
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: theme.textTheme.bodySmall,
                   ),
                 ),
               ),
@@ -376,6 +358,8 @@ class _ReservationWidgetState extends State<ReservationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -383,9 +367,9 @@ class _ReservationWidgetState extends State<ReservationWidget> {
           const SizedBox(height: 10.0),
           Text(
             widget.storeName,
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: theme.textTheme.titleLarge!.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 10.0),
           Text(
@@ -428,6 +412,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                     alignment: Alignment.center,
                     children: [
                       ...buildStage(
+                        theme: theme,
                         tabIndex: widget.tabIndex,
                         height: height,
                         width: width,
@@ -452,8 +437,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                                     });
 
                                     selectTable(
-                                      storeId: widget.storeId,
-                                      date: widget.date,
+                                      theme: theme,
                                       table: _selectedTable!,
                                     );
                                   }

@@ -45,19 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocListener<PopupBloc, PopupState>(
       listener: (context, state) async {
         if (state is PopupDone) {
-          await popupDialog(
-              context, context.read<PopupBloc>().state.popup!.image!);
+          await popupDialog(context, context.read<PopupBloc>().state.popup!.image!);
         }
       },
       child: MultiBlocProvider(
         providers: [
           BlocProvider<BannerBloc>(
-            create: (BuildContext context) =>
-                getIt.get<BannerBloc>()..add(const GetBanner()),
+            create: (BuildContext context) => getIt.get<BannerBloc>()..add(const GetBanner()),
           ),
           BlocProvider<EventBloc>(
-            create: (BuildContext context) =>
-                getIt.get<EventBloc>()..add(const GetTodayEvent()),
+            create: (BuildContext context) => getIt.get<EventBloc>()..add(const GetTodayEvent()),
           ),
         ],
         child: SingleChildScrollView(
@@ -98,9 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 50.0),
               const Padding(
                 padding: EdgeInsets.all(10.0),
-                child: EventToday(
-                  isTodayEvent: true,
-                ),
+                child: EventToday(),
               ),
             ],
           ),

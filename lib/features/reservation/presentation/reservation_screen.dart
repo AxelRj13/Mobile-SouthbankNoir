@@ -91,8 +91,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 tabIndex: state.tabIndex!,
                 storeId: state.storeId!,
                 storeName: state.storeName!,
+                storeImage: state.storeImage!,
                 date: state.date!,
                 dateDisplay: state.dateDisplay!,
+                event: state.event!,
                 tables: state.tables!,
               );
             }

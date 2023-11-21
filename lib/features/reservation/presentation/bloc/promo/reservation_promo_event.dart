@@ -3,11 +3,13 @@ abstract class ReservationPromoEvent {
 }
 
 class SetApplyPromo extends ReservationPromoEvent {
-  final String bookingId;
+  final String storeId;
+  final String subtotal;
   final String code;
 
   const SetApplyPromo({
-    required this.bookingId,
+    required this.storeId,
+    required this.subtotal,
     required this.code,
   });
 }

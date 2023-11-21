@@ -9,6 +9,8 @@ ThemeData theme() {
     brightness: Brightness.dark,
     scaffoldBackgroundColor: backgroundColor,
     fontFamily: 'Inter',
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
     appBarTheme: appBarTheme(),
     bottomNavigationBarTheme: bottomNavigationBarThemeData(),
     inputDecorationTheme: inputDecorationTheme(),
@@ -16,6 +18,7 @@ ThemeData theme() {
     radioTheme: radioTheme(),
     checkboxTheme: checkboxTheme(),
     elevatedButtonTheme: elevatedButtonTheme(),
+    expansionTileTheme: expansionTileThemeData(),
   );
 }
 
@@ -34,7 +37,9 @@ AppBarTheme appBarTheme() {
 }
 
 BottomNavigationBarThemeData bottomNavigationBarThemeData() {
-  return BottomNavigationBarThemeData(selectedItemColor: accentColor);
+  return BottomNavigationBarThemeData(
+    selectedItemColor: accentColor,
+  );
 }
 
 InputDecorationTheme inputDecorationTheme() {
@@ -88,5 +93,11 @@ ElevatedButtonThemeData elevatedButtonTheme() {
         ),
       ),
     ),
+  );
+}
+
+ExpansionTileThemeData expansionTileThemeData() {
+  return const ExpansionTileThemeData(
+    childrenPadding: EdgeInsets.all(2.0),
   );
 }
