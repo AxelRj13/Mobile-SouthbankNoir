@@ -24,7 +24,6 @@ dependencies:
   email_validator: ^2.1.17
   shared_preferences: ^2.2.0
   internet_connection_checker: ^1.0.0+1
-  connectivity_plus: ^4.0.2
   carousel_slider: ^4.2.1
   flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.1.12
