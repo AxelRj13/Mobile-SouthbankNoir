@@ -82,7 +82,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               height: 30.0,
             ),
             buildTitle(textTheme: theme.textTheme, label: 'Receipt Reference No.'),
-            Text(payment.receiptRefNumber!),
+            Text(payment.receiptRefNumber ?? '-'),
             const Divider(
               thickness: 2.0,
               height: 30.0,

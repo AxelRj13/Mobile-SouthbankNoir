@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,13 +39,14 @@ class ReservationWidget extends StatefulWidget {
 }
 
 class _ReservationWidgetState extends State<ReservationWidget> {
-  int? _selectedTableNo;
-  TableDetailEntity? _selectedTable;
+  final List<TableDetailEntity> _selectedTables = [];
 
   void selectTable({
     required ThemeData theme,
     required TableDetailEntity table,
   }) {
+    final _isSelected = _selectedTables.where((selectedTable) => selectedTable.id == table.id).isNotEmpty;
+
     showModalBottomSheet(
       context: context,
       builder: (BuildContext _) => Padding(
@@ -102,30 +101,21 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                 const SizedBox(width: 10.0),
                 Expanded(
                   child: SBButton(
+                    color: _isSelected ? Colors.red : accentColor,
                     onPressed: () {
-                      final prefs = getIt.get<SharedPreferences>();
+                      setState(() {
+                        if (_isSelected) {
+                          _selectedTables.removeWhere((selectedTable) => selectedTable.id == table.id);
+                        } else {
+                          _selectedTables.add(table);
+                        }
+                      });
 
-                      final firstName = prefs.get('firstName') ?? '';
-                      final lastName = prefs.get('lastName') ?? '';
-                      final phone = prefs.get('phone') ?? '';
-
-                      final reservationConfirm = ReservationConfirmModel(
-                        storeId: widget.storeId,
-                        storeName: widget.storeName,
-                        storeImage: widget.storeImage,
-                        date: widget.date,
-                        dateDisplay: widget.dateDisplay,
-                        event: widget.event,
-                        personName: '$firstName $lastName',
-                        personPhone: phone.toString(),
-                        table: [table],
-                      );
-
-                      router.goNamed('confirmation', extra: reservationConfirm);
+                      Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      'Reserve',
-                      style: TextStyle(fontSize: 16.0),
+                    child: Text(
+                      _isSelected ? 'Remove' : 'Reserve',
+                      style: const TextStyle(fontSize: 16.0),
                     ),
                   ),
                 ),
@@ -203,159 +193,6 @@ class _ReservationWidgetState extends State<ReservationWidget> {
     );
   }
 
-  List<Widget> buildStage({
-    required ThemeData theme,
-    required int tabIndex,
-    required double height,
-    required double width,
-  }) {
-    return tabIndex == 0
-        ? [
-            Positioned(
-              top: height * .12,
-              right: width * .3,
-              left: width * .35,
-              child: Container(
-                height: width * 0.2,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(width * 0.01),
-                ),
-                child: Center(
-                  child: Text(
-                    'STAGE',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ),
-              ),
-            )
-          ]
-        : [
-            Positioned(
-              top: height * .2,
-              left: width * .2,
-              child: Container(
-                width: width * 0.2,
-                height: width * 0.2,
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    'BAR',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ),
-              ),
-            )
-          ];
-  }
-
-  List<Widget> buildTableLabel({
-    required int tabIndex,
-    required double height,
-    required double width,
-  }) {
-    return tabIndex == 0
-        ? [
-            Positioned(
-              top: height * .08,
-              right: width * .08,
-              child: const Text('TOM FORD'),
-            ),
-            Positioned(
-              top: height * .5,
-              child: const Text('CELINE'),
-            ),
-            Positioned(
-              top: height * .28,
-              left: width * .02,
-              child: Transform.rotate(
-                angle: -math.pi / 3,
-                child: const Text('CHANEL'),
-              ),
-            ),
-            Positioned(
-              top: height * .7,
-              left: width * .02,
-              child: Transform.rotate(
-                angle: math.pi / 3,
-                child: const Text('CHANEL'),
-              ),
-            ),
-            Positioned(
-              top: height * .28,
-              right: width * .02,
-              child: Transform.rotate(
-                angle: math.pi / 3,
-                child: const Text('CHANEL'),
-              ),
-            ),
-            Positioned(
-              top: height * .7,
-              right: width * .02,
-              child: Transform.rotate(
-                angle: -math.pi / 3,
-                child: const Text('CHANEL'),
-              ),
-            ),
-          ]
-        : [
-            Positioned(
-              top: height * .08,
-              left: width * .2,
-              child: const Text('BALENCIAGA (III)'),
-            ),
-            Positioned(
-              top: height * .51,
-              left: width * .0,
-              child: Transform.rotate(
-                angle: math.pi / 2,
-                child: const Text('YSL'),
-              ),
-            ),
-            Positioned(
-              top: height * .505,
-              left: width * .22,
-              child: Transform.rotate(
-                angle: math.pi / 2,
-                child: const Text('PRADA'),
-              ),
-            ),
-            Positioned(
-              top: height * .505,
-              right: width * .22,
-              child: Transform.rotate(
-                angle: math.pi / 2,
-                child: const Text('PRADA'),
-              ),
-            ),
-            Positioned(
-              top: height * .51,
-              right: width * .0,
-              child: Transform.rotate(
-                angle: math.pi / 2,
-                child: const Text('YSL'),
-              ),
-            ),
-            Positioned(
-              top: height * .92,
-              left: width * .05,
-              child: const Text('BALENCIAGA (I)'),
-            ),
-            Positioned(
-              top: height * .84,
-              child: const Text('DIOR'),
-            ),
-            Positioned(
-              top: height * .92,
-              right: width * .05,
-              child: const Text('BALENCIAGA (II)'),
-            ),
-          ];
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -411,58 +248,42 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                   return Stack(
                     alignment: Alignment.center,
                     children: [
-                      ...buildStage(
-                        theme: theme,
-                        tabIndex: widget.tabIndex,
-                        height: height,
-                        width: width,
-                      ),
-                      ...buildTableLabel(
-                        tabIndex: widget.tabIndex,
-                        height: height,
-                        width: width,
-                      ),
+                      Image.asset(widget.tabIndex == 1 ? 'assets/img/floor-2.png' : 'assets/img/floor-1.png'),
                       ...widget.tables.map(
-                        (table) => Positioned(
-                          top: table.top == null ? null : height * table.top!,
-                          right: table.right == null ? null : width * table.right!,
-                          bottom: table.bottom == null ? null : height * table.bottom!,
-                          left: table.left == null ? null : width * table.left!,
-                          child: GestureDetector(
-                            onTap: table.isAvailable!
-                                ? () {
-                                    setState(() {
-                                      _selectedTableNo = int.parse(table.id!);
-                                      _selectedTable = table;
-                                    });
-
-                                    selectTable(
-                                      theme: theme,
-                                      table: _selectedTable!,
-                                    );
-                                  }
-                                : null,
-                            child: Container(
-                              width: width * (widget.tabIndex == 0 ? 0.08 : 0.06),
-                              height: width * (widget.tabIndex == 0 ? 0.08 : 0.06),
-                              decoration: BoxDecoration(
-                                color: !table.isAvailable!
-                                    ? Colors.green
-                                    : (_selectedTableNo == int.parse(table.id!))
-                                        ? accentColor
-                                        : Colors.grey,
-                                borderRadius: BorderRadius.circular(
-                                  width * 0.01,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  table.tableNo!.toLowerCase().replaceAll('table ', ''),
+                        (table) {
+                          return Positioned(
+                            top: table.top == null ? null : height * table.top!,
+                            right: table.right == null ? null : width * table.right!,
+                            bottom: table.bottom == null ? null : height * table.bottom!,
+                            left: table.left == null ? null : width * table.left!,
+                            child: GestureDetector(
+                              onTap: table.isAvailable!
+                                  ? () {
+                                      selectTable(
+                                        theme: theme,
+                                        table: table,
+                                      );
+                                    }
+                                  : null,
+                              child: Container(
+                                width: width * (widget.tabIndex == 0 ? 0.05 : 0.04),
+                                height: width * (widget.tabIndex == 0 ? 0.05 : 0.04),
+                                decoration: BoxDecoration(
+                                    color: !table.isAvailable!
+                                        ? Colors.green
+                                        : _selectedTables.where((selectedTable) => selectedTable.id == table.id).isNotEmpty
+                                            ? accentColor
+                                            : Colors.grey,
+                                    shape: BoxShape.circle),
+                                child: Center(
+                                  child: Text(
+                                    table.tableNo!.toLowerCase().replaceAll('table ', ''),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ],
                   );
@@ -471,8 +292,35 @@ class _ReservationWidgetState extends State<ReservationWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25.0),
+            padding: const EdgeInsets.only(top: 25.0),
             child: ReservationLegend(),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25.0),
+            child: SBButton(
+              child: const Text('Make Reservation'),
+              onPressed: () {
+                final prefs = getIt.get<SharedPreferences>();
+
+                final firstName = prefs.get('firstName') ?? '';
+                final lastName = prefs.get('lastName') ?? '';
+                final phone = prefs.get('phone') ?? '';
+
+                final reservationConfirm = ReservationConfirmModel(
+                  storeId: widget.storeId,
+                  storeName: widget.storeName,
+                  storeImage: widget.storeImage,
+                  date: widget.date,
+                  dateDisplay: widget.dateDisplay,
+                  event: widget.event,
+                  personName: '$firstName $lastName',
+                  personPhone: phone.toString(),
+                  table: _selectedTables,
+                );
+
+                router.goNamed('confirmation', extra: reservationConfirm);
+              },
+            ),
           ),
         ],
       ),
