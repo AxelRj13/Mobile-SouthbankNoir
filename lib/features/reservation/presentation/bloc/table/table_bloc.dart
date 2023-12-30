@@ -26,73 +26,73 @@ class TableBloc extends Bloc<TableEvent, TableState> {
   final List<Map<String, List<TablePosition>>> _tablePosition = [
     {
       'celine': [
-        const TablePosition(top: .3, left: .3),
-        const TablePosition(top: .4, left: .2),
-        const TablePosition(top: .55, left: .2),
-        const TablePosition(top: .65, left: .3),
-        const TablePosition(top: .65, right: .3),
-        const TablePosition(top: .55, right: .2),
-        const TablePosition(top: .4, right: .2),
-        const TablePosition(top: .3, right: .3),
+        const TablePosition(top: .34, left: .33),
+        const TablePosition(top: .40, left: .29),
+        const TablePosition(top: .525, left: .32),
+        const TablePosition(top: .57, left: .38),
+        const TablePosition(top: .57, right: .37),
+        const TablePosition(top: .53, right: .31),
+        const TablePosition(top: .42, right: .27),
+        const TablePosition(top: .36, right: .30),
       ],
       'chanel': [
-        const TablePosition(top: .2, left: .2),
-        const TablePosition(top: .3, left: .13),
-        const TablePosition(top: .4, left: .03),
-        const TablePosition(top: .55, left: .03),
-        const TablePosition(top: .65, left: .13),
-        const TablePosition(top: .75, left: .2),
-        const TablePosition(top: .65, right: .13),
-        const TablePosition(top: .55, right: .03),
-        const TablePosition(top: .4, right: .03),
-        const TablePosition(top: .3, right: .13),
+        const TablePosition(top: .2, left: .25),
+        const TablePosition(top: .285, left: .16),
+        const TablePosition(top: .395, left: .115),
+        const TablePosition(top: .51, left: .13),
+        const TablePosition(top: .612, left: .21),
+        const TablePosition(top: .685, left: .325),
+        const TablePosition(top: .675, right: .325),
+        const TablePosition(top: .615, right: .205),
+        const TablePosition(top: .415, right: .13),
+        const TablePosition(top: .31, right: .165),
       ],
       'tom ford': [
-        const TablePosition(top: .12, right: .12),
+        const TablePosition(top: .12, right: .13),
       ]
     },
     {
       'balenciaga i': [
-        const TablePosition(top: .7, left: .15),
-        const TablePosition(top: .78, left: .08),
-        const TablePosition(top: .86, left: .01),
-        const TablePosition(top: .86, left: .15),
-        const TablePosition(top: .78, left: .22),
+        const TablePosition(top: .611, left: .19),
+        const TablePosition(top: .637, left: .15),
+        const TablePosition(top: .666, left: .114),
+        const TablePosition(top: .672, left: .166),
+        const TablePosition(top: .657, left: .218),
       ],
       'balenciaga ii': [
-        const TablePosition(top: .78, right: .22),
-        const TablePosition(top: .86, right: .12),
-        const TablePosition(top: .78, right: .01),
-        const TablePosition(top: .70, right: .01),
-        const TablePosition(top: .65, right: .12),
+        const TablePosition(top: .67, right: .214),
+        const TablePosition(top: .688, right: .166),
+        const TablePosition(top: .67, right: .12),
+        const TablePosition(top: .631, right: .12),
+        const TablePosition(top: .6, right: .153),
       ],
       'balenciaga iii': [
-        const TablePosition(top: .12, left: .42),
-        const TablePosition(top: .12, left: .32),
-        const TablePosition(top: .12, left: .22),
-        const TablePosition(top: .16, left: .1),
-        const TablePosition(top: .24, left: .07),
-        const TablePosition(top: .32, left: .1),
+        const TablePosition(top: .15, left: .363),
+        const TablePosition(top: .15, left: .285),
+        const TablePosition(top: .15, left: .216),
+        const TablePosition(top: .17, left: .163),
+        const TablePosition(top: .215, left: .135),
+        const TablePosition(top: .265, left: .13),
       ],
       'dior': [
-        const TablePosition(top: .75, left: .32),
-        const TablePosition(top: .78, left: .42),
-        const TablePosition(top: .78, right: .42),
-        const TablePosition(top: .75, right: .32),
+        const TablePosition(top: .67, left: .326),
+        const TablePosition(top: .7, left: .44),
+        const TablePosition(top: .7, right: .405),
+        const TablePosition(top: .67, right: .295),
       ],
       'prada': [
-        const TablePosition(top: .42, left: .2),
-        const TablePosition(top: .5, left: .17),
-        const TablePosition(top: .58, left: .2),
-        const TablePosition(top: .54, right: .17),
-        const TablePosition(top: .46, right: .17),
+        const TablePosition(top: .393, left: .21),
+        const TablePosition(top: .447, left: .21),
+        const TablePosition(top: .505, left: .23),
+        const TablePosition(top: .477, right: .177),
+        const TablePosition(top: .423, right: .17),
       ],
       'ysl': [
-        const TablePosition(top: .4, left: .1),
-        const TablePosition(top: .5, left: .07),
-        const TablePosition(top: .6, left: .1),
-        const TablePosition(top: .55, right: .07),
-        const TablePosition(top: .45, right: .07),
+        const TablePosition(top: .355, left: .127),
+        const TablePosition(top: .457, left: .125),
+        const TablePosition(top: .551, left: .17),
+        const TablePosition(top: .515, right: .133),
+        const TablePosition(top: .39, right: .115),
       ]
     },
   ];
@@ -115,12 +115,15 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       date: event.date,
     );
 
+    print(tableRequest);
+
     final dataState = await _getTablesUseCase(params: tableRequest);
 
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
       if (status == 1) {
+        print(dataState.data!.data);
         final reservation = TableModel.fromJson(dataState.data!.data);
 
         _storeId = int.parse(reservation.storeId!);
@@ -143,6 +146,8 @@ class TableBloc extends Bloc<TableEvent, TableState> {
 
             tables!.asMap().forEach((key, tableDetail) {
               final tablePosition = tablesPosition!.elementAt(key);
+
+              print('${tableDetail.id} ${tableDetail.isAvailable}');
 
               final tableDetailObject = TableDetailEntity(
                 id: tableDetail.id,

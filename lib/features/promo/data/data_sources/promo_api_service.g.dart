@@ -13,7 +13,7 @@ class _PromoApiService implements PromoApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://206.189.39.51/api/v1/';
+    baseUrl ??= 'https://api.southbanknoir.com/api/v1/';
   }
 
   final Dio _dio;
