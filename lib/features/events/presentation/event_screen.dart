@@ -61,6 +61,7 @@ class _EventScreenState extends State<EventScreen> {
                                 artist: event.artist,
                                 timeStart: event.timeStart,
                                 storeName: event.storeName,
+                                rsvpDate: event.rsvpDate,
                                 isFullBook: event.isFullBook == 1,
                               ),
                             );

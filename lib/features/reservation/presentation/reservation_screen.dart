@@ -11,7 +11,12 @@ import 'bloc/table/table_state.dart';
 import 'widgets/reservation_widget.dart';
 
 class ReservationScreen extends StatefulWidget {
-  const ReservationScreen({super.key});
+  final String? rsvpDate;
+
+  const ReservationScreen({
+    super.key,
+    this.rsvpDate,
+  });
 
   @override
   State<ReservationScreen> createState() => _ReservationScreenState();
@@ -24,7 +29,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
     return await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(1900),
+      firstDate: DateTime.now(),
       lastDate: DateTime(DateTime.now().year + 10),
       builder: (BuildContext context, child) {
         return Theme(
@@ -49,6 +54,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    selectedDate = widget.rsvpDate != null ? DateTime.parse(widget.rsvpDate!) : selectedDate;
+
     return BlocProvider<TableBloc>(
       create: (context) => getIt.get<TableBloc>()
         ..add(

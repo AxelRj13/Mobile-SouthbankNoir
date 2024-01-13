@@ -21,7 +21,7 @@ class TableBloc extends Bloc<TableEvent, TableState> {
   String? _dateDisplay;
   String? _event;
   List<TableFloorEntity>? _floors;
-  final List<List<TableDetailEntity>> _tables = [];
+  List<List<TableDetailEntity>> _tables = [];
 
   final List<Map<String, List<TablePosition>>> _tablePosition = [
     {
@@ -115,15 +115,14 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       date: event.date,
     );
 
-    print(tableRequest);
-
     final dataState = await _getTablesUseCase(params: tableRequest);
 
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        print(dataState.data!.data);
+        _tables = [];
+
         final reservation = TableModel.fromJson(dataState.data!.data);
 
         _storeId = int.parse(reservation.storeId!);
@@ -146,8 +145,6 @@ class TableBloc extends Bloc<TableEvent, TableState> {
 
             tables!.asMap().forEach((key, tableDetail) {
               final tablePosition = tablesPosition!.elementAt(key);
-
-              print('${tableDetail.id} ${tableDetail.isAvailable}');
 
               final tableDetailObject = TableDetailEntity(
                 id: tableDetail.id,

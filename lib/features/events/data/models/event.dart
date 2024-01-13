@@ -11,6 +11,7 @@ class EventModel extends EventEntity {
     String? dateStart,
     String? timeStart,
     String? rsvpDate,
+    String? rsvpDateDisplay,
     int? isFullBook,
   }) : super(
           id: id,
@@ -22,6 +23,7 @@ class EventModel extends EventEntity {
           dateStart: dateStart,
           timeStart: timeStart,
           rsvpDate: rsvpDate,
+          rsvpDateDisplay: rsvpDateDisplay,
           isFullBook: isFullBook,
         );
 
@@ -35,6 +37,7 @@ class EventModel extends EventEntity {
         dateStart: data['date_start'],
         timeStart: data['time_start'],
         rsvpDate: data['reservation_date'],
+        rsvpDateDisplay: data['reservation_date_display'],
         isFullBook: data['is_fully_booked'],
       );
 }

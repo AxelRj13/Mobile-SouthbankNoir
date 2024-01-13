@@ -94,7 +94,10 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'reservation',
           name: 'reservation',
-          builder: (context, state) => const ReservationScreen(),
+          builder: (context, state) {
+            final rsvpDate = state.uri.queryParameters['rsvpDate'];
+            return ReservationScreen(rsvpDate: rsvpDate);
+          },
           routes: [
             GoRoute(
               path: 'confirmation',

@@ -24,8 +24,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
       carouselController: _controller,
       options: CarouselOptions(
         viewportFraction: 1,
-        height: MediaQuery.of(context).size.height * 0.23,
-        aspectRatio: 2.0,
+        // height: MediaQuery.of(context).size.height * 0.23,
+        aspectRatio: 3,
         enableInfiniteScroll: true,
         onPageChanged: (index, reason) {
           setState(() {
@@ -48,10 +48,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: banner.bannerImage != null
-                            ? NetworkImage(banner.bannerImage!)
-                            : const AssetImage('assets/img/logo.png')
-                                as ImageProvider,
+                        image:
+                            banner.bannerImage != null ? NetworkImage(banner.bannerImage!) : const AssetImage('assets/img/logo.png') as ImageProvider,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -74,10 +72,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
           margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: (Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black)
-                .withOpacity(_current == banner.key ? 0.9 : 0.4),
+            color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black).withOpacity(_current == banner.key ? 0.9 : 0.4),
           ),
         );
       }).toList(),

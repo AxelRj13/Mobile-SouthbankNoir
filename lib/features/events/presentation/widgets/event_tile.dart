@@ -10,6 +10,7 @@ class EventTile extends StatelessWidget {
   final String? artist;
   final String? timeStart;
   final String? storeName;
+  final String? rsvpDate;
   final bool? isFullBook;
 
   const EventTile({
@@ -20,6 +21,7 @@ class EventTile extends StatelessWidget {
     required this.artist,
     required this.timeStart,
     required this.storeName,
+    required this.rsvpDate,
     required this.isFullBook,
   });
 
@@ -79,7 +81,9 @@ class EventTile extends StatelessWidget {
       ),
       onPressed: !isFullBook!
           ? () {
-              router.goNamed('reservation');
+              router.goNamed('reservation', queryParameters: {
+                'rsvpDate': rsvpDate,
+              });
             }
           : null,
       child: Text(

@@ -32,7 +32,7 @@ class SBImageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.147,
       child: image == null || image == ''
           ? imageWidget(
               child: Icon(Icons.error, color: accentColor),
