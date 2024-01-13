@@ -4,13 +4,15 @@ class OutletModel extends OutletEntity {
   const OutletModel({
     String? name,
     String? address,
-    String? direction,
+    String? androidDirection,
+    String? iosDirection,
     String? phone,
     String? image,
   }) : super(
           name: name,
           address: address,
-          direction: direction,
+          androidDirection: androidDirection,
+          iosDirection: iosDirection,
           phone: phone,
           image: image,
         );
@@ -18,7 +20,8 @@ class OutletModel extends OutletEntity {
   factory OutletModel.fromJson(Map<String, dynamic> data) => OutletModel(
         name: data['name'],
         address: data['address'],
-        direction: data['direction'],
+        androidDirection: data['android_direction'],
+        iosDirection: data['ios_direction'],
         phone: data['phone'],
         image: data['image'],
       );

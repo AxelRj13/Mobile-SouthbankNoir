@@ -194,32 +194,11 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
                                 final width = constraints.maxWidth;
 
                                 return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        buildBadgeSign(
-                                          status: booking.bookingNo!,
-                                          textTheme: theme.textTheme,
-                                        ),
-                                        RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              const TextSpan(text: 'Status:'),
-                                              const WidgetSpan(
-                                                child: SizedBox(width: 5.0),
-                                              ),
-                                              WidgetSpan(
-                                                alignment: PlaceholderAlignment.middle,
-                                                child: buildBadgeSign(
-                                                  status: booking.status!,
-                                                  textTheme: theme.textTheme,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                    buildBadgeSign(
+                                      status: booking.bookingNo!,
+                                      textTheme: theme.textTheme,
                                     ),
                                     const SizedBox(height: 10.0),
                                     Row(
@@ -232,6 +211,7 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
                                         const SizedBox(width: 15.0),
                                         Expanded(
                                           child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               buildTitle(
@@ -249,6 +229,23 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
                                               buildInformation(
                                                 textTheme: theme.textTheme,
                                                 label: 'Event: ${booking.events ?? '-'}',
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    const TextSpan(text: 'Status:'),
+                                                    const WidgetSpan(
+                                                      child: SizedBox(width: 5.0),
+                                                    ),
+                                                    WidgetSpan(
+                                                      alignment: PlaceholderAlignment.middle,
+                                                      child: buildBadgeSign(
+                                                        status: booking.status!,
+                                                        textTheme: theme.textTheme,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),

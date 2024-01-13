@@ -10,6 +10,7 @@ class EventEntity extends Equatable {
   final String? dateStart;
   final String? timeStart;
   final String? rsvpDate;
+  final String? rsvpDateDisplay;
   final int? isFullBook;
 
   const EventEntity({
@@ -22,6 +23,7 @@ class EventEntity extends Equatable {
     this.dateStart,
     this.timeStart,
     this.rsvpDate,
+    this.rsvpDateDisplay,
     this.isFullBook,
   });
 
@@ -36,6 +38,7 @@ class EventEntity extends Equatable {
         dateStart,
         timeStart,
         rsvpDate,
+        rsvpDateDisplay,
         isFullBook,
       ];
 }

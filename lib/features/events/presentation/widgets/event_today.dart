@@ -37,9 +37,6 @@ class _EventTodayState extends State<EventToday> {
         if (state is EventsDone) {
           final events = state.events!;
 
-          print('TODAY EVENTS');
-          print(events);
-
           return Column(
             children: [
               buildHeader(),
@@ -53,6 +50,7 @@ class _EventTodayState extends State<EventToday> {
                     artist: event.artist,
                     timeStart: event.timeStart,
                     storeName: event.storeName,
+                    rsvpDate: event.rsvpDate,
                     isFullBook: event.isFullBook == 1,
                   ),
                 ),
