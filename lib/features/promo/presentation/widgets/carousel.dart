@@ -24,8 +24,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
       carouselController: _controller,
       options: CarouselOptions(
         viewportFraction: 1,
-        // height: MediaQuery.of(context).size.height * 0.23,
-        aspectRatio: 3,
+        aspectRatio: 16 / 9,
         enableInfiniteScroll: true,
         onPageChanged: (index, reason) {
           setState(() {

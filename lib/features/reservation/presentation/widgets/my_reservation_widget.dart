@@ -79,7 +79,7 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
     required String label,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
+      padding: const EdgeInsets.only(bottom: 5.0),
       child: Text(
         label,
         style: textTheme.titleMedium!.copyWith(
@@ -218,6 +218,13 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
                                                 textTheme: theme.textTheme,
                                                 label: booking.storeName!,
                                               ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(bottom: 10.0),
+                                                child: Text(
+                                                  'Created: ${booking.createdDate!}',
+                                                  style: const TextStyle(color: Colors.grey),
+                                                ),
+                                              ),
                                               buildInformation(
                                                 textTheme: theme.textTheme,
                                                 label: booking.tableName!,
@@ -252,6 +259,16 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
                                         )
                                       ],
                                     ),
+                                    if (booking.expiryDate != null)
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: Center(
+                                          child: Text(
+                                            'Please complete the payment before: ${booking.expiryDate}',
+                                            style: const TextStyle(color: Colors.red),
+                                          ),
+                                        ),
+                                      )
                                   ],
                                 );
                               },

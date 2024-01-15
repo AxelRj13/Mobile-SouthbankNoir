@@ -18,6 +18,8 @@ class ReservationDetailEntity extends Equatable {
   final String? totalPayment;
   final String? tableName;
   final String? tableCapacity;
+  final String? createdDate;
+  final String? expiryDate;
   final List<ReservationTableDetailEntity>? details;
 
   const ReservationDetailEntity({
@@ -37,6 +39,8 @@ class ReservationDetailEntity extends Equatable {
     this.totalPayment,
     this.tableName,
     this.tableCapacity,
+    this.createdDate,
+    this.expiryDate,
     this.details,
   });
 
@@ -58,6 +62,8 @@ class ReservationDetailEntity extends Equatable {
         totalPayment,
         tableName,
         tableCapacity,
+        createdDate,
+        expiryDate,
         details,
       ];
 }

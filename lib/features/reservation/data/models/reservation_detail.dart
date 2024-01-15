@@ -20,6 +20,8 @@ class ReservationDetailModel extends ReservationDetailEntity {
     String? totalPayment,
     String? tableName,
     String? tableCapacity,
+    String? createdDate,
+    String? expiryDate,
     List<ReservationTableDetailEntity>? details,
   }) : super(
           bookingId: bookingId,
@@ -38,6 +40,8 @@ class ReservationDetailModel extends ReservationDetailEntity {
           totalPayment: totalPayment,
           tableName: tableName,
           tableCapacity: tableCapacity,
+          createdDate: createdDate,
+          expiryDate: expiryDate,
           details: details,
         );
 
@@ -58,6 +62,8 @@ class ReservationDetailModel extends ReservationDetailEntity {
         totalPayment: data['total_payment'],
         tableName: data['table_name'],
         tableCapacity: data['table_capacity'],
+        createdDate: data['created_date'],
+        expiryDate: data['expiry_date'],
         details: data['details'] != null ? (data['details'] as List).map((table) => ReservationTableDetailModel.fromJson(table)).toList() : null,
       );
 }

@@ -29,8 +29,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthMessage) {
-          await basicDialog(
-              context, state.message!.title, state.message!.message);
+          await basicDialog(context, state.message!.title, state.message!.message);
         }
       },
       child: SafeArea(
@@ -46,12 +45,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     'Register Member',
                     style: TextStyle(fontSize: 24.0),
                   ),
-            _isLoginForm
-                ? const SizedBox(height: 50.0)
-                : const SizedBox(height: 20.0),
-            _isLoginForm
-                ? FormLogin(onFormSwitchTap: () => _switchForm())
-                : FormRegister(onFormSwitchTap: () => _switchForm()),
+            _isLoginForm ? const SizedBox(height: 50.0) : const SizedBox(height: 20.0),
+            _isLoginForm ? FormLogin(onFormSwitchTap: () => _switchForm()) : FormRegister(onFormSwitchTap: () => _switchForm()),
             const SizedBox(height: 30.0),
           ],
         ),
