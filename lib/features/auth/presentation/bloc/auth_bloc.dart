@@ -53,6 +53,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
+      print(dataState.data!);
+
       if (status == 1) {
         final token = dataState.data!.token;
         final user = UserModel.fromJson(dataState.data!.data);
@@ -93,6 +95,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     final dataState = await _loginUseCase(params: loginRequest);
+
+    print(dataState);
 
     _result(dataState, emit);
   }
