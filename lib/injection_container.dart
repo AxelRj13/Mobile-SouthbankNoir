@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:southbank/features/reservation/domain/usecases/get_payment_method.dart';
+import 'package:southbank/features/reservation/presentation/bloc/payment_method/payment_method_bloc.dart';
 
 import 'core/network/dio_client.dart';
 import 'features/auth/data/data_sources/auth_api_service.dart';
@@ -264,6 +266,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<GetTablesUseCase>(
     () => GetTablesUseCase(sl()),
   );
+  sl.registerLazySingleton<GetPaymentMethodsUseCase>(
+    () => GetPaymentMethodsUseCase(sl()),
+  );
   sl.registerLazySingleton<GetPaymentUseCase>(
     () => GetPaymentUseCase(sl()),
   );
@@ -325,5 +330,8 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<ConfirmationPaymentBloc>(
     () => ConfirmationPaymentBloc(sl()),
+  );
+  sl.registerFactory<PaymentMethodBloc>(
+    () => PaymentMethodBloc(sl()),
   );
 }

@@ -53,10 +53,10 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     ).toJson();
 
     if (event.paymentMethod == 8) {
-      reservationPayload['card_number'] = event.cardNumber;
-      reservationPayload['card_exp_month'] = event.cardMonth;
-      reservationPayload['card_exp_year'] = event.cardYear;
-      reservationPayload['card_cvv'] = event.cardCVV;
+      reservationPayload['payload']['card_number'] = event.cardNumber;
+      reservationPayload['payload']['card_exp_month'] = event.cardMonth;
+      reservationPayload['payload']['card_exp_year'] = event.cardYear;
+      reservationPayload['payload']['card_cvv'] = event.cardCVV;
     }
 
     final dataState = await _createReservationUseCase(
