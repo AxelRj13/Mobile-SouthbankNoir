@@ -69,6 +69,28 @@ class ReservationRepositoryImpl implements ReservationRepository {
   }
 
   @override
+  Future<DataState<ApiResponseEntity>> getPaymentMethods() async {
+    try {
+      final httpResponse = await _reservationApiService.getPaymentMethods();
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
   Future<DataState<ApiResponseEntity>> getReservations() async {
     try {
       final httpResponse = await _reservationApiService.getReservations();

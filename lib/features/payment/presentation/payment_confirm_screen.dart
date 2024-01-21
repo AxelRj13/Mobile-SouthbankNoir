@@ -13,10 +13,12 @@ import 'widgets/payment_confirm_widget.dart';
 
 class PaymentConfirmScreen extends StatefulWidget {
   final String bookingId;
+  final String redirectUrl;
 
   const PaymentConfirmScreen({
     super.key,
     required this.bookingId,
+    required this.redirectUrl,
   });
 
   @override
@@ -68,6 +70,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
           },
           child: PaymentConfirmWidget(
             bookingId: widget.bookingId,
+            redirectUrl: widget.redirectUrl,
           ),
         ),
       ),

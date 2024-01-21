@@ -135,6 +135,7 @@ final GoRouter router = GoRouter(
           name: 'payment',
           builder: (context, state) => PaymentConfirmScreen(
             bookingId: state.pathParameters['bookingId']!,
+            redirectUrl: state.uri.queryParameters['redirectUrl']!,
           ),
           routes: [
             GoRoute(

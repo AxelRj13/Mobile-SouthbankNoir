@@ -7,6 +7,8 @@ abstract class ReservationRepository {
     required String date,
   });
 
+  Future<DataState<ApiResponseEntity>> getPaymentMethods();
+
   Future<DataState<ApiResponseEntity>> getReservations();
 
   Future<DataState<ApiResponseEntity>> createReservation({

@@ -43,6 +43,7 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
 
     final reservationPayload = ReservationPayload(
       storeId: event.storeId,
+      paymentMethod: event.paymentMethod,
       date: event.date,
       personName: event.personName,
       personPhone: event.personPhone,
@@ -50,6 +51,13 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       promoCode: event.promoCode,
       details: tables,
     ).toJson();
+
+    if (event.paymentMethod == 8) {
+      reservationPayload['card_number'] = event.cardNumber;
+      reservationPayload['card_exp_month'] = event.cardMonth;
+      reservationPayload['card_exp_year'] = event.cardYear;
+      reservationPayload['card_cvv'] = event.cardCVV;
+    }
 
     final dataState = await _createReservationUseCase(
       params: reservationPayload,
@@ -77,6 +85,7 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
           ReservationBook(
             message: messageResponse,
             bookingId: dataState.data!.data['id'],
+            redirectUrl: dataState.data!.data['redirect_url'],
           ),
         );
       } else {

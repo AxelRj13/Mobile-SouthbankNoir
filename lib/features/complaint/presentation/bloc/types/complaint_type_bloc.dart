@@ -9,8 +9,7 @@ import 'complaint_type_state.dart';
 class ComplaintTypeBloc extends Bloc<ComplaintTypeEvent, ComplaintTypeState> {
   final GetComplaintTypesUseCase _getComplaintTypesUseCase;
 
-  ComplaintTypeBloc(this._getComplaintTypesUseCase)
-      : super(const ComplaintTypeLoading()) {
+  ComplaintTypeBloc(this._getComplaintTypesUseCase) : super(const ComplaintTypeLoading()) {
     on<GetComplaintTypes>(onGetComplaintTypes);
   }
 
@@ -21,11 +20,13 @@ class ComplaintTypeBloc extends Bloc<ComplaintTypeEvent, ComplaintTypeState> {
     final dataState = await _getComplaintTypesUseCase();
 
     if (dataState is DataSuccess) {
-      final types = (dataState.data!.data as List)
-          .map((item) => ComplaintTypeModel.fromJson(item))
-          .toList();
+      final status = dataState.data!.status;
 
-      emit(ComplaintTypeDone(types));
+      if (status == 1) {
+        final types = (dataState.data!.data as List).map((item) => ComplaintTypeModel.fromJson(item)).toList();
+
+        emit(ComplaintTypeDone(types));
+      }
     }
 
     if (dataState is DataFailed) {

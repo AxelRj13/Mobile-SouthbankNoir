@@ -116,6 +116,7 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
         colors = accentColor;
         break;
       case 'Failed':
+      case 'Expired':
         colors = Colors.red;
         break;
       default:
@@ -173,6 +174,9 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
                               'payment',
                               pathParameters: {
                                 'bookingId': booking.bookingId!,
+                              },
+                              queryParameters: {
+                                'redirectUrl': booking.redirectUrl,
                               },
                             );
                           } else {

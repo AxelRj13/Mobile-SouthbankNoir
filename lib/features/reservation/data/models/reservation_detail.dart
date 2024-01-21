@@ -23,6 +23,7 @@ class ReservationDetailModel extends ReservationDetailEntity {
     String? createdDate,
     String? expiryDate,
     List<ReservationTableDetailEntity>? details,
+    String? redirectUrl,
   }) : super(
           bookingId: bookingId,
           bookingNo: bookingNo,
@@ -43,6 +44,7 @@ class ReservationDetailModel extends ReservationDetailEntity {
           createdDate: createdDate,
           expiryDate: expiryDate,
           details: details,
+          redirectUrl: redirectUrl,
         );
 
   factory ReservationDetailModel.fromJson(Map<String, dynamic> data) => ReservationDetailModel(
@@ -65,5 +67,6 @@ class ReservationDetailModel extends ReservationDetailEntity {
         createdDate: data['created_date'],
         expiryDate: data['expiry_date'],
         details: data['details'] != null ? (data['details'] as List).map((table) => ReservationTableDetailModel.fromJson(table)).toList() : null,
+        redirectUrl: data['redirect_url'],
       );
 }

@@ -45,7 +45,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
     required ThemeData theme,
     required TableDetailEntity table,
   }) {
-    final _isSelected = _selectedTables.where((selectedTable) => selectedTable.id == table.id).isNotEmpty;
+    final isSelected = _selectedTables.where((selectedTable) => selectedTable.id == table.id).isNotEmpty;
 
     showModalBottomSheet(
       context: context,
@@ -101,10 +101,10 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                 const SizedBox(width: 10.0),
                 Expanded(
                   child: SBButton(
-                    color: _isSelected ? Colors.red : accentColor,
+                    color: isSelected ? Colors.red : accentColor,
                     onPressed: () {
                       setState(() {
-                        if (_isSelected) {
+                        if (isSelected) {
                           _selectedTables.removeWhere((selectedTable) => selectedTable.id == table.id);
                         } else {
                           _selectedTables.add(table);
@@ -114,7 +114,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                       Navigator.of(context).pop();
                     },
                     child: Text(
-                      _isSelected ? 'Remove' : 'Reserve',
+                      isSelected ? 'Remove' : 'Reserve',
                       style: const TextStyle(fontSize: 16.0),
                     ),
                   ),
