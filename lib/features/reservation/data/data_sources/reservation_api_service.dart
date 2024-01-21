@@ -17,6 +17,9 @@ abstract class ReservationApiService {
     @Field('date') String date,
   );
 
+  @POST('payment-method/get')
+  Future<HttpResponse<ApiResponseModel>> getPaymentMethods();
+
   @POST('booking/list')
   Future<HttpResponse<ApiResponseModel>> getReservations();
 

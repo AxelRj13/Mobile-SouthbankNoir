@@ -1,6 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/core/components/dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
@@ -9,14 +12,17 @@ import '../bloc/confirmation/confirmation_bloc.dart';
 import '../bloc/confirmation/confirmation_event.dart';
 import '../bloc/confirmation/confirmation_state.dart';
 import '../bloc/payment/payment_bloc.dart';
+import '../bloc/payment/payment_event.dart';
 import '../bloc/payment/payment_state.dart';
 
 class PaymentConfirmWidget extends StatefulWidget {
   final String bookingId;
+  final String redirectUrl;
 
   const PaymentConfirmWidget({
     super.key,
     required this.bookingId,
+    required this.redirectUrl,
   });
 
   @override
@@ -99,6 +105,132 @@ class _PaymentConfirmWidgetState extends State<PaymentConfirmWidget> {
     );
   }
 
+  List<Widget> buildVAInformation({
+    required TextTheme textTheme,
+    required String orderId,
+    required String vaNumber,
+    required String subtotal,
+    required List<String> atmInstructions,
+    required List<String> mobileInstructions,
+    required List<String> internetInstructions,
+  }) {
+    return [
+      buildDetailInformation(
+        textTheme: textTheme,
+        label: 'Order ID',
+        information: orderId,
+      ),
+      const Divider(
+        thickness: 2.0,
+        height: 30.0,
+      ),
+      buildDetailInformation(
+        textTheme: textTheme,
+        label: 'Virtual Account Number',
+        information: vaNumber,
+        trailing: TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(accentColor),
+          ),
+          onPressed: () {
+            Clipboard.setData(
+              ClipboardData(
+                text: vaNumber,
+              ),
+            ).then(
+              (value) => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Virtual account copied'),
+                ),
+              ),
+            );
+          },
+          child: const Text(
+            'Copy',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      const Divider(
+        thickness: 2.0,
+        height: 30.0,
+      ),
+      buildDetailInformation(
+        textTheme: textTheme,
+        label: 'Total Payment',
+        information: subtotal,
+      ),
+      const Divider(
+        thickness: 2.0,
+        height: 30.0,
+      ),
+      Text(
+        'How to Pay',
+        style: textTheme.bodyMedium!.copyWith(fontSize: 18.0),
+      ),
+      const SizedBox(height: 20.0),
+      buildHowToPayExpansionTile(
+        label: 'ATM',
+        items: atmInstructions,
+      ),
+      buildHowToPayExpansionTile(
+        label: 'Mobile Banking',
+        items: mobileInstructions,
+      ),
+      buildHowToPayExpansionTile(
+        label: 'Internet Banking',
+        items: internetInstructions,
+      ),
+    ];
+  }
+
+  List<Widget> buildRedirectURLInformation({
+    required TextTheme textTheme,
+  }) {
+    return [
+      Text(
+        'How to Pay',
+        style: textTheme.bodyMedium!.copyWith(fontSize: 18.0),
+      ),
+      const SizedBox(height: 20.0),
+      Card(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: RichText(
+            text: TextSpan(children: [
+              TextSpan(
+                  style: textTheme.bodyMedium!.copyWith(fontSize: 16.0),
+                  text:
+                      'Payment using E-Wallet or Credit Card will be redirected to another page first. If you are not directed to the payment page you can tap through '),
+              TextSpan(
+                  style: textTheme.bodyMedium!.copyWith(
+                    decoration: TextDecoration.underline,
+                    color: accentColor,
+                  ),
+                  text: 'this link',
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async {
+                      final uri = Uri.parse(widget.redirectUrl);
+                      if (await canLaunchUrl(uri)) {
+                        launchUrl(uri, mode: LaunchMode.externalApplication);
+                      } else {
+                        if (mounted) await basicDialog(context, 'Information', 'Could not open the URL');
+                      }
+                    }),
+              TextSpan(
+                  style: textTheme.bodyMedium!.copyWith(fontSize: 16.0),
+                  text:
+                      '. Make sure you have made a payment before the transaction expires. After the system checks the payment has been made then you will be redirected automatically, if not you can confirm the payment via the \'I Have Paid\' button.'),
+            ]),
+          ),
+        ),
+      ),
+      const SizedBox(height: 20.0),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentBloc, PaymentState>(
@@ -113,74 +245,17 @@ class _PaymentConfirmWidgetState extends State<PaymentConfirmWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildDetailInformation(
-                    textTheme: textTheme,
-                    label: 'Order ID',
-                    information: state.payment!.orderId!,
-                  ),
-                  const Divider(
-                    thickness: 2.0,
-                    height: 30.0,
-                  ),
-                  buildDetailInformation(
-                    textTheme: textTheme,
-                    label: 'Virtual Account Number',
-                    information: state.payment!.vaNumber!,
-                    trailing: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(accentColor),
-                      ),
-                      onPressed: () {
-                        Clipboard.setData(
-                          ClipboardData(
-                            text: state.payment!.vaNumber!,
-                          ),
-                        ).then(
-                          (value) => ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Virtual account copied'),
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Copy',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
+                  if (state.payment!.vaNumber != null)
+                    ...buildVAInformation(
+                      textTheme: textTheme,
+                      orderId: state.payment!.orderId!,
+                      vaNumber: state.payment!.vaNumber!,
+                      subtotal: state.payment!.subtotal!,
+                      atmInstructions: state.payment!.atmInstructions!,
+                      mobileInstructions: state.payment!.mobileInstructions!,
+                      internetInstructions: state.payment!.internetInstructions!,
                     ),
-                  ),
-                  const Divider(
-                    thickness: 2.0,
-                    height: 30.0,
-                  ),
-                  buildDetailInformation(
-                    textTheme: textTheme,
-                    label: 'Total Payment',
-                    information: state.payment!.subtotal!,
-                  ),
-                  const Divider(
-                    thickness: 2.0,
-                    height: 30.0,
-                  ),
-                  Text(
-                    'How to Pay',
-                    style: textTheme.bodyMedium!.copyWith(fontSize: 18.0),
-                  ),
-                  const SizedBox(height: 20.0),
-                  buildHowToPayExpansionTile(
-                    label: 'ATM',
-                    items: state.payment!.atmInstructions!,
-                  ),
-                  buildHowToPayExpansionTile(
-                    label: 'Mobile Banking',
-                    items: state.payment!.mobileInstructions!,
-                  ),
-                  buildHowToPayExpansionTile(
-                    label: 'Internet Banking',
-                    items: state.payment!.internetInstructions!,
-                  ),
+                  if (state.payment!.vaNumber == null) ...buildRedirectURLInformation(textTheme: textTheme),
                   BlocBuilder<ConfirmationPaymentBloc, ConfirmationPaymentState>(
                     builder: (context, state) {
                       return SBButton(
@@ -208,8 +283,17 @@ class _PaymentConfirmWidgetState extends State<PaymentConfirmWidget> {
         }
 
         if (state is PaymentError) {
-          return const Center(
-            child: Icon(Icons.refresh),
+          return Center(
+            child: InkWell(
+              onTap: () {
+                BlocProvider.of<PaymentBloc>(context).add(
+                  GetPayment(
+                    bookingId: widget.bookingId,
+                  ),
+                );
+              },
+              child: const Icon(Icons.refresh),
+            ),
           );
         }
 

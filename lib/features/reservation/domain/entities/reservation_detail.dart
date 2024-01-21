@@ -21,6 +21,7 @@ class ReservationDetailEntity extends Equatable {
   final String? createdDate;
   final String? expiryDate;
   final List<ReservationTableDetailEntity>? details;
+  final String? redirectUrl;
 
   const ReservationDetailEntity({
     this.bookingId,
@@ -42,6 +43,7 @@ class ReservationDetailEntity extends Equatable {
     this.createdDate,
     this.expiryDate,
     this.details,
+    this.redirectUrl,
   });
 
   @override
@@ -65,5 +67,6 @@ class ReservationDetailEntity extends Equatable {
         createdDate,
         expiryDate,
         details,
+        redirectUrl,
       ];
 }

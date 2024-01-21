@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class ReservationPayload extends Equatable {
   final int? storeId;
+  final int? paymentMethod;
   final String? date;
   final String? personName;
   final String? personPhone;
@@ -11,6 +12,7 @@ class ReservationPayload extends Equatable {
 
   const ReservationPayload({
     this.storeId,
+    this.paymentMethod,
     this.date,
     this.personName,
     this.personPhone,
@@ -22,6 +24,7 @@ class ReservationPayload extends Equatable {
   @override
   List<Object?> get props => [
         storeId,
+        paymentMethod,
         date,
         personName,
         personPhone,
@@ -33,6 +36,7 @@ class ReservationPayload extends Equatable {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'payload': {
           'store_id': storeId,
+          'payment_method': paymentMethod,
           'reservation_date': date,
           'contact_person_name': personName,
           'contact_person_phone': personPhone,

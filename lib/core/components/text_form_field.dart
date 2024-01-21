@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SBTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -15,6 +16,7 @@ class SBTextFormField extends StatelessWidget {
   final InputBorder? enabledBorder;
   final Color? focusColor;
   final InputBorder? focusedBorder;
+  final List<TextInputFormatter>? inputFormatters;
 
   const SBTextFormField({
     super.key,
@@ -32,15 +34,14 @@ class SBTextFormField extends StatelessWidget {
     this.enabledBorder,
     this.focusColor,
     this.focusedBorder,
+    this.inputFormatters,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: const InputDecoration()
-          .applyDefaults(Theme.of(context).inputDecorationTheme)
-          .copyWith(
+      decoration: const InputDecoration().applyDefaults(Theme.of(context).inputDecorationTheme).copyWith(
             hintText: hintText,
             suffixIcon: suffixIcon,
             filled: true,
@@ -57,6 +58,7 @@ class SBTextFormField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: textInputType,
       maxLines: isMultiline! ? 5 : 1,
+      inputFormatters: inputFormatters,
     );
   }
 }

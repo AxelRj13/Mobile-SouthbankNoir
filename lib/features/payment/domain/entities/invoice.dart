@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class InvoiceEntity extends Equatable {
+  final String? redirectUrl;
   final String? orderId;
   final String? subtotal;
   final String? vaNumber;
@@ -9,6 +10,7 @@ class InvoiceEntity extends Equatable {
   final List<String>? internetInstructions;
 
   const InvoiceEntity({
+    this.redirectUrl,
     this.orderId,
     this.subtotal,
     this.vaNumber,
@@ -19,6 +21,7 @@ class InvoiceEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+        redirectUrl,
         orderId,
         subtotal,
         vaNumber,

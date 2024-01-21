@@ -8,6 +8,7 @@ import '../../../data/models/reservation_detail.dart';
 
 abstract class ReservationState extends Equatable {
   final String? bookingId;
+  final String? redirectUrl;
   final ApplyPromoModel? applyPromo;
   final List<ReservationModel>? reservations;
   final ReservationDetailModel? reservationDetailModel;
@@ -16,6 +17,7 @@ abstract class ReservationState extends Equatable {
 
   const ReservationState({
     this.bookingId,
+    this.redirectUrl,
     this.applyPromo,
     this.reservations,
     this.reservationDetailModel,
@@ -26,6 +28,7 @@ abstract class ReservationState extends Equatable {
   @override
   List<Object> get props => [
         bookingId!,
+        redirectUrl!,
         applyPromo!,
         reservations!,
         reservationDetailModel!,
@@ -46,9 +49,11 @@ class ReservationBook extends ReservationState {
   const ReservationBook({
     required MessageResponse message,
     String? bookingId,
+    String? redirectUrl,
   }) : super(
           message: message,
           bookingId: bookingId,
+          redirectUrl: redirectUrl,
         );
 }
 

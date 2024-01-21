@@ -3,8 +3,7 @@ import '../../../../core/resources/data_state.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../repository/complaint_repository.dart';
 
-class GetComplaintTypesUseCase
-    implements UseCase<DataState<ApiResponseEntity>, void> {
+class GetComplaintTypesUseCase implements UseCase<DataState<ApiResponseEntity>, void> {
   final ComplaintRepository _complaintRepository;
 
   GetComplaintTypesUseCase(this._complaintRepository);

@@ -2,6 +2,7 @@ import '../../domain/entities/invoice.dart';
 
 class InvoiceModel extends InvoiceEntity {
   const InvoiceModel({
+    String? redirectUrl,
     String? orderId,
     String? subtotal,
     String? vaNumber,
@@ -9,6 +10,7 @@ class InvoiceModel extends InvoiceEntity {
     List<String>? mobileInstructions,
     List<String>? internetInstructions,
   }) : super(
+          redirectUrl: redirectUrl,
           orderId: orderId,
           subtotal: subtotal,
           vaNumber: vaNumber,
@@ -18,11 +20,12 @@ class InvoiceModel extends InvoiceEntity {
         );
 
   factory InvoiceModel.fromJson(Map<String, dynamic> data) => InvoiceModel(
+        redirectUrl: data['redirect_url'],
         orderId: data['order_id'],
         subtotal: data['subtotal'],
         vaNumber: data['virtualAccountNumber'],
-        atmInstructions: List<String>.from(data['payment_instruction_atm'] as List),
-        mobileInstructions: List<String>.from(data['payment_instruction_mobile'] as List),
-        internetInstructions: List<String>.from(data['payment_instruction_internet'] as List),
+        atmInstructions: data['payment_instruction_atm'] != null ? List<String>.from(data['payment_instruction_atm'] as List) : null,
+        mobileInstructions: data['payment_instruction_mobile'] != null ? List<String>.from(data['payment_instruction_mobile'] as List) : null,
+        internetInstructions: data['payment_instruction_internet'] != null ? List<String>.from(data['payment_instruction_internet'] as List) : null,
       );
 }

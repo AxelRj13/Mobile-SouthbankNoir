@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/features/reservation/presentation/bloc/payment_method/payment_method_bloc.dart';
+import 'package:southbank/features/reservation/presentation/bloc/payment_method/payment_method_event.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/routes/router.dart';
 import '../../../core/components/dialog.dart';
@@ -38,6 +41,9 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
           BlocProvider<ReservationBloc>(
             create: (context) => getIt.get<ReservationBloc>(),
           ),
+          BlocProvider<PaymentMethodBloc>(
+            create: (context) => getIt.get<PaymentMethodBloc>()..add(const GetPaymentMethods()),
+          ),
         ],
         child: MultiBlocListener(
           listeners: [
@@ -66,10 +72,19 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
                   );
 
                   if (state.message!.status) {
+                    if (state.redirectUrl != null) {
+                      final uri = Uri.parse(state.redirectUrl!);
+                      if (await canLaunchUrl(uri)) {
+                        launchUrl(uri, mode: LaunchMode.externalApplication);
+                      }
+                    }
                     router.goNamed(
                       'payment',
                       pathParameters: {
                         'bookingId': state.bookingId!,
+                      },
+                      queryParameters: {
+                        'redirectUrl': state.redirectUrl,
                       },
                     );
                   }
