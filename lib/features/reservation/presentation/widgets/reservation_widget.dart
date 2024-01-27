@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
+import '../../../../core/components/dialog.dart';
 import '../../../../injection_container.dart';
 import '../../data/models/reservation_confirm.dart';
 import '../../domain/entities/table_detail.dart';
 import '../bloc/table/table_bloc.dart';
 import '../bloc/table/table_event.dart';
+import '../reservation_confirm_screen.dart';
 import 'reservation_legend.dart';
 
 class ReservationWidget extends StatefulWidget {
   final int tabIndex;
+  final DateTime selectedDate;
   final int storeId;
   final String storeName;
   final String storeImage;
@@ -25,6 +28,7 @@ class ReservationWidget extends StatefulWidget {
   const ReservationWidget({
     super.key,
     required this.tabIndex,
+    required this.selectedDate,
     required this.storeId,
     required this.storeName,
     required this.storeImage,
@@ -299,7 +303,13 @@ class _ReservationWidgetState extends State<ReservationWidget> {
             padding: const EdgeInsets.symmetric(vertical: 25.0),
             child: SBButton(
               child: const Text('Make Reservation'),
-              onPressed: () {
+              onPressed: () async {
+                if (_selectedTables.isEmpty) {
+                  await basicDialog(context, 'Information', 'Please select table first');
+
+                  return;
+                }
+
                 final prefs = getIt.get<SharedPreferences>();
 
                 final firstName = prefs.get('firstName') ?? '';
@@ -318,7 +328,23 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                   table: _selectedTables,
                 );
 
-                router.goNamed('confirmation', extra: reservationConfirm);
+                Navigator.of(context)
+                    .push(
+                  MaterialPageRoute(
+                    builder: (context) => ReservationConfirmScreen(reservationConfirm: reservationConfirm),
+                  ),
+                )
+                    .then(
+                  (value) {
+                    context.read<TableBloc>().add(
+                          GetTables(
+                            date: DateFormat('yyyy-MM-dd').format(widget.selectedDate),
+                          ),
+                        );
+                  },
+                );
+
+                // router.goNamed('confirmation', extra: reservationConfirm);
               },
             ),
           ),

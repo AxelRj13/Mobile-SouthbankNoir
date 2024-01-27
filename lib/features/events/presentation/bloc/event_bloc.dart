@@ -26,16 +26,26 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     GetEvents event,
     Emitter<EventState> emit,
   ) async {
+    emit(const EventLoading());
+
     final dataState = await _getEventUseCase();
 
     if (dataState is DataSuccess) {
-      _events = (dataState.data!.data as List).map((item) => EventModel.fromJson(item)).toList();
+      final status = dataState.data!.status;
 
-      emit(
-        EventsDone(
-          events: _events,
-        ),
-      );
+      if (status == 1) {
+        _events = (dataState.data!.data as List)
+            .map(
+              (item) => EventModel.fromJson(item),
+            )
+            .toList();
+
+        emit(
+          EventsDone(events: _events),
+        );
+      } else {
+        emit(const EventNotFound());
+      }
     }
 
     if (dataState is DataFailed) {
@@ -63,9 +73,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         .toList();
 
     emit(
-      EventsDone(
-        events: eventFounds,
-      ),
+      EventsDone(events: eventFounds),
     );
   }
 
@@ -73,6 +81,8 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     GetTodayEvent event,
     Emitter<EventState> emit,
   ) async {
+    emit(const EventLoading());
+
     final dataState = await _getTodayEventUseCase();
 
     if (dataState is DataSuccess) {
@@ -86,9 +96,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
             .toList();
 
         emit(
-          EventsDone(
-            events: todayEvent,
-          ),
+          EventsDone(events: todayEvent),
         );
       } else {
         emit(const EventNotFound());

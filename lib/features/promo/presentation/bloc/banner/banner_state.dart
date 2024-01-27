@@ -1,16 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/banner.dart';
+import '../../../data/models/banner.dart';
 
 abstract class BannerState extends Equatable {
-  final List<BannerEntity>? banners;
+  final List<BannerModel>? banners;
   final DioException? error;
 
-  const BannerState({this.banners, this.error});
+  const BannerState({
+    this.banners,
+    this.error,
+  });
 
   @override
-  List<Object> get props => [banners!, error!];
+  List<Object> get props => [
+        banners!,
+        error!,
+      ];
 }
 
 class BannerLoading extends BannerState {
@@ -18,9 +24,21 @@ class BannerLoading extends BannerState {
 }
 
 class BannerDone extends BannerState {
-  const BannerDone(List<BannerEntity> banner) : super(banners: banner);
+  const BannerDone({
+    required List<BannerModel> banner,
+  }) : super(
+          banners: banner,
+        );
+}
+
+class BannerNotFound extends BannerState {
+  const BannerNotFound();
 }
 
 class BannerError extends BannerState {
-  const BannerError(DioException error) : super(error: error);
+  const BannerError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }

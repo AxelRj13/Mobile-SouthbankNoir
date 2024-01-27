@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/features/reservation/presentation/bloc/payment_method/payment_method_bloc.dart';
-import 'package:southbank/features/reservation/presentation/bloc/payment_method/payment_method_event.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/routes/router.dart';
 import '../../../core/components/dialog.dart';
 import '../../../injection_container.dart';
 import '../data/models/reservation_confirm.dart';
+import 'bloc/payment_method/payment_method_bloc.dart';
+import 'bloc/payment_method/payment_method_event.dart';
 import 'bloc/promo/reservation_promo_bloc.dart';
 import 'bloc/promo/reservation_promo_state.dart';
 import 'bloc/reservation/reservation_bloc.dart';

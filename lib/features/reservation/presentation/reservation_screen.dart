@@ -96,6 +96,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
             if (state is TableInitial) {
               return ReservationWidget(
                 tabIndex: state.tabIndex!,
+                selectedDate: selectedDate,
                 storeId: state.storeId!,
                 storeName: state.storeName!,
                 storeImage: state.storeImage!,
