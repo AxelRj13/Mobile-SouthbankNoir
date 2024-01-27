@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../../../config/routes/router.dart';
-import '../../../../core/components/loading.dart';
-import '../../domain/entities/banner.dart';
-import '../bloc/banner/banner_bloc.dart';
-import '../bloc/banner/banner_state.dart';
+import '../../data/models/banner.dart';
 
 class BannerCarousel extends StatefulWidget {
-  const BannerCarousel({super.key});
+  final List<BannerModel> banners;
+
+  const BannerCarousel({
+    super.key,
+    required this.banners,
+  });
 
   @override
   State<BannerCarousel> createState() => _BannerCarouselState();
@@ -19,7 +20,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
 
-  Widget buildCarousel(List<BannerEntity> banners) {
+  Widget buildCarousel(List<BannerModel> banners) {
     return CarouselSlider(
       carouselController: _controller,
       options: CarouselOptions(
@@ -61,7 +62,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
     );
   }
 
-  Widget buildCarouselIndicator(List<BannerEntity> banners) {
+  Widget buildCarouselIndicator(List<BannerModel> banners) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: banners.asMap().entries.map((banner) {
@@ -80,28 +81,11 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BannerBloc, BannerState>(
-      builder: (context, state) {
-        if (state is BannerDone) {
-          return Column(
-            children: [
-              buildCarousel(state.banners!),
-              buildCarouselIndicator(state.banners!),
-            ],
-          );
-        }
-
-        if (state is BannerError) {
-          return const Center(
-            child: Icon(Icons.refresh),
-          );
-        }
-
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.25,
-          child: const Center(child: SBLoading()),
-        );
-      },
+    return Column(
+      children: [
+        buildCarousel(widget.banners),
+        buildCarouselIndicator(widget.banners),
+      ],
     );
   }
 }

@@ -13,15 +13,30 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
     on<GetBanner>(onGetBanner);
   }
 
-  void onGetBanner(GetBanner event, Emitter<BannerState> emit) async {
+  void onGetBanner(
+    GetBanner event,
+    Emitter<BannerState> emit,
+  ) async {
+    emit(const BannerLoading());
+
     final dataState = await _getBannerUseCase();
 
     if (dataState is DataSuccess) {
-      final banners = (dataState.data!.data as List)
-          .map((item) => BannerModel.fromJson(item))
-          .toList();
+      final status = dataState.data!.status;
 
-      emit(BannerDone(banners));
+      if (status == 1) {
+        final banners = (dataState.data!.data as List)
+            .map(
+              (item) => BannerModel.fromJson(item),
+            )
+            .toList();
+
+        emit(
+          BannerDone(banner: banners),
+        );
+      } else {
+        emit(const BannerNotFound());
+      }
     }
 
     if (dataState is DataFailed) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:southbank/core/components/dialog.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
@@ -368,9 +369,6 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
     _nameController.text = reservationConfirm.personName!;
     _phoneController.text = reservationConfirm.personPhone!;
 
-    print('Selected Payment Method:');
-    print(selectedPaymentMethod);
-
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
@@ -726,7 +724,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                         Expanded(
                           child: SBTextFormField(
                             controller: _notesController,
-                            hintText: 'e.g. : Please turn down AC temperature a bit, etc...',
+                            hintText: '',
                             fillColor: Colors.black12,
                             contentPadding: const EdgeInsets.all(10.0),
                             enabledBorder: InputBorder.none,
@@ -748,7 +746,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                   return SBButton(
                     onPressed: (state is ReservationLoading)
                         ? null
-                        : () {
+                        : () async {
                             if (selectedPaymentMethod != null) {
                               bool ccIsValid = true;
                               String? cardNumber, cardMonth, cardYear, cardCVV;
@@ -786,6 +784,8 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                                   ),
                                 );
                               }
+                            } else {
+                              await basicDialog(context, 'Information', 'Please select payment method first');
                             }
                           },
                     child: (state is ReservationLoading)
