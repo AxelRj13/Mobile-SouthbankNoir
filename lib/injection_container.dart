@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:southbank/features/reservation/domain/usecases/get_payment_method.dart';
-import 'package:southbank/features/reservation/presentation/bloc/payment_method/payment_method_bloc.dart';
 
 import 'core/network/dio_client.dart';
 import 'features/auth/data/data_sources/auth_api_service.dart';
@@ -32,6 +30,7 @@ import 'features/events/data/data_sources/remote/event_api_service.dart';
 import 'features/events/data/repository/event_repository_impl.dart';
 import 'features/events/domain/repository/event_repository.dart';
 import 'features/events/domain/usecases/get_event.dart';
+import 'features/events/domain/usecases/get_events.dart';
 import 'features/events/domain/usecases/get_today_event.dart';
 import 'features/events/presentation/bloc/event_bloc.dart';
 import 'features/home/data/data_sources/remote/popup_api_service.dart';
@@ -83,9 +82,11 @@ import 'features/reservation/data/repository/reservation_repository_impl.dart';
 import 'features/reservation/domain/repository/reservation_repository.dart';
 import 'features/reservation/domain/usecases/apply_promo.dart';
 import 'features/reservation/domain/usecases/create_reservation.dart';
+import 'features/reservation/domain/usecases/get_payment_method.dart';
 import 'features/reservation/domain/usecases/get_reservation_detail.dart';
 import 'features/reservation/domain/usecases/get_reservations.dart';
 import 'features/reservation/domain/usecases/get_tables.dart';
+import 'features/reservation/presentation/bloc/payment_method/payment_method_bloc.dart';
 import 'features/reservation/presentation/bloc/promo/reservation_promo_bloc.dart';
 import 'features/reservation/presentation/bloc/reservation/reservation_bloc.dart';
 import 'features/reservation/presentation/bloc/table/table_bloc.dart';
@@ -209,6 +210,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<GetEventUseCase>(
     () => GetEventUseCase(sl()),
   );
+  sl.registerLazySingleton<GetEventsUseCase>(
+    () => GetEventsUseCase(sl()),
+  );
   sl.registerLazySingleton<GetTodayEventUseCase>(
     () => GetTodayEventUseCase(sl()),
   );
@@ -287,7 +291,7 @@ Future<void> initializeDependencies() async {
     () => BannerBloc(sl()),
   );
   sl.registerFactory<EventBloc>(
-    () => EventBloc(sl(), sl()),
+    () => EventBloc(sl(), sl(), sl()),
   );
   sl.registerFactory<OutletBloc>(
     () => OutletBloc(sl()),

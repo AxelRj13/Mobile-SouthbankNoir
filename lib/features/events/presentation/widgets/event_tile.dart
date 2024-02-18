@@ -5,6 +5,7 @@ import '../../../../config/theme/app_theme.dart';
 
 class EventTile extends StatelessWidget {
   final bool isTodayEvent;
+  final String? id;
   final String? headerLabel;
   final String? image;
   final String? artist;
@@ -16,6 +17,7 @@ class EventTile extends StatelessWidget {
   const EventTile({
     super.key,
     required this.isTodayEvent,
+    required this.id,
     required this.headerLabel,
     required this.image,
     required this.artist,
@@ -57,17 +59,21 @@ class EventTile extends StatelessWidget {
   }
 
   Widget _buildInfo(IconData icon, String label) {
-    return Wrap(
+    return Row(
       children: [
         Icon(
           icon,
           size: 18.0,
         ),
         const SizedBox(width: 8.0),
-        Text(
-          label,
-          style: TextStyle(color: accentColor),
-        )
+        Flexible(
+          child: Text(
+            label,
+            style: TextStyle(color: accentColor),
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+          ),
+        ),
       ],
     );
   }
@@ -98,42 +104,50 @@ class EventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (!isTodayEvent) _buildHeader(),
-        Card(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildImage(),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildInfo(Icons.person, artist!),
-                        const SizedBox(height: 10.0),
-                        _buildInfo(Icons.schedule, timeStart!),
-                        const SizedBox(height: 10.0),
-                        _buildInfo(Icons.location_on, storeName!),
-                        const SizedBox(height: 10.0),
-                        _buildButton(),
-                      ],
+    return GestureDetector(
+      onTap: () {
+        router.goNamed(
+          'eventDetail',
+          pathParameters: {'eventId': id!},
+        );
+      },
+      child: Column(
+        children: [
+          if (!isTodayEvent) _buildHeader(),
+          Card(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildImage(),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildInfo(Icons.person, artist!),
+                          const SizedBox(height: 3.0),
+                          _buildInfo(Icons.schedule, timeStart!),
+                          const SizedBox(height: 3.0),
+                          _buildInfo(Icons.location_on, storeName!),
+                          const SizedBox(height: 3.0),
+                          _buildButton(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

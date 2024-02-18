@@ -28,6 +28,7 @@ class _EventTodayState extends State<EventToday> {
               padding: const EdgeInsets.only(bottom: 10.0),
               child: EventTile(
                 isTodayEvent: true,
+                id: event.id,
                 headerLabel: 'Today\'s Event',
                 image: event.image,
                 artist: event.artist,

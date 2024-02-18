@@ -55,4 +55,28 @@ class EventRepositoryImpl implements EventRepository {
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<DataState<ApiResponseEntity>> getEvent({
+    required String id,
+  }) async {
+    try {
+      final httpResponse = await _eventApiService.getEvent(id);
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      } else {
+        return DataFailed(
+          DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.unknown,
+            requestOptions: httpResponse.response.requestOptions,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
 }

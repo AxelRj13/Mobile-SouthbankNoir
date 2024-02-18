@@ -70,6 +70,20 @@ class _ReservationScreenState extends State<ReservationScreen> {
             BlocBuilder<TableBloc, TableState>(
               builder: (context, state) {
                 return IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    BlocProvider.of<TableBloc>(context).add(
+                      GetTables(
+                        date: DateFormat('yyyy-MM-dd').format(selectedDate),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            BlocBuilder<TableBloc, TableState>(
+              builder: (context, state) {
+                return IconButton(
                   icon: const Icon(Icons.calendar_month),
                   onPressed: () async {
                     final newSelectedDate = await selectDate(context);

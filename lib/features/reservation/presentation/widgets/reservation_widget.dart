@@ -200,6 +200,9 @@ class _ReservationWidgetState extends State<ReservationWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -243,55 +246,48 @@ class _ReservationWidgetState extends State<ReservationWidget> {
           Expanded(
             child: InteractiveViewer(
               minScale: 0.2,
-              maxScale: 3,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final width = constraints.maxWidth;
-                  final height = constraints.maxHeight;
-
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(widget.tabIndex == 1 ? 'assets/img/floor-2.png' : 'assets/img/floor-1.png'),
-                      ...widget.tables.map(
-                        (table) {
-                          return Positioned(
-                            top: table.top == null ? null : height * table.top!,
-                            right: table.right == null ? null : width * table.right!,
-                            bottom: table.bottom == null ? null : height * table.bottom!,
-                            left: table.left == null ? null : width * table.left!,
-                            child: GestureDetector(
-                              onTap: table.isAvailable!
-                                  ? () {
-                                      selectTable(
-                                        theme: theme,
-                                        table: table,
-                                      );
-                                    }
-                                  : null,
-                              child: Container(
-                                width: width * (widget.tabIndex == 0 ? 0.05 : 0.04),
-                                height: width * (widget.tabIndex == 0 ? 0.05 : 0.04),
-                                decoration: BoxDecoration(
-                                    color: !table.isAvailable!
-                                        ? Colors.green
-                                        : _selectedTables.where((selectedTable) => selectedTable.id == table.id).isNotEmpty
-                                            ? accentColor
-                                            : Colors.grey,
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                  child: Text(
-                                    table.tableNo!.toLowerCase().replaceAll('table ', ''),
-                                  ),
-                                ),
+              maxScale: 2,
+              child: Stack(
+                children: [
+                  Image.asset(widget.tabIndex == 1 ? 'assets/img/floor-2.png' : 'assets/img/floor-1.png'),
+                  ...widget.tables.map(
+                    (table) {
+                      return Positioned(
+                        top: table.top == null ? null : height * table.top!,
+                        right: table.right == null ? null : width * table.right!,
+                        bottom: table.bottom == null ? null : height * table.bottom!,
+                        left: table.left == null ? null : width * table.left!,
+                        child: GestureDetector(
+                          onTap: table.isAvailable!
+                              ? () {
+                                  selectTable(
+                                    theme: theme,
+                                    table: table,
+                                  );
+                                }
+                              : null,
+                          child: Container(
+                            width: width * (widget.tabIndex == 0 ? 0.045 : 0.035),
+                            height: width * (widget.tabIndex == 0 ? 0.045 : 0.035),
+                            decoration: BoxDecoration(
+                                color: !table.isAvailable!
+                                    ? Colors.green
+                                    : _selectedTables.where((selectedTable) => selectedTable.id == table.id).isNotEmpty
+                                        ? accentColor
+                                        : Colors.grey,
+                                shape: BoxShape.circle),
+                            child: Center(
+                              child: Text(
+                                table.tableNo!.toLowerCase().replaceAll('table ', ''),
+                                style: TextStyle(fontSize: width < 450 ? 9 : 11),
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),
@@ -343,8 +339,6 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                         );
                   },
                 );
-
-                // router.goNamed('confirmation', extra: reservationConfirm);
               },
             ),
           ),

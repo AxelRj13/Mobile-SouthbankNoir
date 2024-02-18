@@ -3,14 +3,13 @@ import '../../../../core/resources/data_state.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../repository/event_repository.dart';
 
-class GetEventUseCase implements UseCase<DataState<ApiResponseEntity>, String> {
+class GetEventsUseCase implements UseCase<DataState<ApiResponseEntity>, void> {
   final EventRepository _eventRepository;
 
-  GetEventUseCase(this._eventRepository);
+  GetEventsUseCase(this._eventRepository);
 
   @override
-  Future<DataState<ApiResponseEntity>> call({String? params}) {
-    final id = params!;
-    return _eventRepository.getEvent(id: id);
+  Future<DataState<ApiResponseEntity>> call({void params}) {
+    return _eventRepository.getEvents();
   }
 }

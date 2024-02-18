@@ -18,5 +18,9 @@ class PopupLoading extends PopupState {
 }
 
 class PopupDone extends PopupState {
-  const PopupDone(PopupModel popup) : super(popup: popup);
+  const PopupDone({
+    required PopupModel popup,
+  }) : super(
+          popup: popup,
+        );
 }

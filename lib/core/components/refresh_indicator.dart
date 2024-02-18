@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:southbank/config/theme/app_theme.dart';
+
+import '../../config/theme/app_theme.dart';
 
 class SBRefreshIndicator extends StatefulWidget {
   final Future<void> Function() onRefresh;

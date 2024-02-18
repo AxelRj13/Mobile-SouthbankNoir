@@ -53,6 +53,10 @@ class CouponDone extends CouponState {
   const CouponDone(CouponModel coupon) : super(coupon: coupon);
 }
 
+class CouponNotFound extends CouponState {
+  const CouponNotFound();
+}
+
 class CouponError extends CouponState {
   const CouponError(DioException error) : super(error: error);
 }

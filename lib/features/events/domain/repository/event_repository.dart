@@ -3,5 +3,10 @@ import '../../../../core/resources/data_state.dart';
 
 abstract class EventRepository {
   Future<DataState<ApiResponseEntity>> getEvents();
+
   Future<DataState<ApiResponseEntity>> getTodayEvent();
+
+  Future<DataState<ApiResponseEntity>> getEvent({
+    required String id,
+  });
 }

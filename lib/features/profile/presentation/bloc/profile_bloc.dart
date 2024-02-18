@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:southbank/core/resources/message_response.dart';
 
 import '../../../../core/resources/data_state.dart';
+import '../../../../core/resources/message_response.dart';
 import '../../../../injection_container.dart';
 import '../../../auth/data/models/user.dart';
 import '../../domain/entities/profile_request.dart';

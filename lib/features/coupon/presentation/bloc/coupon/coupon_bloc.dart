@@ -40,19 +40,14 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
 
         final points = response.containsKey('points') ? response['points'] : 0;
 
-        final coupons = response.containsKey('coupons')
-            ? (response['coupons'] as List)
-                .map((item) => CouponListModel.fromJson(item))
-                .toList()
-            : null;
+        final coupons = response.containsKey('coupons') ? (response['coupons'] as List).map((item) => CouponListModel.fromJson(item)).toList() : null;
 
-        final myCoupons = response.containsKey('my_coupons')
-            ? (response['my_coupons'] as List)
-                .map((item) => CouponListModel.fromJson(item))
-                .toList()
-            : null;
+        final myCoupons =
+            response.containsKey('my_coupons') ? (response['my_coupons'] as List).map((item) => CouponListModel.fromJson(item)).toList() : null;
 
         emit(CouponsDone(points, coupons, myCoupons));
+      } else {
+        emit(const CouponNotFound());
       }
     }
 
@@ -77,6 +72,8 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
         final coupon = CouponModel.fromJson(dataState.data!.data);
 
         emit(CouponDone(coupon));
+      } else {
+        emit(const CouponNotFound());
       }
     }
 
@@ -101,6 +98,8 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
         final coupon = CouponModel.fromJson(dataState.data!.data);
 
         emit(CouponDone(coupon));
+      } else {
+        emit(const CouponNotFound());
       }
     }
 

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/components/loading.dart';
 import '../../../../core/constants/constants.dart';
-import '../bloc/coupon/coupon_bloc.dart';
+import '../../../../core/error/not_found.dart';
 import '../bloc/coupon/coupon_state.dart';
 import 'coupon_tile.dart';
 
 class TabMyCoupons extends StatefulWidget {
-  const TabMyCoupons({super.key});
+  final CouponState state;
+
+  const TabMyCoupons({
+    super.key,
+    required this.state,
+  });
 
   @override
   State<TabMyCoupons> createState() => _TabMyCouponsState();
@@ -17,33 +21,27 @@ class TabMyCoupons extends StatefulWidget {
 class _TabMyCouponsState extends State<TabMyCoupons> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: BlocBuilder<CouponBloc, CouponState>(
-        builder: (_, state) {
-          if (state is CouponLoading) {
-            return const SBLoading();
-          }
+    if (widget.state is CouponLoading) {
+      return const SBLoading();
+    }
 
-          if (state is CouponError) {
-            return const Icon(Icons.refresh);
-          }
+    if (widget.state is CouponError) {
+      return const Icon(Icons.refresh);
+    }
 
-          if (state is CouponsDone) {
-            return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return CouponTileWidget(
-                  tabIndex: myCoupon,
-                  coupon: state.myCoupons![index],
-                );
-              },
-              itemCount: state.myCoupons!.length,
-            );
-          }
+    if (widget.state is CouponsDone) {
+      return Column(
+        children: widget.state.myCoupons!
+            .map(
+              (coupon) => CouponTileWidget(
+                tabIndex: myCoupon,
+                coupon: coupon,
+              ),
+            )
+            .toList(),
+      );
+    }
 
-          return const Text('No data');
-        },
-      ),
-    );
+    return const NotFoundWidget();
   }
 }

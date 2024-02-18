@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:southbank/core/components/dialog.dart';
 
 import '../../../../config/theme/app_theme.dart';
+import '../../../../core/components/bullet_text_list.dart';
 import '../../../../core/components/button.dart';
+import '../../../../core/components/dialog.dart';
 import '../../../../core/components/loading.dart';
 import '../../../../core/components/text_form_field.dart';
 import '../../../../core/utils/credit_card_validator.dart';
@@ -375,6 +376,24 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
+            Card(
+              margin: const EdgeInsets.all(10.0),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  color: accentColor,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: SBBulletTextList(
+                  textList: [
+                    'Once reserved, you cannot move or cancel your reservation table',
+                    'Please come to the outlet before scheduled time on your reservation day to avoid cancellation'
+                  ],
+                ),
+              ),
+            ),
             Card(
               margin: const EdgeInsets.all(10.0),
               shape: RoundedRectangleBorder(

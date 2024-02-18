@@ -2,6 +2,12 @@ abstract class EventEvent {
   const EventEvent();
 }
 
+class GetEvent extends EventEvent {
+  final String id;
+
+  const GetEvent({required this.id});
+}
+
 class GetEvents extends EventEvent {
   const GetEvents();
 }

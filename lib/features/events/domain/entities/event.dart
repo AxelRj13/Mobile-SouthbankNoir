@@ -7,6 +7,7 @@ class EventEntity extends Equatable {
   final String? storeId;
   final String? storeName;
   final String? image;
+  final String? description;
   final String? dateStart;
   final String? timeStart;
   final String? rsvpDate;
@@ -20,6 +21,7 @@ class EventEntity extends Equatable {
     this.storeId,
     this.storeName,
     this.image,
+    this.description,
     this.dateStart,
     this.timeStart,
     this.rsvpDate,
@@ -35,6 +37,7 @@ class EventEntity extends Equatable {
         storeId,
         storeName,
         image,
+        description,
         dateStart,
         timeStart,
         rsvpDate,
