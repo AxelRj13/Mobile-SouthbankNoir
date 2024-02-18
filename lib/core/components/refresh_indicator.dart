@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:southbank/config/theme/app_theme.dart';
+
+import '../../config/theme/app_theme.dart';
 
 class SBRefreshIndicator extends StatefulWidget {
   final Future<void> Function() onRefresh;
@@ -21,7 +22,9 @@ class SBRefreshIndicator extends StatefulWidget {
 class _SBRefreshIndicatorState extends State<SBRefreshIndicator> {
   Widget _buildWidgetListDataIOS() {
     return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
       slivers: [
         CupertinoSliverRefreshControl(
           onRefresh: widget.onRefresh,
@@ -37,11 +40,8 @@ class _SBRefreshIndicatorState extends State<SBRefreshIndicator> {
     return RefreshIndicator(
       color: accentColor,
       onRefresh: widget.onRefresh,
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: widget.items,
-        ),
+      child: ListView(
+        children: widget.items,
       ),
     );
   }

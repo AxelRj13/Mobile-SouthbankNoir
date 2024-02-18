@@ -8,7 +8,6 @@ import 'bloc/confirmation/confirmation_bloc.dart';
 import 'bloc/confirmation/confirmation_state.dart';
 import 'bloc/payment/payment_bloc.dart';
 import 'bloc/payment/payment_event.dart';
-import 'bloc/payment/payment_state.dart';
 import 'widgets/payment_confirm_widget.dart';
 
 class PaymentConfirmScreen extends StatefulWidget {
@@ -64,7 +63,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
               }
             }
 
-            if (state is PaymentError) {
+            if (state is ConfirmationPaymentError) {
               if (context.mounted) await exceptionDialog(context);
             }
           },

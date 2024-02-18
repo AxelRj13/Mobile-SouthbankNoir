@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/resources/data_state.dart';
+import '../../../../../core/resources/message_response.dart';
 import '../../../data/models/invoice.dart';
 import '../../../domain/usecases/get_payment.dart';
 import 'payment_event.dart';
@@ -28,6 +29,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
+      print(dataState.data);
+
       if (status == 1) {
         final payment = InvoiceModel.fromJson(
           dataState.data!.data,
@@ -36,6 +39,18 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         emit(
           PaymentDone(
             payment: payment,
+          ),
+        );
+      } else {
+        final messageResponse = MessageResponse(
+          status: false,
+          title: 'Oppss...',
+          message: dataState.data!.message!,
+        );
+
+        emit(
+          PaymentExpired(
+            message: messageResponse,
           ),
         );
       }

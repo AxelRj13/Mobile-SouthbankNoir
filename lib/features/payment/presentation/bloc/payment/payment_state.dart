@@ -42,6 +42,14 @@ class PaymentDone extends PaymentState {
         );
 }
 
+class PaymentExpired extends PaymentState {
+  const PaymentExpired({
+    required MessageResponse message,
+  }) : super(
+          message: message,
+        );
+}
+
 class PaymentError extends PaymentState {
   const PaymentError(
     DioException error,

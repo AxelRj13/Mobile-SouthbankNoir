@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:southbank/core/resources/message_response.dart';
+
+import '../../../../../core/resources/message_response.dart';
 
 abstract class ComplaintState extends Equatable {
   final MessageResponse? message;

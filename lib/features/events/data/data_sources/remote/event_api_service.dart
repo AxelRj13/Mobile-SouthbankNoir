@@ -15,4 +15,10 @@ abstract class EventApiService {
 
   @POST('event/today/get')
   Future<HttpResponse<ApiResponseModel>> getTodayEvent();
+
+  @POST('event/details')
+  @FormUrlEncoded()
+  Future<HttpResponse<ApiResponseModel>> getEvent(
+    @Field('id') String id,
+  );
 }

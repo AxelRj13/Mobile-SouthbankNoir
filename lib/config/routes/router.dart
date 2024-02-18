@@ -8,6 +8,7 @@ import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/complaint/presentation/complaint_screen.dart';
 import '../../features/coupon/presentation/coupon_detail_screen.dart';
 import '../../features/coupon/presentation/coupon_screen.dart';
+import '../../features/events/presentation/event_detail_screen.dart';
 import '../../features/news/presentation/news_detail_screen.dart';
 import '../../features/outlet/presentation/outlet_screen.dart';
 import '../../features/payment/data/models/payment.dart';
@@ -147,6 +148,13 @@ final GoRouter router = GoRouter(
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: 'event/detail/:eventId',
+          name: 'eventDetail',
+          builder: (context, state) => EventDetailScreen(
+            id: state.pathParameters['eventId']!,
+          ),
         ),
       ],
     ),

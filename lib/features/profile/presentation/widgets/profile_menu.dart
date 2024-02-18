@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:southbank/config/routes/router.dart';
 
+import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/dialog.dart';
 import '../../../../core/constants/constants.dart';

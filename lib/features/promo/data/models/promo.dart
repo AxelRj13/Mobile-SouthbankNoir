@@ -1,4 +1,4 @@
-import 'package:southbank/features/promo/domain/entities/promo.dart';
+import '../../domain/entities/promo.dart';
 
 class PromoModel extends PromoEntity {
   const PromoModel({

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/core/components/dialog.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
+import '../../../../core/components/dialog.dart';
 import '../../../../core/components/loading.dart';
 import '../../domain/entities/coupon.dart';
 import '../bloc/coupon/coupon_bloc.dart';
@@ -18,8 +18,7 @@ class DetailCouponInformation extends StatefulWidget {
   const DetailCouponInformation({super.key, required this.coupon});
 
   @override
-  State<DetailCouponInformation> createState() =>
-      _DetailCouponInformationState();
+  State<DetailCouponInformation> createState() => _DetailCouponInformationState();
 }
 
 class _DetailCouponInformationState extends State<DetailCouponInformation> {
@@ -62,10 +61,7 @@ class _DetailCouponInformationState extends State<DetailCouponInformation> {
                             child: Center(
                               child: Text(
                                 widget.coupon.price!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(color: accentColor),
+                                style: Theme.of(context).textTheme.titleLarge!.copyWith(color: accentColor),
                               ),
                             ),
                           ),
@@ -80,8 +76,7 @@ class _DetailCouponInformationState extends State<DetailCouponInformation> {
                                   'Validity Period',
                                   style: TextStyle(color: accentColor),
                                 ),
-                                Text(
-                                    '${widget.coupon.startDate} - ${widget.coupon.endDate}'),
+                                Text('${widget.coupon.startDate} - ${widget.coupon.endDate}'),
                               ],
                             ),
                           ),

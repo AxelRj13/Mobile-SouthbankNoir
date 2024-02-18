@@ -2,11 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/core/components/dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
+import '../../../../core/components/dialog.dart';
 import '../../../../core/components/loading.dart';
 import '../bloc/confirmation/confirmation_bloc.dart';
 import '../bloc/confirmation/confirmation_event.dart';
@@ -278,6 +278,19 @@ class _PaymentConfirmWidgetState extends State<PaymentConfirmWidget> {
                   ),
                 ],
               ),
+            ),
+          );
+        }
+
+        if (state is PaymentExpired) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.info, size: 40.0),
+                const SizedBox(height: 10.0),
+                Text(state.message!.message),
+              ],
             ),
           );
         }

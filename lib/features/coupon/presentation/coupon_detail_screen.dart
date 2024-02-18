@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/features/coupon/presentation/bloc/coupon/coupon_bloc.dart';
-import 'package:southbank/features/coupon/presentation/bloc/coupon_purchased/coupon_purchased_bloc.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../injection_container.dart';
+import 'bloc/coupon/coupon_bloc.dart';
+import 'bloc/coupon_purchased/coupon_purchased_bloc.dart';
 import 'widgets/coupon_detail.dart';
 
 class CouponDetailScreen extends StatefulWidget {
