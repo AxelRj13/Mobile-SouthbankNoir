@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/loading.dart';
 import '../../../../core/constants/constants.dart';
 import '../../domain/entities/coupon_list.dart';
+import '../bloc/coupon/coupon_bloc.dart';
+import '../bloc/coupon/coupon_event.dart';
+import '../coupon_detail_screen.dart';
 
 class CouponTileWidget extends StatelessWidget {
   final String tabIndex;
@@ -48,16 +51,12 @@ class CouponTileWidget extends StatelessWidget {
     final height = MediaQuery.of(context).size.height / 4.75;
 
     return coupon.image == null || coupon.image == ''
-        ? imageWidget(
-            child: Icon(Icons.error, color: accentColor), height: height)
+        ? imageWidget(child: Icon(Icons.error, color: accentColor), height: height)
         : CachedNetworkImage(
             imageUrl: coupon.image!,
-            imageBuilder: (context, imageProvider) =>
-                imageWidget(imageProvider: imageProvider, height: height),
-            progressIndicatorBuilder: (context, url, progress) => imageWidget(
-                child: const Center(child: SBLoading()), height: height),
-            errorWidget: (context, url, error) => imageWidget(
-                child: Icon(Icons.error, color: accentColor), height: height),
+            imageBuilder: (context, imageProvider) => imageWidget(imageProvider: imageProvider, height: height),
+            progressIndicatorBuilder: (context, url, progress) => imageWidget(child: const Center(child: SBLoading()), height: height),
+            errorWidget: (context, url, error) => imageWidget(child: Icon(Icons.error, color: accentColor), height: height),
           );
   }
 
@@ -93,8 +92,7 @@ class CouponTileWidget extends StatelessWidget {
     info.add(
       TextSpan(
         text: information,
-        style:
-            Theme.of(context).textTheme.bodySmall!.copyWith(color: accentColor),
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: accentColor),
       ),
     );
 
@@ -110,10 +108,7 @@ class CouponTileWidget extends StatelessWidget {
         children: [
           Text(
             coupon.name ?? '',
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium!
-                .copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8.0),
           Row(
@@ -141,11 +136,15 @@ class CouponTileWidget extends StatelessWidget {
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
       child: GestureDetector(
         onTap: () {
-          router.goNamed(
-            'couponDetail',
-            pathParameters: {
-              'type': tabIndex,
-              'couponId': coupon.id!,
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+              builder: (context) => CouponDetailScreen(type: tabIndex, id: coupon.id!),
+            ),
+          )
+              .then(
+            (value) {
+              context.read<CouponBloc>().add(const GetCoupons());
             },
           );
         },

@@ -201,8 +201,9 @@ class _ReservationWidgetState extends State<ReservationWidget> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    // Karena width offset padding kiri-kanan harusnya sama dengan height dari gambar
+    // jadi untuk height menggunakan variabel width
     final width = size.width;
-    final height = size.height;
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -249,13 +250,13 @@ class _ReservationWidgetState extends State<ReservationWidget> {
               maxScale: 2,
               child: Stack(
                 children: [
-                  Image.asset(widget.tabIndex == 1 ? 'assets/img/floor-2.png' : 'assets/img/floor-1.png'),
+                  Container(color: accentColor, child: Image.asset(widget.tabIndex == 1 ? 'assets/img/floor-2.png' : 'assets/img/floor-1.png')),
                   ...widget.tables.map(
                     (table) {
                       return Positioned(
-                        top: table.top == null ? null : height * table.top!,
+                        top: table.top == null ? null : (width - 20.0) * table.top!,
                         right: table.right == null ? null : width * table.right!,
-                        bottom: table.bottom == null ? null : height * table.bottom!,
+                        bottom: table.bottom == null ? null : (width - 20.0) * table.bottom!,
                         left: table.left == null ? null : width * table.left!,
                         child: GestureDetector(
                           onTap: table.isAvailable!
