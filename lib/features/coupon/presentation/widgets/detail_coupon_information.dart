@@ -32,6 +32,8 @@ class _DetailCouponInformationState extends State<DetailCouponInformation> {
             state.message!.title,
             state.message!.message,
           );
+
+          if (context.mounted) Navigator.of(context).pop();
         }
 
         if (state is CouponPurchasedError) {
