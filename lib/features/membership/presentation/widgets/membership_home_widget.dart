@@ -57,9 +57,7 @@ class _MembershipHomeWidgetState extends State<MembershipHomeWidget> {
                 ),
                 const SizedBox(height: 5.0),
                 Text(
-                  state is MembershipDone
-                      ? state.membership!.name!.toUpperCase()
-                      : '',
+                  state is MembershipDone ? state.membership!.name!.toUpperCase() : 'please wait'.toUpperCase(),
                   style: TextStyle(color: accentColor),
                 ),
               ],

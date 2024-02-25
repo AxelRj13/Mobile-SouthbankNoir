@@ -5,6 +5,8 @@ import '../../../core/components/dialog.dart';
 import '../../../injection_container.dart';
 import '../../events/presentation/bloc/event_bloc.dart';
 import '../../events/presentation/bloc/event_event.dart';
+import '../../membership/presentation/bloc/membership_bloc.dart';
+import '../../membership/presentation/bloc/membership_event.dart';
 import '../../promo/presentation/bloc/banner/banner_bloc.dart';
 import '../../promo/presentation/bloc/banner/banner_event.dart';
 import 'bloc/popup_bloc.dart';
@@ -39,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<MembershipBloc>(
+            create: (BuildContext context) => getIt.get<MembershipBloc>()..add(const GetMembership()),
+          ),
           BlocProvider<BannerBloc>(
             create: (BuildContext context) => getIt.get<BannerBloc>()..add(const GetBanner()),
           ),

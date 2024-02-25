@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/features/complaint/presentation/bloc/types/complaint_type_bloc.dart';
+import 'package:southbank/features/complaint/presentation/bloc/types/complaint_type_event.dart';
 
 import '../../../injection_container.dart';
 import 'bloc/complaint/complaint_bloc.dart';
@@ -12,16 +14,22 @@ class ComplaintScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Complaint')),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: BlocProvider<ComplaintBloc>(
-            create: (BuildContext context) => getIt.get<ComplaintBloc>(),
-            child: const ComplaintForm(),
-          ),
-        ),
-      ),
+      body: MultiBlocProvider(
+          providers: [
+            BlocProvider<ComplaintBloc>(
+              create: (context) => getIt.get<ComplaintBloc>(),
+            ),
+            BlocProvider<ComplaintTypeBloc>(
+              create: (context) => getIt.get<ComplaintTypeBloc>()..add(const GetComplaintTypes()),
+            ),
+          ],
+          child: const SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: ComplaintForm(),
+            ),
+          )),
     );
   }
 }

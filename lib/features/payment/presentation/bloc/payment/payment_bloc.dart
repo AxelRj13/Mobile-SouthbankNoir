@@ -29,8 +29,6 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
-      print(dataState.data);
-
       if (status == 1) {
         final payment = InvoiceModel.fromJson(
           dataState.data!.data,

@@ -9,10 +9,18 @@ abstract class NewsState extends Equatable {
   final List<NewsListModel>? newsList;
   final DioException? error;
 
-  const NewsState({this.news, this.newsList, this.error});
+  const NewsState({
+    this.news,
+    this.newsList,
+    this.error,
+  });
 
   @override
-  List<Object> get props => [news!, newsList!, error!];
+  List<Object> get props => [
+        news!,
+        newsList!,
+        error!,
+      ];
 }
 
 class NewsLoading extends NewsState {
@@ -20,13 +28,29 @@ class NewsLoading extends NewsState {
 }
 
 class NewsListDone extends NewsState {
-  const NewsListDone(List<NewsListModel> newsList) : super(newsList: newsList);
+  const NewsListDone({
+    required List<NewsListModel> newsList,
+  }) : super(
+          newsList: newsList,
+        );
 }
 
 class NewsDone extends NewsState {
-  const NewsDone(NewsModel news) : super(news: news);
+  const NewsDone({
+    required NewsModel news,
+  }) : super(
+          news: news,
+        );
+}
+
+class NewsNotFound extends NewsState {
+  const NewsNotFound();
 }
 
 class NewsError extends NewsState {
-  const NewsError(DioException error) : super(error: error);
+  const NewsError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }

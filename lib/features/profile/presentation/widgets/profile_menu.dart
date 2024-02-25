@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
-import '../../../../core/components/dialog.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../membership/presentation/bloc/membership_bloc.dart';
+import '../../../membership/presentation/bloc/membership_state.dart';
 import '../../data/models/menu.dart';
 
 class ProfileMenu extends StatefulWidget {
@@ -42,14 +44,74 @@ class _ProfileMenuState extends State<ProfileMenu> {
       id: 4,
       label: 'Terms & Conditions',
       icon: Icons.checklist,
-      route: ProfileMenuRouteModel(route: 'comingsoon'),
+      route: ProfileMenuRouteModel(route: 'tnc'),
     ),
     const ProfileMenuModel(
       id: 5,
+      label: 'Privacy & Policy',
+      icon: Icons.shield,
+      route: ProfileMenuRouteModel(route: 'privacyPolicy'),
+    ),
+    const ProfileMenuModel(
+      id: 6,
       label: 'App Version',
       icon: Icons.info,
     ),
   ];
+
+  Widget buildMenuTile({
+    required ProfileMenuModel menu,
+    MembershipState? state,
+  }) {
+    String urlContent = 'https://southbanknoir.com/';
+    Widget trailing = const Icon(Icons.chevron_right);
+
+    if (menu.id == 6) {
+      if (state is MembershipDone) {
+        trailing = Text(state.membership!.appVersion!);
+      } else {
+        trailing = const Text('-');
+      }
+    }
+
+    if (menu.id == 4) {
+      if (state is MembershipDone) {
+        urlContent = state.membership!.tncUrl!;
+        urlContent = state.membership!.tncUrl!;
+      }
+    }
+
+    if (menu.id == 5) {
+      if (state is MembershipDone) {
+        urlContent = state.membership!.privacyPolicyUrl!;
+      }
+    }
+
+    return ListTile(
+      leading: Icon(menu.icon),
+      title: Text(menu.label!),
+      trailing: trailing,
+      onTap: () {
+        if (menu.route != null) {
+          if (menu.id == 1) {
+            router.goNamed(menu.route!.route!);
+          } else if (menu.id == 4 || menu.id == 5) {
+            router.goNamed(
+              menu.route!.route!,
+              queryParameters: {
+                'urlContent': urlContent,
+              },
+            );
+          } else {
+            router.goNamed(
+              menu.route!.route!,
+              pathParameters: menu.route!.parameter ?? {},
+            );
+          }
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,27 +124,15 @@ class _ProfileMenuState extends State<ProfileMenu> {
         ),
         child: Column(
           children: menu.map((menu) {
-            final trailing = menu.id == 5 ? const Text('1.1.0') : const Icon(Icons.chevron_right);
+            if (menu.id! > 3) {
+              return BlocBuilder<MembershipBloc, MembershipState>(
+                builder: (_, state) {
+                  return buildMenuTile(menu: menu, state: state);
+                },
+              );
+            }
 
-            return ListTile(
-              leading: Icon(menu.icon),
-              title: Text(menu.label!),
-              trailing: trailing,
-              onTap: () {
-                if (menu.route != null) {
-                  if (menu.id == 1) {
-                    router.goNamed(menu.route!.route!);
-                  } else if (menu.id == 4) {
-                    comingsoonDialog(context);
-                  } else {
-                    router.goNamed(
-                      menu.route!.route!,
-                      pathParameters: menu.route!.parameter ?? {},
-                    );
-                  }
-                }
-              },
-            );
+            return buildMenuTile(menu: menu);
           }).toList(),
         ),
       ),

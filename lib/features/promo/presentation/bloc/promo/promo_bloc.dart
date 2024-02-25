@@ -24,17 +24,21 @@ class PromoBloc extends Bloc<PromoEvent, PromoState> {
     GetPromoList event,
     Emitter<PromoState> emit,
   ) async {
+    emit(const PromoLoading());
+
     final dataState = await _getPromoListUseCase();
 
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        final news = (dataState.data!.data as List)
-            .map((item) => PromoListModel.fromJson(item))
-            .toList();
+        final promo = (dataState.data!.data as List).map((item) => PromoListModel.fromJson(item)).toList();
 
-        emit(PromoListDone(news));
+        emit(
+          PromoListDone(promoList: promo),
+        );
+      } else {
+        emit(const PromoNotFound());
       }
     }
 
@@ -54,9 +58,13 @@ class PromoBloc extends Bloc<PromoEvent, PromoState> {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        final news = PromoModel.fromJson(dataState.data!.data);
+        final promo = PromoModel.fromJson(dataState.data!.data);
 
-        emit(PromoDone(news));
+        emit(
+          PromoDone(promo: promo),
+        );
+      } else {
+        emit(const PromoNotFound());
       }
     }
 

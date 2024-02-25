@@ -63,8 +63,6 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
-      print(dataState.data!);
-
       if (status == 1) {
         _events = (dataState.data!.data as List)
             .map(

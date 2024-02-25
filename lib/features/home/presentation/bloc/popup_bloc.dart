@@ -22,14 +22,10 @@ class PopupBloc extends Bloc<PopupEvent, PopupState> {
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
-      print(dataState.data!);
-
       if (status == 1) {
         final popups = (dataState.data!.data as List).map((item) => PopupModel.fromJson(item)).toList();
 
         final popup = popups.first;
-
-        print(popup);
 
         emit(PopupDone(popup: popup));
       }
