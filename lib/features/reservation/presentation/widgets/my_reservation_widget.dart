@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/core/components/refresh_indicator.dart';
+import 'package:southbank/core/error/general_error.dart';
+import 'package:southbank/core/error/not_found.dart';
+import 'package:southbank/features/reservation/presentation/bloc/reservation/reservation_event.dart';
 
 import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
@@ -138,166 +142,177 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReservationBloc, ReservationState>(
-      builder: (context, state) {
-        if (state is ReservationDone) {
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(10.0),
-            itemCount: state.reservations!.length,
-            itemBuilder: (context, index) {
-              final theme = Theme.of(context);
-              final reservation = state.reservations![index];
+    return SBRefreshIndicator(
+      onRefresh: () async {
+        context.read<ReservationBloc>().add(const GetReservations());
+      },
+      items: [
+        Center(
+          child: BlocBuilder<ReservationBloc, ReservationState>(
+            builder: (context, state) {
+              if (state is ReservationLoading) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: SBLoading(),
+                );
+              }
 
-              return Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(reservation.date!),
-                    ),
-                    ...reservation.bookings!.map(
-                      (booking) => InkWell(
-                        onTap: () {
-                          if (booking.status == 'Success') {
-                            router.goNamed(
-                              'bookingDetail',
-                              pathParameters: {
-                                'bookingId': booking.bookingId!,
-                                'bookingNo': booking.bookingNo!,
-                              },
-                            );
-                          } else if (booking.status == 'Pending Payment') {
-                            router.pushNamed(
-                              'payment',
-                              pathParameters: {
-                                'bookingId': booking.bookingId!,
-                              },
-                              queryParameters: {
-                                'redirectUrl': booking.redirectUrl,
-                              },
-                            );
-                          } else {
-                            return;
-                          }
-                        },
-                        child: Card(
-                          margin: const EdgeInsets.all(10.0),
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: accentColor,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
+              if (state is ReservationError) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: GeneralErrorWidget(),
+                );
+              }
+
+              if (state is ReservationDone) {
+                return Column(
+                  children: state.reservations!.map((reservation) {
+                    final theme = Theme.of(context);
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Text(reservation.date!),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: LayoutBuilder(
-                              builder: (context, constraints) {
-                                final width = constraints.maxWidth;
+                          ...reservation.bookings!.map(
+                            (booking) => InkWell(
+                              onTap: () {
+                                if (booking.status == 'Success') {
+                                  router.goNamed(
+                                    'bookingDetail',
+                                    pathParameters: {
+                                      'bookingId': booking.bookingId!,
+                                      'bookingNo': booking.bookingNo!,
+                                    },
+                                  );
+                                } else if (booking.status == 'Pending Payment') {
+                                  router.pushNamed(
+                                    'payment',
+                                    pathParameters: {
+                                      'bookingId': booking.bookingId!,
+                                    },
+                                    queryParameters: {
+                                      'redirectUrl': booking.redirectUrl,
+                                    },
+                                  );
+                                } else {
+                                  return;
+                                }
+                              },
+                              child: Card(
+                                margin: const EdgeInsets.all(10.0),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: accentColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      final width = constraints.maxWidth;
 
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    buildBadgeSign(
-                                      status: booking.bookingNo!,
-                                      textTheme: theme.textTheme,
-                                    ),
-                                    const SizedBox(height: 10.0),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        buildImage(
-                                          width: width,
-                                          image: booking.storeImage!,
-                                        ),
-                                        const SizedBox(width: 15.0),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          buildBadgeSign(
+                                            status: booking.bookingNo!,
+                                            textTheme: theme.textTheme,
+                                          ),
+                                          const SizedBox(height: 10.0),
+                                          Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              buildTitle(
-                                                textTheme: theme.textTheme,
-                                                label: booking.storeName!,
+                                              buildImage(
+                                                width: width,
+                                                image: booking.storeImage!,
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(bottom: 10.0),
-                                                child: Text(
-                                                  'Created: ${booking.createdDate!}',
-                                                  style: const TextStyle(color: Colors.grey),
-                                                ),
-                                              ),
-                                              buildInformation(
-                                                textTheme: theme.textTheme,
-                                                label: booking.tableName!,
-                                              ),
-                                              buildInformation(
-                                                textTheme: theme.textTheme,
-                                                label: booking.tableCapacity!,
-                                              ),
-                                              buildInformation(
-                                                textTheme: theme.textTheme,
-                                                label: 'Event: ${booking.events ?? '-'}',
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
+                                              const SizedBox(width: 15.0),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    const TextSpan(text: 'Status:'),
-                                                    const WidgetSpan(
-                                                      child: SizedBox(width: 5.0),
+                                                    buildTitle(
+                                                      textTheme: theme.textTheme,
+                                                      label: booking.storeName!,
                                                     ),
-                                                    WidgetSpan(
-                                                      alignment: PlaceholderAlignment.middle,
-                                                      child: buildBadgeSign(
-                                                        status: booking.status!,
-                                                        textTheme: theme.textTheme,
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(bottom: 10.0),
+                                                      child: Text(
+                                                        'Created: ${booking.createdDate!}',
+                                                        style: const TextStyle(color: Colors.grey),
+                                                      ),
+                                                    ),
+                                                    buildInformation(
+                                                      textTheme: theme.textTheme,
+                                                      label: booking.tableName!,
+                                                    ),
+                                                    buildInformation(
+                                                      textTheme: theme.textTheme,
+                                                      label: booking.tableCapacity!,
+                                                    ),
+                                                    buildInformation(
+                                                      textTheme: theme.textTheme,
+                                                      label: 'Event: ${booking.events ?? '-'}',
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          const TextSpan(text: 'Status:'),
+                                                          const WidgetSpan(
+                                                            child: SizedBox(width: 5.0),
+                                                          ),
+                                                          WidgetSpan(
+                                                            alignment: PlaceholderAlignment.middle,
+                                                            child: buildBadgeSign(
+                                                              status: booking.status!,
+                                                              textTheme: theme.textTheme,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
+                                              )
                                             ],
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    if (booking.expiryDate != null)
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
-                                        child: Center(
-                                          child: Text(
-                                            'Please complete the payment before: ${booking.expiryDate}',
-                                            style: const TextStyle(color: Colors.red),
-                                          ),
-                                        ),
-                                      )
-                                  ],
-                                );
-                              },
+                                          if (booking.expiryDate != null)
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 8.0),
+                                              child: Center(
+                                                child: Text(
+                                                  'Please complete the payment before: ${booking.expiryDate}',
+                                                  style: const TextStyle(color: Colors.red),
+                                                ),
+                                              ),
+                                            )
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              );
+                    );
+                  }).toList(),
+                );
+              }
+
+              return const NotFoundWidget();
             },
-          );
-        }
-
-        if (state is ReservationError) {
-          return const Center(
-            child: Icon(Icons.refresh),
-          );
-        }
-
-        return const Center(
-          child: SBLoading(),
-        );
-      },
+          ),
+        )
+      ],
     );
   }
 }

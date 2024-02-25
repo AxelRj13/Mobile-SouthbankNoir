@@ -17,10 +17,7 @@ class _MyReservationScreenState extends State<MyReservationScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ReservationBloc>(
-      create: (context) => getIt.get<ReservationBloc>()
-        ..add(
-          const GetReservations(),
-        ),
+      create: (context) => getIt.get<ReservationBloc>()..add(const GetReservations()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('My Bookings'),
