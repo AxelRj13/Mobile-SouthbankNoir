@@ -7,10 +7,16 @@ abstract class ComplaintTypeState extends Equatable {
   final List<ComplaintTypeModel>? types;
   final DioException? error;
 
-  const ComplaintTypeState({this.types, this.error});
+  const ComplaintTypeState({
+    this.types,
+    this.error,
+  });
 
   @override
-  List<Object> get props => [types!, error!];
+  List<Object> get props => [
+        types!,
+        error!,
+      ];
 }
 
 class ComplaintTypeLoading extends ComplaintTypeState {
@@ -18,9 +24,21 @@ class ComplaintTypeLoading extends ComplaintTypeState {
 }
 
 class ComplaintTypeDone extends ComplaintTypeState {
-  const ComplaintTypeDone(List<ComplaintTypeModel> types) : super(types: types);
+  const ComplaintTypeDone({
+    required List<ComplaintTypeModel> types,
+  }) : super(
+          types: types,
+        );
+}
+
+class ComplaintTypeNotFound extends ComplaintTypeState {
+  const ComplaintTypeNotFound();
 }
 
 class ComplaintTypeError extends ComplaintTypeState {
-  const ComplaintTypeError(DioException error) : super(error: error);
+  const ComplaintTypeError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }

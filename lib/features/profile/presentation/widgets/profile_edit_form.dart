@@ -36,8 +36,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final _phoneController = TextEditingController();
   final _picker = ImagePicker();
 
-  ImageProvider profilePicture =
-      const AssetImage('assets/img/profile-default.png');
+  ImageProvider profilePicture = const AssetImage('assets/img/profile-default.png');
   late DateTime selectedDate;
   Gender selectedGender = Gender.male;
 
@@ -74,8 +73,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
 
     if (croppedFile != null) {
       File imageFile = File(croppedFile.path);
-      print('IMAGE');
-      print(imageFile);
+
       if (mounted) {
         BlocProvider.of<ProfileBloc>(context).add(SetPhoto(image: imageFile));
       }
@@ -124,17 +122,11 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   Future<void> loadPrefs() async {
     final prefs = getIt.get<SharedPreferences>();
 
-    final dob = prefs.getString('dob') != null
-        ? DateTime.parse(prefs.getString('dob')!)
-        : DateTime.now();
+    final dob = prefs.getString('dob') != null ? DateTime.parse(prefs.getString('dob')!) : DateTime.now();
 
-    profilePicture = prefs.getString('photo') != null
-        ? NetworkImage(prefs.getString('photo')!)
-        : profilePicture;
+    profilePicture = prefs.getString('photo') != null ? NetworkImage(prefs.getString('photo')!) : profilePicture;
 
     selectedDate = dob;
-
-    print('Selected init date: $selectedDate');
 
     _firstNameController.text = prefs.getString('firstName') ?? '';
     _lastNameController.text = prefs.getString('lastName') ?? '';
@@ -142,9 +134,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _cityController.text = prefs.getString('city') ?? '';
     _phoneController.text = prefs.getString('phone') ?? '';
 
-    selectedGender = prefs.getString('gender')?.toLowerCase() == 'female'
-        ? Gender.female
-        : Gender.male;
+    selectedGender = prefs.getString('gender')?.toLowerCase() == 'female' ? Gender.female : Gender.male;
   }
 
   @override
@@ -201,9 +191,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                       children: [
                         CircleAvatar(
                           radius: MediaQuery.of(context).size.width * 0.2,
-                          backgroundImage: state is ProfilePhotoSet
-                              ? FileImage(state.image!)
-                              : profilePicture,
+                          backgroundImage: state is ProfilePhotoSet ? FileImage(state.image!) : profilePicture,
                         ),
                         Positioned(
                           bottom: -10,
@@ -348,13 +336,8 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                           if (_formKey.currentState!.validate()) {
                             FocusScope.of(context).requestFocus(FocusNode());
 
-                            print('Selected btn date: $selectedDate');
-
-                            final String dob =
-                                DateFormat('yyyy-MM-dd').format(selectedDate);
-                            final String gender = selectedGender == Gender.male
-                                ? 'male'
-                                : 'female';
+                            final String dob = DateFormat('yyyy-MM-dd').format(selectedDate);
+                            final String gender = selectedGender == Gender.male ? 'male' : 'female';
 
                             BlocProvider.of<ProfileBloc>(context).add(
                               UpdateProfile(

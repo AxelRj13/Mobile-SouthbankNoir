@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:southbank/features/membership/presentation/bloc/membership_bloc.dart';
+import 'package:southbank/features/membership/presentation/bloc/membership_event.dart';
 
 import '../../../../core/components/loading.dart';
 import '../../../../core/components/refresh_indicator.dart';
@@ -42,6 +44,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     return SBRefreshIndicator(
       onRefresh: () async {
+        context.read<MembershipBloc>().add(const GetMembership());
         context.read<BannerBloc>().add(const GetBanner());
         context.read<EventBloc>().add(const GetTodayEvent());
       },

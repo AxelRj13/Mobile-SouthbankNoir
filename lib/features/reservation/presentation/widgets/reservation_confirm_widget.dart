@@ -323,25 +323,40 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
     return [const Text('Select Payment Method')];
   }
 
-  void selectPaymentMethod(BuildContext context, List<PaymentMethodCategoryModel> paymentMethods) async {
+  void selectPaymentMethod({
+    required BuildContext context,
+    List<PaymentMethodCategoryModel>? paymentMethods,
+  }) async {
     final newSelectedPaymentMethod = await showModalBottomSheet<PaymentMethodModel>(
       isScrollControlled: true,
       context: context,
       builder: (_) {
         return Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Wrap(
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                child: Text('Payment Methods'),
-              ),
-              ...paymentMethods
-                  .map((paymentCategory) =>
-                      buildPaymentMethodExpansionTile(label: paymentCategory.category!, paymentMethods: paymentCategory.paymentMethods!))
-                  .toList()
-            ],
-          ),
+          child: paymentMethods != null
+              ? Wrap(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                      child: Text('Payment Methods'),
+                    ),
+                    ...paymentMethods
+                        .map((paymentCategory) =>
+                            buildPaymentMethodExpansionTile(label: paymentCategory.category!, paymentMethods: paymentCategory.paymentMethods!))
+                        .toList()
+                  ],
+                )
+              : const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 50.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.info, size: 40.0),
+                      SizedBox(height: 10.0),
+                      Text('Payment methods not found'),
+                    ],
+                  ),
+                ),
         );
       },
     );
@@ -546,11 +561,11 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                           padding: const EdgeInsets.only(bottom: 15.0),
                           child: BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
                             builder: (context, state) {
-                              if (state is PaymentMethodDone) {
+                              if (state is PaymentMethodDone || state is PaymentMethodNotFound) {
                                 return InkWell(
                                   onTap: () {
                                     FocusScope.of(context).requestFocus(FocusNode());
-                                    selectPaymentMethod(context, state.paymentMethods!);
+                                    selectPaymentMethod(context: context, paymentMethods: state.paymentMethods);
                                   },
                                   child: const Text('Change'),
                                 );

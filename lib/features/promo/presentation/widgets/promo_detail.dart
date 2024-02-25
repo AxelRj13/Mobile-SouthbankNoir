@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/image_header.dart';
 import '../../../../core/components/loading.dart';
+import '../../../../core/error/general_error.dart';
+import '../../../../core/error/not_found.dart';
 import '../../data/models/promo.dart';
 import '../bloc/promo/promo_bloc.dart';
 import '../bloc/promo/promo_event.dart';
@@ -91,7 +93,7 @@ class _PromoDetailState extends State<PromoDetail> {
         }
 
         if (state is PromoError) {
-          return const Center(child: Icon(Icons.refresh));
+          return const Center(child: GeneralErrorWidget(isDetail: true));
         }
 
         if (state is PromoDone) {
@@ -101,13 +103,13 @@ class _PromoDetailState extends State<PromoDetail> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SBImageHeader(image: state.promo!.image),
-                buildPromo(state.promo!)
+                buildPromo(state.promo!),
               ],
             ),
           );
         }
 
-        return const Center(child: Text('No data'));
+        return const Center(child: NotFoundWidget());
       },
     );
   }

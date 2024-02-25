@@ -250,7 +250,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
               maxScale: 2,
               child: Stack(
                 children: [
-                  Container(color: accentColor, child: Image.asset(widget.tabIndex == 1 ? 'assets/img/floor-2.png' : 'assets/img/floor-1.png')),
+                  Image.asset(widget.tabIndex == 1 ? 'assets/img/floor-2.png' : 'assets/img/floor-1.png'),
                   ...widget.tables.map(
                     (table) {
                       return Positioned(

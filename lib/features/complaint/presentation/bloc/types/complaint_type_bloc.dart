@@ -25,7 +25,11 @@ class ComplaintTypeBloc extends Bloc<ComplaintTypeEvent, ComplaintTypeState> {
       if (status == 1) {
         final types = (dataState.data!.data as List).map((item) => ComplaintTypeModel.fromJson(item)).toList();
 
-        emit(ComplaintTypeDone(types));
+        emit(
+          ComplaintTypeDone(types: types),
+        );
+      } else {
+        emit(const ComplaintTypeNotFound());
       }
     }
 

@@ -24,17 +24,21 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     GetNewsList event,
     Emitter<NewsState> emit,
   ) async {
+    emit(const NewsLoading());
+
     final dataState = await _getNewsListUseCase();
 
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        final news = (dataState.data!.data as List)
-            .map((item) => NewsListModel.fromJson(item))
-            .toList();
+        final news = (dataState.data!.data as List).map((item) => NewsListModel.fromJson(item)).toList();
 
-        emit(NewsListDone(news));
+        emit(
+          NewsListDone(newsList: news),
+        );
+      } else {
+        emit(const NewsNotFound());
       }
     }
 
@@ -48,6 +52,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     GetNews event,
     Emitter<NewsState> emit,
   ) async {
+    emit(const NewsLoading());
+
     final dataState = await _getNewsUseCase(params: event.id);
 
     if (dataState is DataSuccess) {
@@ -56,7 +62,11 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       if (status == 1) {
         final news = NewsModel.fromJson(dataState.data!.data);
 
-        emit(NewsDone(news));
+        emit(
+          NewsDone(news: news),
+        );
+      } else {
+        emit(const NewsNotFound());
       }
     }
 

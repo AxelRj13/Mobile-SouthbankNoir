@@ -29,12 +29,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProfileBloc>(
-          create: (BuildContext context) =>
-              getIt.get<ProfileBloc>()..add(CheckProfile()),
+          create: (context) => getIt.get<ProfileBloc>()..add(CheckProfile()),
         ),
         BlocProvider<MembershipBloc>(
-          create: (BuildContext context) =>
-              getIt.get<MembershipBloc>()..add(const GetMembership()),
+          create: (context) => getIt.get<MembershipBloc>()..add(const GetMembership()),
         ),
       ],
       child: BlocBuilder<ProfileBloc, ProfileState>(

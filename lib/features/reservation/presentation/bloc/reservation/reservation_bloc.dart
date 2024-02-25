@@ -142,8 +142,6 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     if (dataState is DataSuccess) {
       final status = dataState.data!.status;
 
-      print(dataState.data);
-
       if (status == 1) {
         final reservationDetail = ReservationDetailModel.fromJson(
           dataState.data!.data,

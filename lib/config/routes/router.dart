@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/screen/main_screen.dart';
 import '../../core/screen/news_promo_screen.dart';
+import '../../core/screen/privacy_policy_screen.dart';
 import '../../core/screen/splash_screen.dart';
+import '../../core/screen/terms_condition_screen.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/complaint/presentation/complaint_screen.dart';
 import '../../features/coupon/presentation/coupon_detail_screen.dart';
@@ -155,6 +157,22 @@ final GoRouter router = GoRouter(
           builder: (context, state) => EventDetailScreen(
             id: state.pathParameters['eventId']!,
           ),
+        ),
+        GoRoute(
+          path: 'privacy-policy',
+          name: 'privacyPolicy',
+          builder: (context, state) {
+            final urlContent = state.uri.queryParameters['urlContent'];
+            return PrivacyPolicyScreen(urlContent: urlContent!);
+          },
+        ),
+        GoRoute(
+          path: 'terms-condition',
+          name: 'tnc',
+          builder: (context, state) {
+            final urlContent = state.uri.queryParameters['urlContent'];
+            return TermsConditionScreen(urlContent: urlContent!);
+          },
         ),
       ],
     ),

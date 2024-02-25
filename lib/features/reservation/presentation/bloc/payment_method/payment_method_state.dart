@@ -7,10 +7,16 @@ abstract class PaymentMethodState extends Equatable {
   final List<PaymentMethodCategoryModel>? paymentMethods;
   final DioException? error;
 
-  const PaymentMethodState({this.paymentMethods, this.error});
+  const PaymentMethodState({
+    this.paymentMethods,
+    this.error,
+  });
 
   @override
-  List<Object> get props => [paymentMethods!, error!];
+  List<Object> get props => [
+        paymentMethods!,
+        error!,
+      ];
 }
 
 class PaymentMethodLoading extends PaymentMethodState {
@@ -18,9 +24,21 @@ class PaymentMethodLoading extends PaymentMethodState {
 }
 
 class PaymentMethodDone extends PaymentMethodState {
-  const PaymentMethodDone(List<PaymentMethodCategoryModel> paymentMethods) : super(paymentMethods: paymentMethods);
+  const PaymentMethodDone({
+    required List<PaymentMethodCategoryModel> paymentMethods,
+  }) : super(
+          paymentMethods: paymentMethods,
+        );
+}
+
+class PaymentMethodNotFound extends PaymentMethodState {
+  const PaymentMethodNotFound();
 }
 
 class PaymentMethodError extends PaymentMethodState {
-  const PaymentMethodError(DioException error) : super(error: error);
+  const PaymentMethodError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }

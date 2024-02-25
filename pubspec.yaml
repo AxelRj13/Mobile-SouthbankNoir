@@ -33,6 +33,7 @@ dependencies:
   mime: ^1.0.4
   google_sign_in: ^6.1.5
   font_awesome_flutter: ^10.6.0
+  webview_flutter: ^4.5.0
 
 dev_dependencies:
   flutter_test:

@@ -9,10 +9,18 @@ abstract class PromoState extends Equatable {
   final List<PromoListModel>? promoList;
   final DioException? error;
 
-  const PromoState({this.promo, this.promoList, this.error});
+  const PromoState({
+    this.promo,
+    this.promoList,
+    this.error,
+  });
 
   @override
-  List<Object> get props => [promo!, promoList!, error!];
+  List<Object> get props => [
+        promo!,
+        promoList!,
+        error!,
+      ];
 }
 
 class PromoLoading extends PromoState {
@@ -20,14 +28,29 @@ class PromoLoading extends PromoState {
 }
 
 class PromoListDone extends PromoState {
-  const PromoListDone(List<PromoListModel> promoList)
-      : super(promoList: promoList);
+  const PromoListDone({
+    required List<PromoListModel> promoList,
+  }) : super(
+          promoList: promoList,
+        );
 }
 
 class PromoDone extends PromoState {
-  const PromoDone(PromoModel promo) : super(promo: promo);
+  const PromoDone({
+    required PromoModel promo,
+  }) : super(
+          promo: promo,
+        );
+}
+
+class PromoNotFound extends PromoState {
+  const PromoNotFound();
 }
 
 class PromoError extends PromoState {
-  const PromoError(DioException error) : super(error: error);
+  const PromoError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }

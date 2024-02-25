@@ -9,8 +9,7 @@ class MembershipProfileWidget extends StatefulWidget {
   const MembershipProfileWidget({super.key});
 
   @override
-  State<MembershipProfileWidget> createState() =>
-      _MembershipProfileWidgetState();
+  State<MembershipProfileWidget> createState() => _MembershipProfileWidgetState();
 }
 
 class _MembershipProfileWidgetState extends State<MembershipProfileWidget> {
@@ -28,9 +27,7 @@ class _MembershipProfileWidgetState extends State<MembershipProfileWidget> {
                     const Text('Membership Tier'),
                     const SizedBox(height: 15.0),
                     Text(
-                      state is MembershipDone
-                          ? state.membership!.name!.toUpperCase()
-                          : '',
+                      state is MembershipDone ? state.membership!.name!.toUpperCase() : '',
                       style: TextStyle(
                         color: accentColor,
                         fontSize: 18.0,

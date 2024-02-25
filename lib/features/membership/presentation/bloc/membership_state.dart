@@ -13,7 +13,10 @@ abstract class MembershipState extends Equatable {
   });
 
   @override
-  List<Object> get props => [membership!, error!];
+  List<Object> get props => [
+        membership!,
+        error!,
+      ];
 }
 
 class MembershipLoading extends MembershipState {
@@ -21,10 +24,17 @@ class MembershipLoading extends MembershipState {
 }
 
 class MembershipDone extends MembershipState {
-  const MembershipDone(MembershipModel membership)
-      : super(membership: membership);
+  const MembershipDone({
+    required MembershipModel membership,
+  }) : super(
+          membership: membership,
+        );
 }
 
 class MembershipError extends MembershipState {
-  const MembershipError(DioException error) : super(error: error);
+  const MembershipError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }

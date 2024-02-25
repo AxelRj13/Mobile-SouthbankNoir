@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../injection_container.dart';
+import '../../../coupon/presentation/coupon_screen.dart';
 import '../../../membership/presentation/bloc/membership_bloc.dart';
 import '../../../membership/presentation/bloc/membership_event.dart';
 import '../../../membership/presentation/widgets/membership_home_widget.dart';
@@ -41,9 +40,18 @@ class Header extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        router.goNamed(
-                          'coupons',
-                          pathParameters: {'type': myCoupon},
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (context) => const CouponScreen(type: myCoupon),
+                          ),
+                        )
+                            .then(
+                          (value) {
+                            context.read<MembershipBloc>().add(
+                                  const GetMembership(),
+                                );
+                          },
                         );
                       },
                     ),
@@ -70,9 +78,18 @@ class Header extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        router.goNamed(
-                          'coupons',
-                          pathParameters: {'type': buyCoupon},
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (context) => const CouponScreen(type: buyCoupon),
+                          ),
+                        )
+                            .then(
+                          (value) {
+                            context.read<MembershipBloc>().add(
+                                  const GetMembership(),
+                                );
+                          },
                         );
                       },
                     ),
@@ -84,11 +101,7 @@ class Header extends StatelessWidget {
               thickness: 2.0,
               height: 30.0,
             ),
-            BlocProvider<MembershipBloc>(
-              create: (BuildContext context) =>
-                  getIt.get<MembershipBloc>()..add(const GetMembership()),
-              child: const MembershipHomeWidget(),
-            ),
+            const MembershipHomeWidget(),
           ],
         ),
       ),

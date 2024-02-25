@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/components/image_header.dart';
 import '../../../../core/components/loading.dart';
+import '../../../../core/error/general_error.dart';
+import '../../../../core/error/not_found.dart';
 import '../../data/models/news.dart';
 import '../bloc/news_bloc.dart';
 import '../bloc/news_event.dart';
@@ -65,7 +67,7 @@ class _NewsDetailState extends State<NewsDetail> {
         }
 
         if (state is NewsError) {
-          return const Center(child: Icon(Icons.refresh));
+          return const Center(child: GeneralErrorWidget(isDetail: true));
         }
 
         if (state is NewsDone) {
@@ -75,13 +77,13 @@ class _NewsDetailState extends State<NewsDetail> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SBImageHeader(image: state.news!.image),
-                buildNewsArticle(state.news!)
+                buildNewsArticle(state.news!),
               ],
             ),
           );
         }
 
-        return const Center(child: Text('No data'));
+        return const Center(child: NotFoundWidget());
       },
     );
   }

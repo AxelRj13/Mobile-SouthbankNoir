@@ -23,9 +23,17 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
       final status = dataState.data!.status;
 
       if (status == 1) {
-        final paymentMethods = (dataState.data!.data as List).map((item) => PaymentMethodCategoryModel.fromJson(item)).toList();
+        final paymentMethods = (dataState.data!.data as List)
+            .map(
+              (item) => PaymentMethodCategoryModel.fromJson(item),
+            )
+            .toList();
 
-        emit(PaymentMethodDone(paymentMethods));
+        emit(
+          PaymentMethodDone(paymentMethods: paymentMethods),
+        );
+      } else {
+        emit(const PaymentMethodNotFound());
       }
     }
 

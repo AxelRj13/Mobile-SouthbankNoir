@@ -7,13 +7,11 @@ import '../../../../core/components/button.dart';
 import '../../../../core/components/dialog.dart';
 import '../../../../core/components/loading.dart';
 import '../../../../core/components/text_form_field.dart';
-import '../../../../injection_container.dart';
 import '../../data/models/complaint_type.dart';
 import '../bloc/complaint/complaint_bloc.dart';
 import '../bloc/complaint/complaint_event.dart';
 import '../bloc/complaint/complaint_state.dart';
 import '../bloc/types/complaint_type_bloc.dart';
-import '../bloc/types/complaint_type_event.dart';
 import '../bloc/types/complaint_type_state.dart';
 
 class ComplaintForm extends StatefulWidget {
@@ -33,19 +31,20 @@ class _ComplaintFormState extends State<ComplaintForm> {
 
   DateTime selectedDate = DateTime.now();
 
-  void selectType(BuildContext context) async {
+  void selectType({
+    required BuildContext context,
+    List<ComplaintTypeModel>? complaintType,
+  }) async {
     final newSelectedType = await showModalBottomSheet<ComplaintTypeModel>(
       isScrollControlled: true,
       context: context,
-      builder: (BuildContext _) {
-        return BlocProvider.value(
-          value: getIt.get<ComplaintTypeBloc>()..add(const GetComplaintTypes()),
-          child: BlocBuilder<ComplaintTypeBloc, ComplaintTypeState>(
-            builder: (context, state) {
-              if (state is ComplaintTypeDone) {
-                return Wrap(
+      builder: (_) {
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: complaintType != null
+              ? Wrap(
                   children: [
-                    for (final type in state.types!)
+                    for (final type in complaintType)
                       ListTile(
                         onTap: () {
                           Navigator.of(context).pop(type);
@@ -53,17 +52,18 @@ class _ComplaintFormState extends State<ComplaintForm> {
                         title: Text(type.name ?? '-'),
                       ),
                   ],
-                );
-              }
-
-              return const FractionallySizedBox(
-                heightFactor: 0.2,
-                child: Center(
-                  child: SBLoading(),
+                )
+              : const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 50.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.info, size: 40.0),
+                      SizedBox(height: 10.0),
+                      Text('Complaint type not found'),
+                    ],
+                  ),
                 ),
-              );
-            },
-          ),
         );
       },
     );
@@ -142,25 +142,33 @@ class _ComplaintFormState extends State<ComplaintForm> {
             key: _formKey,
             child: Column(
               children: [
-                SBTextFormField(
-                  controller: _typeController,
-                  hintText: 'Type',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please fill in the type field';
-                    }
-                    return null;
+                BlocBuilder<ComplaintTypeBloc, ComplaintTypeState>(
+                  builder: (context, state) {
+                    return SBTextFormField(
+                      controller: _typeController,
+                      hintText: 'Type',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please fill in the type field';
+                        }
+                        return null;
+                      },
+                      onTap: (state is ComplaintTypeDone || state is ComplaintTypeNotFound)
+                          ? () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              selectType(context: context, complaintType: state.types);
+                            }
+                          : null,
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: (state is ComplaintTypeDone || state is ComplaintTypeNotFound)
+                            ? () {
+                                selectType(context: context, complaintType: state.types);
+                              }
+                            : null,
+                      ),
+                    );
                   },
-                  onTap: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    selectType(context);
-                  },
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onPressed: () {
-                      selectType(context);
-                    },
-                  ),
                 ),
                 const SizedBox(height: 15.0),
                 SBTextFormField(
@@ -203,8 +211,7 @@ class _ComplaintFormState extends State<ComplaintForm> {
                           if (_formKey.currentState!.validate()) {
                             FocusScope.of(context).requestFocus(FocusNode());
 
-                            final String date =
-                                DateFormat('yyyy-MM-dd').format(selectedDate);
+                            final String date = DateFormat('yyyy-MM-dd').format(selectedDate);
 
                             BlocProvider.of<ComplaintBloc>(context).add(
                               SendComplaint(

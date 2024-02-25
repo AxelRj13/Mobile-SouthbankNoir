@@ -42,16 +42,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     final prefs = getIt.get<SharedPreferences>();
 
-    print({
-      'firstName': event.firstName,
-      'lastName': event.lastName,
-      'phone': event.phone,
-      'dob': event.dob,
-      'city': event.city,
-      'gender': event.gender,
-      'file': image,
-    });
-
     final profileRequest = ProfileRequest(
       firstName: event.firstName,
       lastName: event.lastName,
@@ -74,8 +64,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (status == 1) {
         final token = dataState.data!.token;
         final user = UserModel.fromJson(dataState.data!.data);
-
-        print(dataState.data!.data);
 
         prefs.setString('token', token!);
         prefs.setString('id', user.id!);
