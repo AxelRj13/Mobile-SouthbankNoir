@@ -333,11 +333,13 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                 )
                     .then(
                   (value) {
-                    context.read<TableBloc>().add(
-                          GetTables(
-                            date: DateFormat('yyyy-MM-dd').format(widget.selectedDate),
-                          ),
-                        );
+                    if (value != null && value) {
+                      context.read<TableBloc>().add(
+                            GetTables(
+                              date: DateFormat('yyyy-MM-dd').format(widget.selectedDate),
+                            ),
+                          );
+                    }
                   },
                 );
               },
