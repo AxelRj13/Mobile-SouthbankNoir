@@ -56,6 +56,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
   String payment = 'Rp 0';
   bool promoApplied = false;
 
+  ReservationConfirmModel? reservationConfirm;
   PaymentMethodEntity? selectedPaymentMethod;
 
   Widget imageWidget({
@@ -369,6 +370,16 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    reservationConfirm = widget.reservationConfirm;
+
+    _nameController.text = reservationConfirm!.personName!;
+    _phoneController.text = reservationConfirm!.personPhone!;
+  }
+
+  @override
   void dispose() {
     _promoController.dispose();
     _nameController.dispose();
@@ -380,10 +391,6 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final reservationConfirm = widget.reservationConfirm;
-
-    _nameController.text = reservationConfirm.personName!;
-    _phoneController.text = reservationConfirm.personPhone!;
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
@@ -428,7 +435,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                       children: [
                         buildImage(
                           width: width,
-                          image: reservationConfirm.storeImage!,
+                          image: reservationConfirm!.storeImage!,
                         ),
                         const SizedBox(width: 15.0),
                         Expanded(
@@ -437,7 +444,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                             children: [
                               buildTitle(
                                 textTheme: theme.textTheme,
-                                label: reservationConfirm.storeName!,
+                                label: reservationConfirm!.storeName!,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 15.0),
@@ -455,13 +462,13 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                                         child: SizedBox(width: 5.0),
                                       ),
                                       TextSpan(
-                                        text: reservationConfirm.dateDisplay,
+                                        text: reservationConfirm!.dateDisplay,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              Text('Event: ${reservationConfirm.event ?? '-'}'),
+                              Text('Event: ${reservationConfirm!.event ?? '-'}'),
                             ],
                           ),
                         )
@@ -488,7 +495,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                       textTheme: theme.textTheme,
                       label: 'Booking Details',
                     ),
-                    ...reservationConfirm.table!.map(
+                    ...reservationConfirm!.table!.map(
                       (tableDetail) => buildTableDetails(tableDetail: tableDetail),
                     ),
                     const Divider(
@@ -502,7 +509,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                     ),
                     BlocBuilder<ReservationPromoBloc, ReservationPromoState>(
                       builder: (context, state) {
-                        final tables = reservationConfirm.table!;
+                        final tables = reservationConfirm!.table!;
                         final totalTable = tables.length;
 
                         if (totalPayment == 0) {
@@ -629,7 +636,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                                       if (_promoController.text != '') {
                                         BlocProvider.of<ReservationPromoBloc>(context).add(
                                           SetApplyPromo(
-                                            storeId: reservationConfirm.storeId!.toString(),
+                                            storeId: reservationConfirm!.storeId!.toString(),
                                             subtotal: totalPayment.toString(),
                                             code: _promoController.text,
                                           ),
@@ -803,14 +810,14 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
 
                                 BlocProvider.of<ReservationBloc>(context).add(
                                   CreateReservation(
-                                    storeId: reservationConfirm.storeId!,
+                                    storeId: reservationConfirm!.storeId!,
                                     paymentMethod: int.parse(selectedPaymentMethod!.id!),
-                                    date: reservationConfirm.date!,
+                                    date: reservationConfirm!.date!,
                                     personName: _nameController.text,
                                     personPhone: _phoneController.text,
                                     notes: _notesController.text,
                                     promoCode: _promoController.text != '' ? _promoController.text : null,
-                                    tables: reservationConfirm.table!,
+                                    tables: reservationConfirm!.table!,
                                     cardNumber: cardNumber,
                                     cardMonth: cardMonth,
                                     cardYear: cardYear,

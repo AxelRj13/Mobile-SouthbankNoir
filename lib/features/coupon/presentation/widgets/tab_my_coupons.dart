@@ -21,8 +21,8 @@ class TabMyCoupons extends StatefulWidget {
 class _TabMyCouponsState extends State<TabMyCoupons> {
   @override
   Widget build(BuildContext context) {
-    if (widget.state is CouponLoading) {
-      return const SBLoading();
+    if (widget.state is CouponNotFound) {
+      return const NotFoundWidget();
     }
 
     if (widget.state is CouponError) {
@@ -42,6 +42,6 @@ class _TabMyCouponsState extends State<TabMyCoupons> {
       );
     }
 
-    return const NotFoundWidget();
+    return const SBLoading();
   }
 }

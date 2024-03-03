@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:southbank/features/profile/presentation/bloc/profile_bloc.dart';
 
 import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
@@ -7,6 +8,8 @@ import '../../../../core/constants/constants.dart';
 import '../../../membership/presentation/bloc/membership_bloc.dart';
 import '../../../membership/presentation/bloc/membership_state.dart';
 import '../../data/models/menu.dart';
+import '../bloc/profile_event.dart';
+import '../profile_edit_screen.dart';
 
 class ProfileMenu extends StatefulWidget {
   const ProfileMenu({super.key});
@@ -94,7 +97,17 @@ class _ProfileMenuState extends State<ProfileMenu> {
       onTap: () {
         if (menu.route != null) {
           if (menu.id == 1) {
-            router.goNamed(menu.route!.route!);
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (context) => const ProfileEditScreen(),
+              ),
+            )
+                .then(
+              (value) {
+                context.read<ProfileBloc>().add(CheckProfile());
+              },
+            );
           } else if (menu.id == 4 || menu.id == 5) {
             router.goNamed(
               menu.route!.route!,

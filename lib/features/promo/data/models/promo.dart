@@ -7,12 +7,14 @@ class PromoModel extends PromoEntity {
     String? promoDate,
     String? image,
     String? minimumSpend,
+    String? code,
   }) : super(
           title: title,
           description: description,
           promoDate: promoDate,
           image: image,
           minimumSpend: minimumSpend,
+          code: code,
         );
 
   factory PromoModel.fromJson(Map<String, dynamic> data) => PromoModel(
@@ -21,5 +23,6 @@ class PromoModel extends PromoEntity {
         promoDate: data['promo_date'],
         image: data['image'],
         minimumSpend: data['minimum_spend'],
+        code: data['code'],
       );
 }

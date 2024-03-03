@@ -73,6 +73,10 @@ class ReservationDetail extends ReservationState {
         );
 }
 
+class ReservationNotFound extends ReservationState {
+  const ReservationNotFound();
+}
+
 class ReservationError extends ReservationState {
   const ReservationError(
     DioException error,

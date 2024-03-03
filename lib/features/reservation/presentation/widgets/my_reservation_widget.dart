@@ -150,11 +150,8 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
         Center(
           child: BlocBuilder<ReservationBloc, ReservationState>(
             builder: (context, state) {
-              if (state is ReservationLoading) {
-                return const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: SBLoading(),
-                );
+              if (state is ReservationNotFound) {
+                return const NotFoundWidget();
               }
 
               if (state is ReservationError) {
@@ -308,7 +305,10 @@ class _MyReservationWidgetState extends State<MyReservationWidget> {
                 );
               }
 
-              return const NotFoundWidget();
+              return const Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: SBLoading(),
+              );
             },
           ),
         )

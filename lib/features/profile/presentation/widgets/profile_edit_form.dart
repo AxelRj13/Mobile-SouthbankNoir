@@ -166,6 +166,8 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
             state.message!.title,
             state.message!.message,
           );
+
+          if (context.mounted) Navigator.of(context).pop();
         }
 
         if (state is ProfileUpdateError) {

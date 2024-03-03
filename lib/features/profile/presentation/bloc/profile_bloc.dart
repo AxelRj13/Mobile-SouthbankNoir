@@ -98,6 +98,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     CheckProfile event,
     Emitter<ProfileState> emit,
   ) {
+    emit(const ProfileLoading());
+
     final prefs = getIt.get<SharedPreferences>();
     final token = prefs.getString('token');
     final id = prefs.getString('id');

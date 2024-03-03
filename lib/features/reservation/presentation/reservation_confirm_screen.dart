@@ -87,6 +87,8 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
                         'redirectUrl': state.redirectUrl,
                       },
                     );
+                  } else {
+                    if (context.mounted) Navigator.of(context).pop(true);
                   }
                 }
 
