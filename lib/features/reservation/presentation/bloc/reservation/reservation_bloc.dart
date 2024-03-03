@@ -120,6 +120,8 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
         emit(
           ReservationDone(reservations),
         );
+      } else {
+        emit(const ReservationNotFound());
       }
     }
 
@@ -150,6 +152,8 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
         emit(
           ReservationDetail(reservationDetail),
         );
+      } else {
+        emit(const ReservationNotFound());
       }
     }
 

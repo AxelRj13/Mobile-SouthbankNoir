@@ -21,8 +21,8 @@ class TabNews extends StatefulWidget {
 class _TabNewsState extends State<TabNews> {
   @override
   Widget build(BuildContext context) {
-    if (widget.state is NewsLoading) {
-      return const SBLoading();
+    if (widget.state is NewsNotFound) {
+      return const NotFoundWidget();
     }
 
     if (widget.state is NewsError) {
@@ -39,6 +39,6 @@ class _TabNewsState extends State<TabNews> {
       );
     }
 
-    return const NotFoundWidget();
+    return const SBLoading();
   }
 }

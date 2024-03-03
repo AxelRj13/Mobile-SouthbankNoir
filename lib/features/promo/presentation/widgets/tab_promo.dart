@@ -20,8 +20,8 @@ class TabPromo extends StatefulWidget {
 class _TabPromoState extends State<TabPromo> {
   @override
   Widget build(BuildContext context) {
-    if (widget.state is PromoLoading) {
-      return const SBLoading();
+    if (widget.state is PromoNotFound) {
+      return const NotFoundWidget();
     }
 
     if (widget.state is PromoError) {
@@ -38,6 +38,6 @@ class _TabPromoState extends State<TabPromo> {
       );
     }
 
-    return const NotFoundWidget();
+    return const SBLoading();
   }
 }
