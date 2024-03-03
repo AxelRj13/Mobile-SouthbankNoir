@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/theme/app_theme.dart';
@@ -22,9 +23,9 @@ class PromoDetail extends StatefulWidget {
 
 class _PromoDetailState extends State<PromoDetail> {
   Widget buildInformationComponent({
-    required IconData icon,
     required String label,
-    required String information,
+    required Widget information,
+    IconData? icon,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,21 +33,22 @@ class _PromoDetailState extends State<PromoDetail> {
         RichText(
           text: TextSpan(
             children: [
-              WidgetSpan(
-                child: Icon(
-                  icon,
-                  size: 20.0,
-                  color: accentColor,
+              if (icon != null)
+                WidgetSpan(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      icon,
+                      size: 20.0,
+                      color: accentColor,
+                    ),
+                  ),
                 ),
-              ),
-              const WidgetSpan(
-                child: SizedBox(width: 8.0),
-              ),
               TextSpan(text: label),
             ],
           ),
         ),
-        Text(information),
+        information,
       ],
     );
   }
@@ -60,13 +62,49 @@ class _PromoDetailState extends State<PromoDetail> {
           buildInformationComponent(
             icon: Icons.calendar_month,
             label: 'Promo Period',
-            information: promo.promoDate!,
+            information: Text(promo.promoDate!),
           ),
           const SizedBox(height: 10.0),
           buildInformationComponent(
             icon: Icons.payments,
             label: 'Minimum Spend',
-            information: promo.minimumSpend!,
+            information: Text(promo.minimumSpend!),
+          ),
+          const SizedBox(height: 10.0),
+          InkWell(
+            onTap: () async {
+              Clipboard.setData(ClipboardData(text: promo.code ?? '')).then(
+                (value) => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Promo code copied'),
+                  ),
+                ),
+              );
+            },
+            child: buildInformationComponent(
+              label: 'Promo Code',
+              information: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: promo.code,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(color: accentColor),
+                    ),
+                    const WidgetSpan(
+                      child: SizedBox(width: 8.0),
+                    ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Icon(
+                        Icons.copy,
+                        size: 20.0,
+                        color: accentColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 25.0),
           Text(promo.description!),

@@ -17,7 +17,7 @@ class PromoBloc extends Bloc<PromoEvent, PromoState> {
     this._getPromoUseCase,
   ) : super(const PromoLoading()) {
     on<GetPromoList>(onGetPromoList);
-    on<GetPromo>(onPromoNews);
+    on<GetPromo>(onGetPromo);
   }
 
   void onGetPromoList(
@@ -48,7 +48,7 @@ class PromoBloc extends Bloc<PromoEvent, PromoState> {
     }
   }
 
-  void onPromoNews(
+  void onGetPromo(
     GetPromo event,
     Emitter<PromoState> emit,
   ) async {

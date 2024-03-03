@@ -6,6 +6,7 @@ class PromoEntity extends Equatable {
   final String? promoDate;
   final String? image;
   final String? minimumSpend;
+  final String? code;
 
   const PromoEntity({
     this.title,
@@ -13,6 +14,7 @@ class PromoEntity extends Equatable {
     this.promoDate,
     this.image,
     this.minimumSpend,
+    this.code,
   });
 
   @override
@@ -22,5 +24,6 @@ class PromoEntity extends Equatable {
         promoDate,
         image,
         minimumSpend,
+        code,
       ];
 }
