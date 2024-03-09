@@ -65,6 +65,7 @@ import 'features/profile/data/data_sources/profile_api_service.dart';
 import 'features/profile/data/repository/profile_repository_impl.dart';
 import 'features/profile/domain/repository/profile_repository.dart';
 import 'features/profile/domain/usecases/update_profile.dart';
+import 'features/profile/presentation/bloc/picture/picture_bloc.dart';
 import 'features/profile/presentation/bloc/profile_bloc.dart';
 import 'features/promo/data/data_sources/banner_api_service.dart';
 import 'features/promo/data/data_sources/promo_api_service.dart';
@@ -310,6 +311,9 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<ProfileBloc>(
     () => ProfileBloc(sl()),
+  );
+  sl.registerFactory<ProfilePictureBloc>(
+    () => ProfilePictureBloc(),
   );
   sl.registerFactory<MembershipBloc>(
     () => MembershipBloc(sl()),
