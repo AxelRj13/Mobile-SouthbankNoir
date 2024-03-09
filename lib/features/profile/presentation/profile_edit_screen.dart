@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../injection_container.dart';
+import 'bloc/picture/picture_bloc.dart';
 import 'bloc/profile_bloc.dart';
 import 'widgets/profile_edit_form.dart';
 
@@ -21,8 +22,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(25.0),
-          child: BlocProvider<ProfileBloc>(
-            create: (BuildContext context) => getIt.get<ProfileBloc>(),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ProfileBloc>(
+                create: (context) => getIt.get<ProfileBloc>(),
+              ),
+              BlocProvider<ProfilePictureBloc>(
+                create: (context) => getIt.get<ProfilePictureBloc>(),
+              )
+            ],
             child: const ProfileEditForm(),
           ),
         ),

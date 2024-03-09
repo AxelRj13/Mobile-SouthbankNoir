@@ -4,12 +4,6 @@ abstract class ProfileEvent {
   const ProfileEvent();
 }
 
-class SetPhoto extends ProfileEvent {
-  final File image;
-
-  const SetPhoto({required this.image});
-}
-
 class UpdateProfile extends ProfileEvent {
   final String firstName;
   final String lastName;
@@ -17,6 +11,7 @@ class UpdateProfile extends ProfileEvent {
   final String city;
   final String gender;
   final String phone;
+  final File? image;
 
   const UpdateProfile({
     required this.firstName,
@@ -25,6 +20,7 @@ class UpdateProfile extends ProfileEvent {
     required this.city,
     required this.gender,
     required this.phone,
+    this.image,
   });
 }
 

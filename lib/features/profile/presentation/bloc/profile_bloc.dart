@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,23 +13,9 @@ import 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UpdateProfileUseCase _updateProfileUseCase;
 
-  File? image;
-
   ProfileBloc(this._updateProfileUseCase) : super(const ProfileInitial()) {
-    on<SetPhoto>(onSetPhoto);
     on<UpdateProfile>(onUpdateProfile);
     on<CheckProfile>(onCheckProfile);
-  }
-
-  void onSetPhoto(
-    SetPhoto event,
-    Emitter<ProfileState> emit,
-  ) {
-    emit(const ProfileLoading());
-
-    image = event.image;
-
-    emit(ProfilePhotoSet(image!));
   }
 
   void onUpdateProfile(
@@ -49,7 +33,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       dob: event.dob,
       city: event.city,
       gender: event.gender,
-      file: image,
+      file: event.image,
     );
 
     final dataState = await _updateProfileUseCase(params: profileRequest);
@@ -86,7 +70,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         message: responseMessage,
       );
 
-      emit(ProfileUpdateMessage(messageResponse));
+      emit(ProfileUpdateMessage(message: messageResponse));
     }
 
     if (dataState is DataFailed) {
@@ -147,6 +131,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
     }
 
-    emit(ProfileDone(user));
+    emit(ProfileDone(user: user));
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -9,13 +7,20 @@ import '../../../auth/data/models/user.dart';
 abstract class ProfileState extends Equatable {
   final MessageResponse? message;
   final UserModel? user;
-  final File? image;
   final DioException? error;
 
-  const ProfileState({this.message, this.user, this.image, this.error});
+  const ProfileState({
+    this.message,
+    this.user,
+    this.error,
+  });
 
   @override
-  List<Object> get props => [message!, user!, image!, error!];
+  List<Object> get props => [
+        message!,
+        user!,
+        error!,
+      ];
 }
 
 class ProfileInitial extends ProfileState {
@@ -27,17 +32,25 @@ class ProfileLoading extends ProfileState {
 }
 
 class ProfileDone extends ProfileState {
-  const ProfileDone(UserModel user) : super(user: user);
-}
-
-class ProfilePhotoSet extends ProfileState {
-  const ProfilePhotoSet(File image) : super(image: image);
+  const ProfileDone({
+    required UserModel user,
+  }) : super(
+          user: user,
+        );
 }
 
 class ProfileUpdateMessage extends ProfileState {
-  const ProfileUpdateMessage(MessageResponse message) : super(message: message);
+  const ProfileUpdateMessage({
+    required MessageResponse message,
+  }) : super(
+          message: message,
+        );
 }
 
 class ProfileUpdateError extends ProfileState {
-  const ProfileUpdateError(DioException error) : super(error: error);
+  const ProfileUpdateError(
+    DioException error,
+  ) : super(
+          error: error,
+        );
 }
