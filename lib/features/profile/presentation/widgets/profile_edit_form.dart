@@ -16,6 +16,10 @@ import '../../../../core/components/text_form_field.dart';
 import '../../../../core/constants/enum.dart';
 import '../../../../core/utils/validator_extension.dart';
 import '../../../../injection_container.dart';
+
+import '../bloc/picture/picture_bloc.dart';
+import '../bloc/picture/picture_event.dart';
+import '../bloc/picture/picture_state.dart';
 import '../bloc/profile_bloc.dart';
 import '../bloc/profile_event.dart';
 import '../bloc/profile_state.dart';
@@ -39,6 +43,8 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   ImageProvider profilePicture = const AssetImage('assets/img/profile-default.png');
   late DateTime selectedDate;
   Gender selectedGender = Gender.male;
+
+  File? image;
 
   Future selectImageFromGallery(ImageSource imageSource) async {
     final pickedFile = await _picker.pickImage(source: imageSource);
@@ -75,7 +81,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       File imageFile = File(croppedFile.path);
 
       if (mounted) {
-        BlocProvider.of<ProfileBloc>(context).add(SetPhoto(image: imageFile));
+        BlocProvider.of<ProfilePictureBloc>(context).add(SetPhoto(image: imageFile));
       }
     }
   }
@@ -159,13 +165,13 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) async {
         if (state is ProfileUpdateMessage) {
-          loadPrefs();
-
           await basicDialog(
             context,
             state.message!.title,
             state.message!.message,
           );
+
+          await loadPrefs();
 
           if (context.mounted) Navigator.of(context).pop();
         }
@@ -191,9 +197,17 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                       clipBehavior: Clip.none,
                       fit: StackFit.expand,
                       children: [
-                        CircleAvatar(
-                          radius: MediaQuery.of(context).size.width * 0.2,
-                          backgroundImage: state is ProfilePhotoSet ? FileImage(state.image!) : profilePicture,
+                        BlocBuilder<ProfilePictureBloc, ProfilePictureState>(
+                          builder: (context, state) {
+                            if (state is ProfilePictureSet) {
+                              image = state.image!;
+                            }
+
+                            return CircleAvatar(
+                              radius: MediaQuery.of(context).size.width * 0.2,
+                              backgroundImage: state is ProfilePictureSet ? FileImage(state.image!) : profilePicture,
+                            );
+                          },
                         ),
                         Positioned(
                           bottom: -10,
@@ -349,6 +363,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                                 city: _cityController.text,
                                 gender: gender,
                                 phone: _phoneController.text,
+                                image: image,
                               ),
                             );
                           }
