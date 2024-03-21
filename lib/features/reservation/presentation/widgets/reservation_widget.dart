@@ -223,6 +223,10 @@ class _ReservationWidgetState extends State<ReservationWidget> {
               fontStyle: FontStyle.italic,
             ),
           ),
+          const SizedBox(height: 5.0),
+          Text(
+            'Event : ${widget.event}',
+          ),
           const SizedBox(height: 10.0),
           const Divider(thickness: 2.0),
           Padding(

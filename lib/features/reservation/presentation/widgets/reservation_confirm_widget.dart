@@ -157,7 +157,7 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
         children: [
           buildInformation(
             label: 'Table',
-            value: tableDetail.tableName!,
+            value: '${tableDetail.tableName!} ${tableDetail.tableNo!.substring(6)}',
           ),
           buildInformation(
             label: 'Capacity',
