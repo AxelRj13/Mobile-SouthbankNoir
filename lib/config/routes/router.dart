@@ -16,6 +16,7 @@ import '../../features/outlet/presentation/outlet_screen.dart';
 import '../../features/payment/data/models/payment.dart';
 import '../../features/payment/presentation/payment_confirm_screen.dart';
 import '../../features/payment/presentation/payment_screen.dart';
+import '../../features/profile/presentation/point_history_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
 import '../../features/promo/presentation/promo_detail_screen.dart';
 import '../../features/reservation/data/models/reservation_confirm.dart';
@@ -173,6 +174,11 @@ final GoRouter router = GoRouter(
             final urlContent = state.uri.queryParameters['urlContent'];
             return TermsConditionScreen(urlContent: urlContent!);
           },
+        ),
+        GoRoute(
+          path: 'point-history',
+          name: 'pointHistory',
+          builder: (context, state) => const PointHistoryScreen(),
         ),
       ],
     ),

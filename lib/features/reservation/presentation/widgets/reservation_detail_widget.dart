@@ -308,7 +308,7 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Row(
+                      child: Wrap(
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

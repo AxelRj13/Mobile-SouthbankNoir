@@ -20,9 +20,9 @@ import '../../../../injection_container.dart';
 import '../bloc/picture/picture_bloc.dart';
 import '../bloc/picture/picture_event.dart';
 import '../bloc/picture/picture_state.dart';
-import '../bloc/profile_bloc.dart';
-import '../bloc/profile_event.dart';
-import '../bloc/profile_state.dart';
+import '../bloc/profile/profile_bloc.dart';
+import '../bloc/profile/profile_event.dart';
+import '../bloc/profile/profile_state.dart';
 
 class ProfileEditForm extends StatefulWidget {
   const ProfileEditForm({super.key});

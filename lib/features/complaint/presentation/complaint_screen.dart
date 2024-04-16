@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/features/complaint/presentation/bloc/types/complaint_type_bloc.dart';
-import 'package:southbank/features/complaint/presentation/bloc/types/complaint_type_event.dart';
 
 import '../../../injection_container.dart';
 import 'bloc/complaint/complaint_bloc.dart';
+import 'bloc/types/complaint_type_bloc.dart';
+import 'bloc/types/complaint_type_event.dart';
 import 'widgets/complaint_form.dart';
 
 class ComplaintScreen extends StatelessWidget {

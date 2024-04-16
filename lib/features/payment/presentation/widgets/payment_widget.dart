@@ -35,6 +35,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   }
 
   Widget buildInformation({
+    required double width,
     required String label,
     required String value,
   }) {
@@ -43,8 +44,13 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label),
-          Text(value),
+          SizedBox(
+            width: width * .5,
+            child: Text(label),
+          ),
+          Flexible(
+            child: Text(value, textAlign: TextAlign.end),
+          ),
         ],
       ),
     );
@@ -52,6 +58,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
     final payment = widget.payment;
 
@@ -114,10 +121,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                         style: theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    buildInformation(label: 'Date', value: payment.reservationDate!),
-                    buildInformation(label: 'Table', value: payment.tableName!),
-                    buildInformation(label: 'Capacity', value: payment.tableCapacity!),
-                    buildInformation(label: 'Minimum Spend', value: payment.minimumSpend!),
+                    buildInformation(width: size.width, label: 'Date', value: payment.reservationDate!),
+                    buildInformation(width: size.width, label: 'Table', value: payment.tableName!),
+                    buildInformation(width: size.width, label: 'Capacity', value: payment.tableCapacity!),
+                    buildInformation(width: size.width, label: 'Minimum Spend', value: payment.minimumSpend!),
                   ],
                 ),
               ),
