@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../injection_container.dart';
 import 'bloc/picture/picture_bloc.dart';
-import 'bloc/profile_bloc.dart';
+import 'bloc/profile/profile_bloc.dart';
 import 'widgets/profile_edit_form.dart';
 
 class ProfileEditScreen extends StatefulWidget {

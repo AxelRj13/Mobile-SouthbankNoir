@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:southbank/features/membership/presentation/bloc/membership_bloc.dart';
-import 'package:southbank/features/membership/presentation/bloc/membership_event.dart';
 
 import '../../../../core/components/loading.dart';
 import '../../../../core/components/refresh_indicator.dart';
@@ -14,6 +12,8 @@ import '../../../events/presentation/bloc/event_event.dart';
 import '../../../events/presentation/bloc/event_state.dart';
 import '../../../events/presentation/widgets/event_today.dart';
 import '../../../events/presentation/widgets/today_event_title.dart';
+import '../../../membership/presentation/bloc/membership_bloc.dart';
+import '../../../membership/presentation/bloc/membership_event.dart';
 import '../../../promo/presentation/bloc/banner/banner_bloc.dart';
 import '../../../promo/presentation/bloc/banner/banner_event.dart';
 import '../../../promo/presentation/bloc/banner/banner_state.dart';

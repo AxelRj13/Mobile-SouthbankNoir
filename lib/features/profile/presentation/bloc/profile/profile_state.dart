@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/resources/message_response.dart';
-import '../../../auth/data/models/user.dart';
+import '../../../../../core/resources/message_response.dart';
+import '../../../../auth/data/models/user.dart';
 
 abstract class ProfileState extends Equatable {
   final MessageResponse? message;

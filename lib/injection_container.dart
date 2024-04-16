@@ -62,11 +62,16 @@ import 'features/payment/domain/usecases/get_payment.dart';
 import 'features/payment/presentation/bloc/confirmation/confirmation_bloc.dart';
 import 'features/payment/presentation/bloc/payment/payment_bloc.dart';
 import 'features/profile/data/data_sources/profile_api_service.dart';
+import 'features/profile/data/data_sources/profile_point_api_service.dart';
+import 'features/profile/data/repository/profile_point_repository_impl.dart';
 import 'features/profile/data/repository/profile_repository_impl.dart';
+import 'features/profile/domain/repository/profile_point_repository.dart';
 import 'features/profile/domain/repository/profile_repository.dart';
+import 'features/profile/domain/usecases/get_point_history.dart';
 import 'features/profile/domain/usecases/update_profile.dart';
 import 'features/profile/presentation/bloc/picture/picture_bloc.dart';
-import 'features/profile/presentation/bloc/profile_bloc.dart';
+import 'features/profile/presentation/bloc/point/point_bloc.dart';
+import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
 import 'features/promo/data/data_sources/banner_api_service.dart';
 import 'features/promo/data/data_sources/promo_api_service.dart';
 import 'features/promo/data/repository/banner_repository_impl.dart';
@@ -192,6 +197,13 @@ Future<void> initializeDependencies() async {
     () => PaymentRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<ProfilePointApiService>(
+    () => ProfilePointApiService(dio),
+  );
+  sl.registerLazySingleton<ProfilePointRepository>(
+    () => ProfilePointRepositoryImpl(sl()),
+  );
+
   // UseCases
   sl.registerLazySingleton<CheckEmailUseCase>(
     () => CheckEmailUseCase(sl()),
@@ -280,6 +292,9 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<ConfirmPaymentUseCase>(
     () => ConfirmPaymentUseCase(sl()),
   );
+  sl.registerLazySingleton<GetPointHistoryUseCase>(
+    () => GetPointHistoryUseCase(sl()),
+  );
 
   // Blocs
   sl.registerFactory<AuthBloc>(
@@ -341,5 +356,8 @@ Future<void> initializeDependencies() async {
   );
   sl.registerFactory<PaymentMethodBloc>(
     () => PaymentMethodBloc(sl()),
+  );
+  sl.registerFactory<PointBloc>(
+    () => PointBloc(sl()),
   );
 }

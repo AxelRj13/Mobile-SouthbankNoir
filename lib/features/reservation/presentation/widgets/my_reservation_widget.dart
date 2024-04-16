@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/core/components/refresh_indicator.dart';
-import 'package:southbank/core/error/general_error.dart';
-import 'package:southbank/core/error/not_found.dart';
-import 'package:southbank/features/reservation/presentation/bloc/reservation/reservation_event.dart';
 
 import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/loading.dart';
+import '../../../../core/components/refresh_indicator.dart';
+import '../../../../core/error/general_error.dart';
+import '../../../../core/error/not_found.dart';
 import '../bloc/reservation/reservation_bloc.dart';
+import '../bloc/reservation/reservation_event.dart';
 import '../bloc/reservation/reservation_state.dart';
 
 class MyReservationWidget extends StatefulWidget {

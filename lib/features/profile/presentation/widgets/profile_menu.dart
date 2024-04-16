@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/features/profile/presentation/bloc/profile_bloc.dart';
 
 import '../../../../config/routes/router.dart';
 import '../../../../config/theme/app_theme.dart';
@@ -8,7 +7,8 @@ import '../../../../core/constants/constants.dart';
 import '../../../membership/presentation/bloc/membership_bloc.dart';
 import '../../../membership/presentation/bloc/membership_state.dart';
 import '../../data/models/menu.dart';
-import '../bloc/profile_event.dart';
+import '../bloc/profile/profile_bloc.dart';
+import '../bloc/profile/profile_event.dart';
 import '../profile_edit_screen.dart';
 
 class ProfileMenu extends StatefulWidget {
