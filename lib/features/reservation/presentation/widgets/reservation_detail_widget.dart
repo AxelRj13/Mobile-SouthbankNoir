@@ -308,17 +308,19 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Wrap(
+                      child: Row(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              buildTitle(
-                                textTheme: theme.textTheme,
-                                label: 'Additional Notes',
-                              ),
-                              Text('${reservationDetail.notes != '' && reservationDetail.notes != null ? reservationDetail.notes : '-'}'),
-                            ],
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                buildTitle(
+                                  textTheme: theme.textTheme,
+                                  label: 'Additional Notes',
+                                ),
+                                Text('${reservationDetail.notes != '' && reservationDetail.notes != null ? reservationDetail.notes : '-'}'),
+                              ],
+                            ),
                           ),
                         ],
                       ),
