@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:southbank/config/theme/app_theme.dart';
 
 class NotFoundWidget extends StatelessWidget {
   final String? message;
@@ -13,7 +14,11 @@ class NotFoundWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.info, size: 40.0),
+        Icon(
+          Icons.info,
+          size: 40.0,
+          color: accentColor,
+        ),
         const SizedBox(height: 10.0),
         Text(message!),
       ],

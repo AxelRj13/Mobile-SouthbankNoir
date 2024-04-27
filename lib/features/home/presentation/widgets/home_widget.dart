@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:southbank/core/error/not_found.dart';
 
 import '../../../../core/components/loading.dart';
 import '../../../../core/components/refresh_indicator.dart';
@@ -86,6 +87,13 @@ class _HomeWidgetState extends State<HomeWidget> {
             if (state is BannerError) {
               return const Center(
                 child: Icon(Icons.refresh),
+              );
+            }
+
+            if (state is BannerNotFound) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+                child: const NotFoundWidget(),
               );
             }
 

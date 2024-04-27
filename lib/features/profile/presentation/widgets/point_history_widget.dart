@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:southbank/core/components/loading.dart';
 
 import '../../../../config/theme/app_theme.dart';
+import '../../../../core/components/loading.dart';
 import '../../../../core/components/refresh_indicator.dart';
 import '../../../../core/error/general_error.dart';
 import '../../../../core/error/not_found.dart';
@@ -20,8 +20,6 @@ class PointHistoryWidget extends StatefulWidget {
 class _PointHistoryWidgetState extends State<PointHistoryWidget> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return SBRefreshIndicator(
       onRefresh: () async {
         context.read<PointBloc>().add(const GetPointHistory());
@@ -53,20 +51,26 @@ class _PointHistoryWidgetState extends State<PointHistoryWidget> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(20.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Flexible(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(point.title!),
+                                      Text(
+                                        point.title!,
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ),
                                       const SizedBox(height: 10.0),
                                       Text(point.details ?? '-'),
+                                      const SizedBox(height: 10.0),
+                                      Text(point.tableInfo ?? '-'),
                                       const SizedBox(height: 10.0),
                                       Text(
                                         point.pointChange!,
@@ -75,16 +79,17 @@ class _PointHistoryWidgetState extends State<PointHistoryWidget> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  width: size.width * .2,
-                                  child: Text(
-                                    point.latestPoint!,
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: size.width * .1),
-                                  ),
-                                ),
+                                const SizedBox(width: 15.0),
+                                Text(
+                                  point.latestPoint!,
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                )
                               ],
                             ),
-                            Text(point.createdDate!),
+                            Text(
+                              point.createdDate!,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
                           ],
                         ),
                       ),
