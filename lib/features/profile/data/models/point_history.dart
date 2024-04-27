@@ -20,7 +20,7 @@ class PointHistoryModel extends PointHistoryEntity {
   factory PointHistoryModel.fromJson(Map<String, dynamic> data) => PointHistoryModel(
         title: data['title'],
         details: data['details'],
-        tableInfo: data['tableInfo'],
+        tableInfo: data['table_info'],
         pointChange: data['point_change'],
         latestPoint: data['latest_point'],
         createdDate: data['created_date'],
