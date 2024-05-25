@@ -124,6 +124,7 @@ class TableBloc extends Bloc<TableEvent, TableState> {
         _tables = [];
 
         final reservation = TableModel.fromJson(dataState.data!.data);
+        final isBookingClosed = reservation.bookingFeature == '0';
 
         _storeId = int.parse(reservation.storeId!);
         _storeName = reservation.storeName;
@@ -178,6 +179,8 @@ class TableBloc extends Bloc<TableEvent, TableState> {
             dateDisplay: _dateDisplay,
             event: _event,
             tables: _tables.elementAt(_tabIndex),
+            isBookingClosed: isBookingClosed,
+            bookingClosedWording: reservation.bookingClosedWording,
           ),
         );
       }

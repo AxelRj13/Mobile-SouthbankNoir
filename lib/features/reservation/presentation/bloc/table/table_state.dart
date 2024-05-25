@@ -13,6 +13,8 @@ abstract class TableState extends Equatable {
   final int? tableId;
   final String? event;
   final List<TableDetailEntity>? tables;
+  final bool? isBookingClosed;
+  final String? bookingClosedWording;
   final DioException? error;
 
   const TableState({
@@ -25,6 +27,8 @@ abstract class TableState extends Equatable {
     this.tableId,
     this.event,
     this.tables,
+    this.isBookingClosed,
+    this.bookingClosedWording,
     this.error,
   });
 
@@ -39,6 +43,8 @@ abstract class TableState extends Equatable {
         tableId!,
         event!,
         tables!,
+        isBookingClosed!,
+        bookingClosedWording!,
         error!,
       ];
 }
@@ -53,6 +59,8 @@ class TableInitial extends TableState {
     String? dateDisplay,
     String? event,
     List<TableDetailEntity>? tables,
+    bool? isBookingClosed,
+    String? bookingClosedWording,
   }) : super(
           tabIndex: tabIndex,
           storeId: storeId,
@@ -62,6 +70,8 @@ class TableInitial extends TableState {
           dateDisplay: dateDisplay,
           event: event,
           tables: tables,
+          isBookingClosed: isBookingClosed,
+          bookingClosedWording: bookingClosedWording,
         );
 }
 
