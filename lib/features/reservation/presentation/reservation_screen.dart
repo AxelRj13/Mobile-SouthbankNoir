@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../config/theme/app_theme.dart';
+import '../../../core/components/dialog.dart';
 import '../../../core/components/loading.dart';
 import '../../../injection_container.dart';
 import 'bloc/table/table_bloc.dart';
@@ -63,74 +64,84 @@ class _ReservationScreenState extends State<ReservationScreen> {
             date: DateFormat('yyyy-MM-dd').format(selectedDate),
           ),
         ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Reservation'),
-          actions: [
-            BlocBuilder<TableBloc, TableState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    BlocProvider.of<TableBloc>(context).add(
-                      GetTables(
-                        date: DateFormat('yyyy-MM-dd').format(selectedDate),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-            BlocBuilder<TableBloc, TableState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const Icon(Icons.calendar_month),
-                  onPressed: () async {
-                    final newSelectedDate = await selectDate(context);
+      child: BlocListener<TableBloc, TableState>(
+        listener: (context, state) async {
+          if (state is TableInitial) {
+            if (state.isBookingClosed!) {
+              await basicDialog(context, 'Reservation Closed', state.bookingClosedWording!);
+              if (mounted) Navigator.of(context).pop();
+            }
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Reservation'),
+            actions: [
+              BlocBuilder<TableBloc, TableState>(
+                builder: (context, state) {
+                  return IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () {
+                      BlocProvider.of<TableBloc>(context).add(
+                        GetTables(
+                          date: DateFormat('yyyy-MM-dd').format(selectedDate),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+              BlocBuilder<TableBloc, TableState>(
+                builder: (context, state) {
+                  return IconButton(
+                    icon: const Icon(Icons.calendar_month),
+                    onPressed: () async {
+                      final newSelectedDate = await selectDate(context);
 
-                    if (selectedDate != newSelectedDate) {
-                      if (mounted) {
-                        BlocProvider.of<TableBloc>(context).add(
-                          GetTables(
-                            date: DateFormat('yyyy-MM-dd').format(newSelectedDate!),
-                          ),
-                        );
+                      if (selectedDate != newSelectedDate) {
+                        if (mounted) {
+                          BlocProvider.of<TableBloc>(context).add(
+                            GetTables(
+                              date: DateFormat('yyyy-MM-dd').format(newSelectedDate!),
+                            ),
+                          );
 
-                        selectedDate = newSelectedDate;
+                          selectedDate = newSelectedDate;
+                        }
                       }
-                    }
-                  },
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          body: BlocBuilder<TableBloc, TableState>(
+            builder: (context, state) {
+              if (state is TableInitial) {
+                return ReservationWidget(
+                  tabIndex: state.tabIndex!,
+                  selectedDate: selectedDate,
+                  storeId: state.storeId!,
+                  storeName: state.storeName!,
+                  storeImage: state.storeImage!,
+                  date: state.date!,
+                  dateDisplay: state.dateDisplay!,
+                  event: state.event!,
+                  tables: state.tables!,
                 );
-              },
-            ),
-          ],
-        ),
-        body: BlocBuilder<TableBloc, TableState>(
-          builder: (context, state) {
-            if (state is TableInitial) {
-              return ReservationWidget(
-                tabIndex: state.tabIndex!,
-                selectedDate: selectedDate,
-                storeId: state.storeId!,
-                storeName: state.storeName!,
-                storeImage: state.storeImage!,
-                date: state.date!,
-                dateDisplay: state.dateDisplay!,
-                event: state.event!,
-                tables: state.tables!,
-              );
-            }
+              }
 
-            if (state is TableError) {
+              if (state is TableError) {
+                return const Center(
+                  child: Icon(Icons.refresh),
+                );
+              }
+
               return const Center(
-                child: Icon(Icons.refresh),
+                child: SBLoading(),
               );
-            }
-
-            return const Center(
-              child: SBLoading(),
-            );
-          },
+            },
+          ),
         ),
       ),
     );
