@@ -92,13 +92,22 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
   Widget buildInformation({
     required String label,
     required String value,
+    bool isBold = false,
+    TextTheme? textTheme,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 3.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label),
+          Text(
+            label,
+            style: isBold
+                ? textTheme!.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  )
+                : null,
+          ),
           Text(value),
         ],
       ),
@@ -133,7 +142,7 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
     );
   }
 
-  Widget buildSubtotal({
+  Widget buildPaymentInformation({
     required String quantity,
     required String discount,
     required String payment,
@@ -147,10 +156,6 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
         buildInformation(
           label: 'Discount',
           value: discount,
-        ),
-        buildInformation(
-          label: 'Payment',
-          value: payment,
         ),
       ],
     );
@@ -257,14 +262,24 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
                             height: 30.0,
                           ),
                           const SizedBox(height: 15.0),
-                          buildTitle(
-                            textTheme: theme.textTheme,
+                          buildInformation(
                             label: 'Subtotal',
+                            value: reservationDetail.subtotal!,
+                            isBold: true,
+                            textTheme: theme.textTheme,
                           ),
-                          buildSubtotal(
+                          const SizedBox(height: 10.0),
+                          buildPaymentInformation(
                             quantity: reservationDetail.qty!,
                             discount: reservationDetail.totalDiscount!,
                             payment: reservationDetail.totalPayment!,
+                          ),
+                          const SizedBox(height: 10.0),
+                          buildInformation(
+                            label: 'Total',
+                            value: reservationDetail.totalPayment!,
+                            isBold: true,
+                            textTheme: theme.textTheme,
                           ),
                         ],
                       ),
