@@ -145,7 +145,6 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
   Widget buildPaymentInformation({
     required String quantity,
     required String discount,
-    required String payment,
   }) {
     return Column(
       children: [
@@ -272,7 +271,6 @@ class _ReservationDetailWidgetState extends State<ReservationDetailWidget> {
                           buildPaymentInformation(
                             quantity: reservationDetail.qty!,
                             discount: reservationDetail.totalDiscount!,
-                            payment: reservationDetail.totalPayment!,
                           ),
                           const SizedBox(height: 10.0),
                           buildInformation(
