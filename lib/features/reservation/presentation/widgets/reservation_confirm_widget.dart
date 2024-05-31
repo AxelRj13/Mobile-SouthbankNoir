@@ -53,7 +53,8 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
 
   int totalPayment = 0;
   String discount = '-';
-  String payment = 'Rp 0';
+  String payment = 'Rp. 0';
+  String subtotal = 'Rp. 0';
   bool promoApplied = false;
 
   ReservationConfirmModel? reservationConfirm;
@@ -135,13 +136,22 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
   Widget buildInformation({
     required String label,
     required String value,
+    bool isBold = false,
+    TextTheme? textTheme,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 3.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label),
+          Text(
+            label,
+            style: isBold
+                ? textTheme!.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  )
+                : null,
+          ),
           Text(value),
         ],
       ),
@@ -173,29 +183,6 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget buildSubtotal({
-    required String quantity,
-    required String discount,
-    required String payment,
-  }) {
-    return Column(
-      children: [
-        buildInformation(
-          label: 'Quantity',
-          value: quantity,
-        ),
-        buildInformation(
-          label: 'Discount',
-          value: discount,
-        ),
-        buildInformation(
-          label: 'Payment',
-          value: payment,
-        ),
-      ],
     );
   }
 
@@ -377,6 +364,15 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
 
     _nameController.text = reservationConfirm!.personName!;
     _phoneController.text = reservationConfirm!.personPhone!;
+
+    final subtotalTable = reservationConfirm!.table!.fold(0, (p, e) => p + e.downPaymentNumber!);
+    final formatted = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp. ',
+      decimalDigits: 0,
+    );
+
+    subtotal = formatted.format(subtotalTable);
   }
 
   @override
@@ -503,10 +499,13 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                       height: 30.0,
                     ),
                     const SizedBox(height: 15.0),
-                    buildTitle(
-                      textTheme: theme.textTheme,
+                    buildInformation(
                       label: 'Subtotal',
+                      value: subtotal,
+                      isBold: true,
+                      textTheme: theme.textTheme,
                     ),
+                    const SizedBox(height: 10.0),
                     BlocBuilder<ReservationPromoBloc, ReservationPromoState>(
                       builder: (context, state) {
                         final tables = reservationConfirm!.table!;
@@ -528,15 +527,29 @@ class _ReservationConfirmWidgetState extends State<ReservationConfirmWidget> {
                           }
                         }
 
-                        return buildSubtotal(
-                          quantity: Intl.plural(
-                            totalTable,
-                            zero: '$totalTable Table',
-                            one: '$totalTable Table',
-                            other: '$totalTable Tables',
-                          ),
-                          discount: discount,
-                          payment: payment,
+                        return Column(
+                          children: [
+                            buildInformation(
+                              label: 'Quantity',
+                              value: Intl.plural(
+                                totalTable,
+                                zero: '$totalTable Table',
+                                one: '$totalTable Table',
+                                other: '$totalTable Tables',
+                              ),
+                            ),
+                            buildInformation(
+                              label: 'Discount',
+                              value: discount,
+                            ),
+                            const SizedBox(height: 10.0),
+                            buildInformation(
+                              label: 'Total',
+                              value: payment,
+                              isBold: true,
+                              textTheme: theme.textTheme,
+                            ),
+                          ],
                         );
                       },
                     ),
