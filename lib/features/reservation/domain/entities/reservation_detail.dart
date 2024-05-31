@@ -16,6 +16,7 @@ class ReservationDetailEntity extends Equatable {
   final String? promoCode;
   final String? totalDiscount;
   final String? totalPayment;
+  final String? subtotal;
   final String? tableName;
   final String? tableCapacity;
   final String? createdDate;
@@ -38,6 +39,7 @@ class ReservationDetailEntity extends Equatable {
     this.promoCode,
     this.totalDiscount,
     this.totalPayment,
+    this.subtotal,
     this.tableName,
     this.tableCapacity,
     this.createdDate,
@@ -62,6 +64,7 @@ class ReservationDetailEntity extends Equatable {
         promoCode,
         totalDiscount,
         totalPayment,
+        subtotal,
         tableName,
         tableCapacity,
         createdDate,
