@@ -6,9 +6,7 @@ import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
 import '../../../../core/components/checkbox.dart';
 import '../../../../core/components/loading.dart';
-import '../../../../core/components/radio_button.dart';
 import '../../../../core/components/text_form_field.dart';
-import '../../../../core/constants/enum.dart';
 import '../../../../core/utils/validator_extension.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
@@ -37,7 +35,6 @@ class _FormRegisterState extends State<FormRegister> {
   DateTime initialDate = DateTime.now();
 
   DateTime selectedDate = DateTime.now();
-  Gender selectedGender = Gender.male;
   bool passwordObsecure = true;
   bool confirmObsecure = true;
   bool agreement = false;
@@ -117,9 +114,6 @@ class _FormRegisterState extends State<FormRegister> {
                 controller: _lastNameController,
                 hintText: 'Last Name',
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please fill in the last name field';
-                  }
                   return null;
                 },
               ),
@@ -156,53 +150,14 @@ class _FormRegisterState extends State<FormRegister> {
                 },
               ),
               const SizedBox(height: 30.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Gender',
-                    style: TextStyle(color: Colors.grey, fontSize: 16.0),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: SBRadioButton<Gender>(
-                          label: 'Male',
-                          value: Gender.male,
-                          groupValue: selectedGender,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedGender = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: SBRadioButton<Gender>(
-                          label: 'Female',
-                          value: Gender.female,
-                          groupValue: selectedGender,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedGender = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
               SBTextFormField(
                 controller: _emailController,
                 hintText: 'Email',
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please fill in the email field';
-                  }
-                  if (!value.isEmail) {
-                    return 'Please enter a valid email';
+                  if (value!.isNotEmpty) {
+                    if (!value.isEmail) {
+                      return 'Please enter a valid email';
+                    }
                   }
                   return null;
                 },
@@ -293,8 +248,7 @@ class _FormRegisterState extends State<FormRegister> {
               ),
               const SizedBox(height: 15.0),
               SBCheckbox(
-                label:
-                    'By registering, you agree to the Terms & Conditions and Privacy Policy',
+                label: 'By registering, you agree to the Terms & Conditions and Privacy Policy',
                 value: agreement,
                 onChanged: (value) {
                   setState(() {
@@ -311,10 +265,7 @@ class _FormRegisterState extends State<FormRegister> {
                         if (_formKey.currentState!.validate() && agreement) {
                           FocusScope.of(context).requestFocus(FocusNode());
 
-                          final String dob =
-                              DateFormat('yyyy-MM-dd').format(selectedDate);
-                          final String gender =
-                              selectedGender == Gender.male ? 'male' : 'female';
+                          final String dob = DateFormat('yyyy-MM-dd').format(selectedDate);
 
                           BlocProvider.of<AuthBloc>(context).add(
                             Register(
@@ -322,7 +273,6 @@ class _FormRegisterState extends State<FormRegister> {
                               lastName: _lastNameController.text,
                               dob: dob,
                               city: _cityController.text,
-                              gender: gender,
                               email: _emailController.text,
                               phone: _phoneController.text,
                               password: _passwordController.text,

@@ -29,10 +29,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final profileRequest = ProfileRequest(
       firstName: event.firstName,
       lastName: event.lastName,
+      email: event.email,
       phone: event.phone,
       dob: event.dob,
       city: event.city,
-      gender: event.gender,
       file: event.image,
     );
 
@@ -56,7 +56,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         prefs.setString('email', user.email!);
         prefs.setString('phone', user.phone!);
         prefs.setString('dob', user.dob!);
-        prefs.setString('gender', user.gender!);
         prefs.setString('city', user.city!);
         prefs.setString('photo', user.photo!);
 
@@ -92,7 +91,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final email = prefs.getString('email');
     final phone = prefs.getString('phone');
     final dob = prefs.getString('dob');
-    final gender = prefs.getString('gender');
     final city = prefs.getString('city');
     final photo = prefs.getString('photo');
 
@@ -103,7 +101,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       email: '-',
       phone: '-',
       dob: '-',
-      gender: '-',
       city: '-',
       photo: '-',
     );
@@ -115,7 +112,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         email != null &&
         phone != null &&
         dob != null &&
-        gender != null &&
         city != null &&
         photo != null) {
       user = UserModel(
@@ -125,7 +121,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         email: email,
         phone: phone,
         dob: dob,
-        gender: gender,
         city: city,
         photo: photo,
       );

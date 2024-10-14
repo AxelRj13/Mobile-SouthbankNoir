@@ -8,7 +8,6 @@ class UserModel extends UserEntity {
     String? email,
     String? phone,
     String? dob,
-    String? gender,
     String? city,
     String? photo,
   }) : super(
@@ -18,7 +17,6 @@ class UserModel extends UserEntity {
           email: email,
           phone: phone,
           dob: dob,
-          gender: gender,
           city: city,
           photo: photo,
         );
@@ -31,7 +29,6 @@ class UserModel extends UserEntity {
       email: data['email'],
       phone: data['phone'],
       dob: data['date_of_birth'],
-      gender: data['gender'],
       city: data['city'],
       photo: data['photo'],
     );

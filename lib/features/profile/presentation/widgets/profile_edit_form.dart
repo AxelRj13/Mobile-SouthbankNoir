@@ -11,9 +11,7 @@ import '../../../../config/theme/app_theme.dart';
 import '../../../../core/components/button.dart';
 import '../../../../core/components/dialog.dart';
 import '../../../../core/components/loading.dart';
-import '../../../../core/components/radio_button.dart';
 import '../../../../core/components/text_form_field.dart';
-import '../../../../core/constants/enum.dart';
 import '../../../../core/utils/validator_extension.dart';
 import '../../../../injection_container.dart';
 
@@ -38,11 +36,11 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final _dobController = TextEditingController();
   final _cityController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _picker = ImagePicker();
 
   ImageProvider profilePicture = const AssetImage('assets/img/profile-default.png');
   late DateTime selectedDate;
-  Gender selectedGender = Gender.male;
 
   File? image;
 
@@ -139,8 +137,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _dobController.text = DateFormat.yMMMMd().format(dob);
     _cityController.text = prefs.getString('city') ?? '';
     _phoneController.text = prefs.getString('phone') ?? '';
-
-    selectedGender = prefs.getString('gender')?.toLowerCase() == 'female' ? Gender.female : Gender.male;
+    _emailController.text = prefs.getString('email') ?? '';
   }
 
   @override
@@ -157,6 +154,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _dobController.dispose();
     _cityController.dispose();
     _phoneController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -275,6 +273,20 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                 ),
                 const SizedBox(height: 15.0),
                 SBTextFormField(
+                  controller: _emailController,
+                  hintText: 'Email',
+                  validator: (value) {
+                    if (value!.isNotEmpty) {
+                      if (!value.isEmail) {
+                        return 'Please enter a valid email';
+                      }
+                    }
+                    return null;
+                  },
+                  textInputType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 15.0),
+                SBTextFormField(
                   controller: _dobController,
                   hintText: 'Date of Birth',
                   validator: (value) {
@@ -306,45 +318,6 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                   },
                 ),
                 const SizedBox(height: 30.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Gender',
-                      style: TextStyle(color: Colors.grey, fontSize: 16.0),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: SBRadioButton<Gender>(
-                            label: 'Male',
-                            value: Gender.male,
-                            groupValue: selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedGender = value;
-                              });
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: SBRadioButton<Gender>(
-                            label: 'Female',
-                            value: Gender.female,
-                            groupValue: selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedGender = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(height: 30.0),
                 SBButton(
                   onPressed: (state is ProfileLoading)
                       ? null
@@ -353,16 +326,15 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                             FocusScope.of(context).requestFocus(FocusNode());
 
                             final String dob = DateFormat('yyyy-MM-dd').format(selectedDate);
-                            final String gender = selectedGender == Gender.male ? 'male' : 'female';
 
                             BlocProvider.of<ProfileBloc>(context).add(
                               UpdateProfile(
                                 firstName: _firstNameController.text,
                                 lastName: _lastNameController.text,
+                                email: _emailController.text.isNotEmpty ? _emailController.text : null,
+                                phone: _phoneController.text,
                                 dob: dob,
                                 city: _cityController.text,
-                                gender: gender,
-                                phone: _phoneController.text,
                                 image: image,
                               ),
                             );

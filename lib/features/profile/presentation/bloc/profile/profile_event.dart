@@ -7,19 +7,19 @@ abstract class ProfileEvent {
 class UpdateProfile extends ProfileEvent {
   final String firstName;
   final String lastName;
+  final String? email;
+  final String phone;
   final String dob;
   final String city;
-  final String gender;
-  final String phone;
   final File? image;
 
   const UpdateProfile({
     required this.firstName,
     required this.lastName,
+    this.email,
+    required this.phone,
     required this.dob,
     required this.city,
-    required this.gender,
-    required this.phone,
     this.image,
   });
 }

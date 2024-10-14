@@ -4,8 +4,7 @@ import '../../../../core/usecase/usecase.dart';
 import '../entities/register_request.dart';
 import '../repository/auth_repository.dart';
 
-class RegisterUseCase
-    implements UseCase<DataState<ApiResponseEntity>, RegisterRequest> {
+class RegisterUseCase implements UseCase<DataState<ApiResponseEntity>, RegisterRequest> {
   final AuthRepository _authRepository;
 
   RegisterUseCase(this._authRepository);
@@ -19,7 +18,6 @@ class RegisterUseCase
       lastName: registerRequest.lastName,
       dob: registerRequest.dob,
       city: registerRequest.city,
-      gender: registerRequest.gender,
       email: registerRequest.email,
       phone: registerRequest.phone,
       password: registerRequest.password,

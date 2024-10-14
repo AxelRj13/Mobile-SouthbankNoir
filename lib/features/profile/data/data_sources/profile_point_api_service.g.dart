@@ -12,7 +12,9 @@ class _ProfilePointApiService implements ProfilePointApiService {
   _ProfilePointApiService(
     this._dio, {
     this.baseUrl,
-  });
+  }) {
+    baseUrl ??= 'https://api.southbanknoir.com/api/v1/';
+  }
 
   final Dio _dio;
 

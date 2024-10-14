@@ -41,7 +41,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     prefs.setString('email', user.email!);
     prefs.setString('phone', user.phone!);
     prefs.setString('dob', user.dob!);
-    prefs.setString('gender', user.gender!);
     prefs.setString('city', user.city!);
     prefs.setString('photo', user.photo!);
   }
@@ -103,7 +102,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     String? lastName,
     String? dob,
     String? city,
-    String? gender,
     String? email,
     String? phone,
     String? password,
@@ -114,9 +112,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       lastName: lastName,
       dob: dob!,
       city: city!,
-      gender: gender!,
-      email: email!,
-      phone: phone,
+      email: email,
+      phone: phone!,
       password: password!,
       confirmPassword: confirmPassword!,
     );
@@ -139,7 +136,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final email = prefs.getString('email');
       final phone = prefs.getString('phone');
       final dob = prefs.getString('dob');
-      final gender = prefs.getString('gender');
       final city = prefs.getString('city');
       final photo = prefs.getString('photo');
 
@@ -150,7 +146,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email != null &&
           phone != null &&
           dob != null &&
-          gender != null &&
           city != null &&
           photo != null) {
         final user = UserModel(
@@ -160,7 +155,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: email,
           phone: phone,
           dob: dob,
-          gender: gender,
           city: city,
           photo: photo,
         );
@@ -193,7 +187,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             firstName: event.name ?? 'Southbank Member',
             dob: DateFormat('yyyy-MM-dd').format(DateTime.now()),
             city: 'BANDUNG',
-            gender: 'MALE',
             email: event.email,
             password: event.id,
             confirmPassword: event.id,
@@ -251,7 +244,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     prefs.remove('email');
     prefs.remove('phone');
     prefs.remove('dob');
-    prefs.remove('gender');
     prefs.remove('city');
     prefs.remove('photo');
 
@@ -270,7 +262,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       lastName: event.lastName,
       dob: event.dob,
       city: event.city,
-      gender: event.gender,
       email: event.email,
       phone: event.phone,
       password: event.password,

@@ -4,8 +4,7 @@ import '../../../../core/usecase/usecase.dart';
 import '../entities/profile_request.dart';
 import '../repository/profile_repository.dart';
 
-class UpdateProfileUseCase
-    implements UseCase<DataState<ApiResponseEntity>, ProfileRequest> {
+class UpdateProfileUseCase implements UseCase<DataState<ApiResponseEntity>, ProfileRequest> {
   final ProfileRepository _profileRepository;
 
   UpdateProfileUseCase(this._profileRepository);
@@ -17,10 +16,10 @@ class UpdateProfileUseCase
     return _profileRepository.updateProfile(
       firstName: profileRequest.firstName,
       lastName: profileRequest.lastName,
+      email: profileRequest.email,
       phone: profileRequest.phone,
       dob: profileRequest.dob,
       city: profileRequest.city,
-      gender: profileRequest.gender,
       file: profileRequest.file,
     );
   }

@@ -25,9 +25,8 @@ abstract class AuthApiService {
     @Field('last_name') String? lastName,
     @Field('date_of_birth') String dob,
     @Field('city') String city,
-    @Field('gender') String gender,
-    @Field('email') String email,
-    @Field('phone') String? phone,
+    @Field('email') String? email,
+    @Field('phone') String phone,
     @Field('password') String password,
     @Field('confirm_password') String confirmPassword,
   );

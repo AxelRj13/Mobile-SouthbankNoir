@@ -16,10 +16,10 @@ class ProfileApiService {
   Future<HttpResponse<ApiResponseModel>> updateProfile(
     String? firstName,
     String? lastName,
+    String? email,
     String? phone,
     String? dob,
     String? city,
-    String? gender,
     File? file,
   ) async {
     const extra = <String, dynamic>{};
@@ -67,11 +67,11 @@ class ProfileApiService {
         ),
       );
     }
-    if (gender != null) {
+    if (email != null) {
       data.fields.add(
         MapEntry(
-          'gender',
-          gender,
+          'email',
+          email,
         ),
       );
     }
@@ -116,9 +116,7 @@ class ProfileApiService {
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
-    if (T != dynamic &&
-        !(requestOptions.responseType == ResponseType.bytes ||
-            requestOptions.responseType == ResponseType.stream)) {
+    if (T != dynamic && !(requestOptions.responseType == ResponseType.bytes || requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
         requestOptions.responseType = ResponseType.plain;
       } else {

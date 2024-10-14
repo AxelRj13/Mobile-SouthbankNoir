@@ -7,10 +7,10 @@ abstract class ProfileRepository {
   Future<DataState<ApiResponseEntity>> updateProfile({
     String? firstName,
     String? lastName,
+    String? email,
     String? phone,
     String? dob,
     String? city,
-    String? gender,
     File? file,
   });
 }

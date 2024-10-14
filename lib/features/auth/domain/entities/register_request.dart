@@ -5,9 +5,8 @@ class RegisterRequest extends Equatable {
   final String? lastName;
   final String dob;
   final String city;
-  final String gender;
-  final String email;
-  final String? phone;
+  final String? email;
+  final String phone;
   final String password;
   final String confirmPassword;
 
@@ -16,9 +15,8 @@ class RegisterRequest extends Equatable {
     this.lastName,
     required this.dob,
     required this.city,
-    required this.gender,
-    required this.email,
-    this.phone,
+    this.email,
+    required this.phone,
     required this.password,
     required this.confirmPassword,
   });
@@ -28,8 +26,7 @@ class RegisterRequest extends Equatable {
         firstName,
         dob,
         city,
-        gender,
-        email,
+        phone,
         password,
         confirmPassword,
       ];

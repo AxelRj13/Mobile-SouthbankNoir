@@ -7,7 +7,6 @@ class Register extends AuthEvent {
   final String lastName;
   final String dob;
   final String city;
-  final String gender;
   final String email;
   final String phone;
   final String password;
@@ -18,7 +17,6 @@ class Register extends AuthEvent {
     required this.lastName,
     required this.dob,
     required this.city,
-    required this.gender,
     required this.email,
     required this.phone,
     required this.password,

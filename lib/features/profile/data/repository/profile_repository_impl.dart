@@ -16,20 +16,20 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<DataState<ApiResponseEntity>> updateProfile({
     String? firstName,
     String? lastName,
+    String? email,
     String? phone,
     String? dob,
     String? city,
-    String? gender,
     File? file,
   }) async {
     try {
       final httpResponse = await _profileApiService.updateProfile(
         firstName,
         lastName,
+        email,
         phone,
         dob,
         city,
-        gender,
         file,
       );
 
