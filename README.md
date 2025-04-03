@@ -70,4 +70,3 @@ The project is organized into the following directories:
 ---
 
 ### 🎯 Happy Coding!
-
