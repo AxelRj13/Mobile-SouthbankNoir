@@ -12,7 +12,7 @@ This project is a Flutter application built with a modular architecture. It foll
 ---
 
 ## Tech Stack
-The project uses the following technologies:
+The project uses the following technologies to support its features and functionalities:
 
 ### **Flutter SDK**
 - Version: `>=3.0.5 <4.0.0`
